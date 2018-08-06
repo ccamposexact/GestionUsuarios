@@ -12,8 +12,19 @@ public class PerfilBean {
 	private String nombre;
 	private Date fCreacion;
 	private String descripcion;
-	private boolean activo;
+	protected String activo;
 	
+	public PerfilBean() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	public String getActivo() {
+		return activo;
+	}
+	public void setActivo(String activo) {
+		this.activo = activo;
+	}
 	@XmlElement
 	public Long getIdPerfil() {
 		return idPerfil;
@@ -42,15 +53,10 @@ public class PerfilBean {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public boolean isActivo() {
-		return activo;
-	}
-	public void setActivo(boolean activo) {
-		this.activo = activo;
-	}
+
 	
 	
-	public PerfilBean(Long idPerfil, String nombre, Date fCreacion, String descripcion, boolean activo) {
+	public PerfilBean(Long idPerfil, String nombre, Date fCreacion, String descripcion, String activo) {
 		super();
 		this.idPerfil = idPerfil;
 		this.nombre = nombre;

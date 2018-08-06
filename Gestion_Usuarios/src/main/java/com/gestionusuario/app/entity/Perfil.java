@@ -1,5 +1,6 @@
 package com.gestionusuario.app.entity;
 
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -9,13 +10,43 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.ParameterMode;
+
+
+@NamedStoredProcedureQueries(
+		{
+				@NamedStoredProcedureQuery(
+					name="perfiles.listar", 
+					procedureName="ListarPerfiles",
+					resultClasses= Perfil.class,
+					parameters={
+								@StoredProcedureParameter(type=void.class )
+						}					
+				),
+				@NamedStoredProcedureQuery(
+						name="perfiles.insertar", 
+						procedureName="InsertarPerfiles",
+						resultClasses= Perfil.class,
+						parameters={
+								@StoredProcedureParameter(mode=ParameterMode.OUT,name="id_perfil", type=String.class),
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="nombre", type=String.class),
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="descripcion", type=String.class),
+							}					
+					)
+		}
+		
+)
+
 
 @Entity
 @Table(name="Perfiles")
-public class Perfil implements Serializable {
+public class Perfil implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
@@ -25,12 +56,25 @@ public class Perfil implements Serializable {
 	
 	private String nombre;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date fCreacion;
 	
 	private String descripcion;
-	private boolean activo;
 	
+	protected String activo;
+	
+	public Perfil() {
+		this.setActivo("1");
+	}
+	
+	public String getActivo() {
+		return activo;
+	}
+
+	public void setActivo(String activo) {
+		this.activo = activo;
+	}
+
 	@ManyToMany
 	private List<Permiso> permisos;
 
@@ -66,14 +110,6 @@ public class Perfil implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public boolean isActivo() {
-		return activo;
-	}
-
-	public void setActivo(boolean activo) {
-		this.activo = activo;
-	}
-
 	public List<Permiso> getPermisos() {
 		return permisos;
 	}
@@ -81,6 +117,18 @@ public class Perfil implements Serializable {
 	public void setPermisos(List<Permiso> permisos) {
 		this.permisos = permisos;
 	}
+
+	public Perfil(Long idPerfil, String nombre, Date fCreacion, String descripcion, String activo) {
+		super();
+		this.idPerfil = idPerfil;
+		this.nombre = nombre;
+		this.fCreacion = fCreacion;
+		this.descripcion = descripcion;
+		this.activo = activo;
+		
+	}
+	
+	
 	
 	
 

@@ -30,18 +30,25 @@ public class Usuario_Perfil implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fBaja;
 	
+	protected String activo;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Perfil perfil;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Usuario usuario;
+	
+	
 
+	public String getActivo() {
+		return activo;
+	}
+	public void setActivo(String activo) {
+		this.activo = activo;
+	}
 	public Long getIdUsuario_Perfil() {
 		return idUsuario_Perfil;
 	}
-	
-	
-
 	public void setIdUsuario_Perfil(Long idUsuario_Perfil) {
 		this.idUsuario_Perfil = idUsuario_Perfil;
 	}

@@ -1,5 +1,11 @@
 package com.gestionusuario.app.repository;
 
-public interface PerfilDAO {
+import java.util.List;
+
+import com.gestionusuario.app.entity.Perfil;
+
+public interface PerfilDAO extends GenericDAO<Perfil>{
+	
+	public List<Perfil> ListarPerfiles() throws Exception;
 
 }

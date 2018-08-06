@@ -1,5 +1,9 @@
 package com.gestionusuario.app.service;
 
-public interface PerfilService {
+import com.gestionusuario.app.entity.Perfil;
+
+public interface PerfilService extends GenericService<Perfil> {
+	
+	
 
 }
