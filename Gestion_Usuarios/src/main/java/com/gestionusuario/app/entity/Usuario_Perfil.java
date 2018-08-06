@@ -1,6 +1,5 @@
 package com.gestionusuario.app.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -15,7 +14,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="UsuarioPerfil")
-public class Usuario_Perfil implements Serializable{
+public class Usuario_Perfil extends GenericEntity{
 
 	
 	private static final long serialVersionUID = 1L;
@@ -39,6 +38,12 @@ public class Usuario_Perfil implements Serializable{
 	private Usuario usuario;
 	
 	
+<<<<<<< HEAD
+=======
+	public Usuario_Perfil() {
+		this.setEstado("1");
+	}
+>>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
 
 	public String getActivo() {
 		return activo;

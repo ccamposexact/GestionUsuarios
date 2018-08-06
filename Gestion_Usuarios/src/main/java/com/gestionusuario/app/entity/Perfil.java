@@ -46,7 +46,11 @@ import javax.persistence.ParameterMode;
 
 @Entity
 @Table(name="Perfiles")
+<<<<<<< HEAD
 public class Perfil implements Serializable{
+=======
+public class Perfil extends GenericEntity{
+>>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
 	
 	private static final long serialVersionUID = 1L;
 
@@ -60,6 +64,13 @@ public class Perfil implements Serializable{
 	private Date fCreacion;
 	
 	private String descripcion;
+<<<<<<< HEAD
+=======
+
+	public Perfil() {
+		this.setEstado("1");
+	}
+>>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
 	
 	protected String activo;
 	
@@ -110,6 +121,10 @@ public class Perfil implements Serializable{
 		this.descripcion = descripcion;
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
 	public List<Permiso> getPermisos() {
 		return permisos;
 	}
