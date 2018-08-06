@@ -47,7 +47,7 @@ public class GestionUsuarioController {
 			e.printStackTrace();
 		}
 		
-		return "{\"ret\":\"Se registro Perfil\"}";
+		return "{\"ret\":\"SE registro Perfil\"}";
 		
 	}
 	
