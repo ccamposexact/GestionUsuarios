@@ -20,6 +20,7 @@ public class Permiso implements Serializable {
 	
 	private String nombre;
 	private String descripcion;
+	
 	public Long getIdPermiso() {
 		return idPermiso;
 	}
