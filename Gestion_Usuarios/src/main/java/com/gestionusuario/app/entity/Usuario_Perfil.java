@@ -1,6 +1,5 @@
 package com.gestionusuario.app.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -15,7 +14,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="UsuarioPerfil")
-public class Usuario_Perfil implements Serializable{
+public class Usuario_Perfil extends GenericEntity{
 
 	
 	private static final long serialVersionUID = 1L;
@@ -35,6 +34,11 @@ public class Usuario_Perfil implements Serializable{
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Usuario usuario;
+	
+	
+	public Usuario_Perfil() {
+		this.setEstado("1");
+	}
 
 	public Long getIdUsuario_Perfil() {
 		return idUsuario_Perfil;

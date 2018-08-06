@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="Perfiles")
-public class Perfil implements Serializable {
+public class Perfil extends GenericEntity{
 	
 	private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,10 @@ public class Perfil implements Serializable {
 	private Date fCreacion;
 	
 	private String descripcion;
-	private boolean activo;
+
+	public Perfil() {
+		this.setEstado("1");
+	}
 	
 	@ManyToMany
 	private List<Permiso> permisos;
@@ -66,13 +69,6 @@ public class Perfil implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public boolean isActivo() {
-		return activo;
-	}
-
-	public void setActivo(boolean activo) {
-		this.activo = activo;
-	}
 
 	public List<Permiso> getPermisos() {
 		return permisos;
