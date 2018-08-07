@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,9 @@ import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.ParameterMode;
 
 
@@ -68,14 +72,12 @@ public class Perfil implements Serializable{
 	private Date fCreacion;
 	
 	private String descripcion;
+	
+	
 	protected String activo;
 	
 	@ManyToMany
 	private List<Permiso> permisos;
-	
-	public Perfil() {
-		
-	}
 	
 	public String getActivo() {
 		return activo;

@@ -23,10 +23,10 @@ public class Usuario_Perfil extends GenericEntity{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idUsuario_Perfil;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date fAsignada;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date fBaja;
 	
 	protected String activo;
