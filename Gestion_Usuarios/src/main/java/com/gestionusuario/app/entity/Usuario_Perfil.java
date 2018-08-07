@@ -38,12 +38,10 @@ public class Usuario_Perfil extends GenericEntity{
 	private Usuario usuario;
 	
 	
-<<<<<<< HEAD
-=======
+
 	public Usuario_Perfil() {
-		this.setEstado("1");
+		
 	}
->>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
 
 	public String getActivo() {
 		return activo;
