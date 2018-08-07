@@ -3,12 +3,13 @@ package com.gestionusuario.app.controller;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.gestionusuario.app.bean.PerfilBean;
+
 import com.gestionusuario.app.entity.Perfil;
 import com.gestionusuario.app.service.PerfilService;
 
@@ -34,13 +35,10 @@ public class GestionUsuarioController {
 
 
 	@RequestMapping(value = "/agregarPerfil", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
-	public @ResponseBody String agregarRequestBody(@RequestBody PerfilBean perfilbean){
-		
-		Perfil perfil = new Perfil();
+	public @ResponseBody String agregarRequestBody(@RequestBody Perfil perfil){
 		
 		try {
 			
-			BeanUtils.copyProperties(perfil,perfilbean );
 			this.getPerfilservice().insertar(perfil);
 			
 		} catch (Exception e) {
@@ -50,6 +48,23 @@ public class GestionUsuarioController {
 		return "{\"ret\":\"SE registro Perfil\"}";
 		
 	}
+	@RequestMapping(value = "/DesactivarPerfil/{id}", produces = "application/json; charset=utf-8", method = RequestMethod.DELETE)
+	public @ResponseBody String DesactivarPerfil(@PathVariable("id") String id) {
+
+		System.out.println("id " + id);
+		Perfil perfil = new Perfil();
+		perfil.setIdPerfil(Long.valueOf(id));
+		boolean sw = false;
+		try {
+			sw = this.getPerfilservice().eliminar(perfil);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return String.valueOf(sw);
+	
+	}
+	
 	
 
 	

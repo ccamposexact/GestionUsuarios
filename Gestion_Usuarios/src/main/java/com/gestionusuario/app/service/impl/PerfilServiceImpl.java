@@ -32,9 +32,12 @@ public class PerfilServiceImpl implements PerfilService{
 	}
 
 	@Override
-	public boolean eliminar(Perfil objeto) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean eliminar(Perfil perfil) throws Exception {
+		try {
+			return this.getPerfildao().eliminar(perfil);
+		} catch (Exception e) {
+			throw new Exception();
+		}
 	}
 	
 

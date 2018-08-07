@@ -51,9 +51,19 @@ public class PerfilDAOimpl implements PerfilDAO{
 	}
 
 	@Override
-	public boolean eliminar(Perfil objeto) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean eliminar(Perfil perfil) throws Exception {
+		
+		boolean sw=false;
+		try {
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.eliminar");
+			spq.setParameter("id", perfil.getIdPerfil());
+			spq.execute();
+			em.close();
+			sw=true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sw;
 	}
 
 	@Override

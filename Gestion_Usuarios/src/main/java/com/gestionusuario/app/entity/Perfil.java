@@ -34,9 +34,16 @@ import javax.persistence.ParameterMode;
 						procedureName="InsertarPerfiles",
 						resultClasses= Perfil.class,
 						parameters={
-								@StoredProcedureParameter(mode=ParameterMode.OUT,name="id_perfil", type=String.class),
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="nombre", type=String.class),
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="descripcion", type=String.class),
+							}					
+					),
+				@NamedStoredProcedureQuery(
+						name="perfiles.eliminar", 
+						procedureName="EliminarPerfiles",
+						resultClasses= Perfil.class,
+						parameters={
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="id",type=Long.class),
 							}					
 					)
 		}
@@ -61,10 +68,10 @@ public class Perfil implements Serializable{
 	private Date fCreacion;
 	
 	private String descripcion;
-
-
-	
 	protected String activo;
+	
+	@ManyToMany
+	private List<Permiso> permisos;
 	
 	public Perfil() {
 		
@@ -77,10 +84,7 @@ public class Perfil implements Serializable{
 	public void setActivo(String activo) {
 		this.activo = activo;
 	}
-
-	@ManyToMany
-	private List<Permiso> permisos;
-
+	
 	public Long getIdPerfil() {
 		return idPerfil;
 	}
@@ -122,15 +126,15 @@ public class Perfil implements Serializable{
 		this.permisos = permisos;
 	}
 
-	public Perfil(Long idPerfil, String nombre, Date fCreacion, String descripcion, String activo) {
-		super();
-		this.idPerfil = idPerfil;
-		this.nombre = nombre;
-		this.fCreacion = fCreacion;
-		this.descripcion = descripcion;
-		this.activo = activo;
-		
+	@Override
+	public String toString() {
+		return "Perfil [idPerfil=" + idPerfil + ", nombre=" + nombre + ", fCreacion=" + fCreacion + ", descripcion="
+				+ descripcion + ", activo=" + activo + ", permisos=" + permisos + "]";
 	}
+
+	
+	
+	
 	
 	
 	
