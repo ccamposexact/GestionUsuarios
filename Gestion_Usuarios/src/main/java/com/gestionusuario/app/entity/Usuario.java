@@ -10,32 +10,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
 
 
-//mode=ParameterMode.REF_CURSOR,name="P_CURSOR", 
+
 
 @NamedStoredProcedureQueries(
 		{
 				@NamedStoredProcedureQuery(
-					name="usuario.listar", 
-					procedureName="ListarUsuarios",
-					resultClasses= Usuario.class,
-					parameters={
-								@StoredProcedureParameter(type=void.class )
-						}					
-				),
-				@NamedStoredProcedureQuery(
-						name="usuario.eliminar", 
-						procedureName="EliminarUsuario",
+						name="usuario.validarCrear", 
+						procedureName="ValidarCrearPerfil",
 						resultClasses= Usuario.class,
 						parameters={
-									@StoredProcedureParameter(type=void.class)
-									
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="id",type=Long.class)
 							}					
-					)
+				)
+				
 		}
 	)
 
@@ -47,7 +40,7 @@ public class Usuario implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long idUsuario;
+	private int idUsuario;
 	
 	private String nombre;
 	private String apellido;
@@ -66,10 +59,10 @@ public class Usuario implements Serializable {
 		this.activo = activo;
 	}
 
-	public Long getIdUsuario() {
+	public int getIdUsuario() {
 		return idUsuario;
 	}
-	public void setIdUsuario(Long idUsuario) {
+	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 	public String getNombre() {
@@ -92,7 +85,7 @@ public class Usuario implements Serializable {
 	}
 
 
-	public Usuario(Long idUsuario, String nombre, String apellido, String correo, String activo) {
+	public Usuario(int idUsuario, String nombre, String apellido, String correo, String activo) {
 		super();
 		this.idUsuario = idUsuario;
 		this.nombre = nombre;

@@ -8,4 +8,5 @@ public interface UsuarioService extends GenericService<Usuario>{
 
 	public List<Usuario> ListarUsuarioPorNombre(String nombre) throws Exception;
 	
+	public boolean validarUsuario(Usuario usuario) throws Exception;
 }

@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import com.gestionusuario.app.entity.Perfil;
+import com.gestionusuario.app.entity.Usuario;
 import com.gestionusuario.app.repository.PerfilDAO;
 
 
@@ -18,12 +19,14 @@ public class PerfilDAOimpl implements PerfilDAO{
 	
 	@PersistenceContext
 	private EntityManager em;
-//cambio
+	
+	
 
 	@SuppressWarnings("uncheked")
 	@Override
 	public boolean insertar(Perfil perfil) throws Exception {
 		boolean sw =false;
+		
 		try {
 			
 			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.insertar");
@@ -45,9 +48,21 @@ public class PerfilDAOimpl implements PerfilDAO{
 	}
 
 	@Override
-	public boolean modificar(Perfil objeto) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean modificar(Perfil perfil) throws Exception {
+		boolean sw=false;
+		
+		try {
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.modificar");
+			spq.setParameter("id", perfil.getIdPerfil());
+			spq.setParameter("nombre", perfil.getNombre());
+			spq.setParameter("descripcion", perfil.getDescripcion());
+			spq.execute();
+			em.close();
+			sw=true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sw;
 	}
 
 	@Override
@@ -71,7 +86,24 @@ public class PerfilDAOimpl implements PerfilDAO{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
+	@Override
+	public int ValidarPermisos(int idUsuario, int idPermiso) throws Exception {
+		
+		int rpta=0;
+		
+		try {
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.validarPermiso");
+			spq.setParameter("idUsuario", idUsuario);
+			spq.setParameter("idPermiso", idPermiso);
+			spq.execute();
+			em.close();
+			rpta=1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rpta;
+	}
+
 
 }

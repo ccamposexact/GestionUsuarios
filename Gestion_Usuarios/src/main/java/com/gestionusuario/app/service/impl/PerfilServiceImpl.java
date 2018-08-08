@@ -26,9 +26,12 @@ public class PerfilServiceImpl implements PerfilService{
 	}
 
 	@Override
-	public boolean modificar(Perfil objeto) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean modificar(Perfil perfil) throws Exception {
+		try {
+			return this.getPerfildao().modificar(perfil);
+		} catch (Exception e) {
+			throw new Exception();
+		}
 	}
 
 	@Override
@@ -48,5 +51,19 @@ public class PerfilServiceImpl implements PerfilService{
 	public void setPerfildao(PerfilDAO perfildao) {
 		this.perfildao = perfildao;
 	}
+
+	@Override
+	public int ValidarPermisos(int idUsuario, int idPermiso) throws Exception {
+	
+		try {
+			return this.perfildao.ValidarPermisos(idUsuario, idPermiso);
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+		
+	}
+
+
+	
 
 }

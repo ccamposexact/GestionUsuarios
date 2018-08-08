@@ -5,12 +5,13 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+
 import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.StoredProcedureParameter;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.ColumnDefault;
+
 
 import javax.persistence.ParameterMode;
 
@@ -49,11 +50,30 @@ import javax.persistence.ParameterMode;
 						parameters={
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="id",type=Long.class),
 							}					
-					)
+				),
+				@NamedStoredProcedureQuery(
+						name="perfiles.modificar", 
+						procedureName="ModificarPerfiles",
+						resultClasses= Perfil.class,
+						parameters={
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="id",type=Long.class),
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="nombre",type=String.class),
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="descripcion",type=String.class)
+							}					
+				),
+				@NamedStoredProcedureQuery(
+						name="perfiles.validarPermiso", 
+						procedureName="ValidarPermiso",
+						resultClasses= Perfil.class,
+						parameters={
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Integer.class),
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPermiso",type=Integer.class)
+							}					
+				)
+				
 		}
 		
 )
-
 
 @Entity
 @Table(name="Perfiles")

@@ -7,5 +7,9 @@ import com.gestionusuario.app.entity.Perfil;
 public interface PerfilDAO extends GenericDAO<Perfil>{
 	
 	public List<Perfil> ListarPerfiles() throws Exception;
-
+	
+	public int ValidarPermisos(int idUsuario, int idPermiso) throws Exception;
+	
+	
+	
 }

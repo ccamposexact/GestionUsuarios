@@ -16,15 +16,15 @@ public class Permiso implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long idPermiso;
+	private int idPermiso;
 	
 	private String nombre;
 	private String descripcion;
 	
-	public Long getIdPermiso() {
+	public int getIdPermiso() {
 		return idPermiso;
 	}
-	public void setIdPermiso(Long idPermiso) {
+	public void setIdPermiso(int idPermiso) {
 		this.idPermiso = idPermiso;
 	}
 	public String getNombre() {

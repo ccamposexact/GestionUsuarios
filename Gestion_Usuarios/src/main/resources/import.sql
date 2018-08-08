@@ -9,11 +9,13 @@ insert into perfiles values (1,'Es el encargado de realizar las actividades diar
 insert into perfiles values (1,'Es el encargado de guardar tarjetas de credito',GETDATE(),'ASISTENTE')
 
 
-insert into permisos values ('TIENE LA CAPACIDAD DE CREAR PERFILES DE USUARIOS','CREAR PERFILES')
-insert into permisos values ('TIENE LA CAPACIDAD MODIFICAR PERFILES EXISTENTES','MODIFICAR PERFILES')
-insert into permisos values ('TIENE LA CAPACIDAD DE CREAR PERMISOS DE PERFILES','CREAR PERMISOS')
-insert into permisos values ('TIENE LA CAPACIDAD DE MODIFICAR PERMISOS EXISTENTES','MODIFICAR PERMISOS')
-insert into permisos values ('TIENE LA CAPACIDAD DE ASIGNAR PERMISOS A LOS PERFILES','ASIGNAR PERMISOS')
+insert into permisos values ('CREADOR DE PERFILES','TIENE EL PERMISO DE CREAR PERFILES DE USUARIO')
+insert into permisos values ('MODIFICADOR DE PERFILES','TIENE EL PERMISO DE MODIFICAR PERFILES DE USUARIO')
+insert into permisos values ('DESACTIVADOR DE PERFILES','TIENE EL PERMISO DE DESACTIVAR PERFILES DE USUARIO')
+insert into permisos values ('ASIGNADOR DE PERFILES','TIENE EL PERMISO DE ASIGNAR PERFILES A UN USUARIO')
+insert into permisos values ('CREADOR DE PERMISOS','TIENE EL PERMISO DE CREAR PERMISOS DE USUARIO')
+insert into permisos values ('MODIFICADOR DE PERMISOS','TIENE EL PERMISO DE MODIFICAR PERMISOS DE USUARIO')
+insert into permisos values ('ASIGNADOR DE PERMISOS','TIENE EL PERMISO DE ASIGNAR PERMISOS A UN PERFIL')
 
 
 
@@ -23,6 +25,7 @@ insert into usuario_perfil values (1,GETDATE(),'',3,3)
 
 insert into perfiles_permisos values (1,1)
 insert into perfiles_permisos values (1,2)
+insert into perfiles_permisos values (1,3)
 insert into perfiles_permisos values (2,2)
 
 
