@@ -79,12 +79,16 @@ public class GestionUsuarioController {
 		
 		Perfil perfil = mapper.readValue(requestJson.getString("Perfil"), Perfil.class);
 		
+		
 		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.CreadorPerfil);
-		System.out.println(rpta);
+		
+		
 		if(rpta==1) 
+			
 		{
 			try {
 				this.getPerfilservice().insertar(perfil);
+				System.out.println(rpta);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

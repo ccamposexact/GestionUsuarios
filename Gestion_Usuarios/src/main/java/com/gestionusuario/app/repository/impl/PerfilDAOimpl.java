@@ -1,6 +1,7 @@
 package com.gestionusuario.app.repository.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.gestionusuario.app.entity.Perfil;
 import com.gestionusuario.app.entity.Usuario;
 import com.gestionusuario.app.repository.PerfilDAO;
-
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
 @Repository("perfildao")
 public class PerfilDAOimpl implements PerfilDAO{
@@ -88,20 +89,19 @@ public class PerfilDAOimpl implements PerfilDAO{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public int ValidarPermisos(Long idUsuario, Long idPermiso) throws Exception {
 		
 		int rpta=0;
-		
-		
-		//validacion cuando idusuario es 0
+	
 		
 		try {
 				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.validarPermiso");
 				spq.setParameter("idUsuario", idUsuario);
 				spq.setParameter("idPermiso", idPermiso);
 				spq.execute();
+				rpta = (int) spq.getOutputParameterValue(1);
 				
 				em.close();
 			

@@ -66,6 +66,7 @@ import javax.persistence.ParameterMode;
 						procedureName="ValidarPermiso",
 						resultClasses= Perfil.class,
 						parameters={
+								@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Integer.class),
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class),
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPermiso",type=Long.class)
 							}					
