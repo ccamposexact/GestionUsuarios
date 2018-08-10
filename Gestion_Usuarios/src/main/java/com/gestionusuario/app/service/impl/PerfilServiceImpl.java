@@ -53,7 +53,7 @@ public class PerfilServiceImpl implements PerfilService{
 	}
 
 	@Override
-	public int ValidarPermisos(int idUsuario, int idPermiso) throws Exception {
+	public int ValidarPermisos(Integer idUsuario, int idPermiso) throws Exception {
 	
 		try {
 			return this.perfildao.ValidarPermisos(idUsuario, idPermiso);

@@ -61,6 +61,7 @@ public class PerfilDAOimpl implements PerfilDAO{
 			sw=true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception();
 		}
 		return sw;
 	}
@@ -72,6 +73,7 @@ public class PerfilDAOimpl implements PerfilDAO{
 		try {
 			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.eliminar");
 			spq.setParameter("id", perfil.getIdPerfil());
+			System.out.println(perfil.getIdPerfil());
 			spq.execute();
 			em.close();
 			sw=true;
@@ -88,7 +90,7 @@ public class PerfilDAOimpl implements PerfilDAO{
 	}
 
 	@Override
-	public int ValidarPermisos(int idUsuario, int idPermiso) throws Exception {
+	public int ValidarPermisos(Integer idUsuario, int idPermiso) throws Exception {
 		
 		int rpta=0;
 		

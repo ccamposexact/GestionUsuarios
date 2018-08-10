@@ -7,5 +7,4 @@ public class PermisosLista  {
 	public static final int DesactivadorPerfil = 3;
 	public static final int AsignadorPerfil = 4;
 	
-
 }
