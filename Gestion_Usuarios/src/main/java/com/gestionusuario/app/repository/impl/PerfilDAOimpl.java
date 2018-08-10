@@ -90,20 +90,25 @@ public class PerfilDAOimpl implements PerfilDAO{
 	}
 
 	@Override
-	public int ValidarPermisos(Integer idUsuario, int idPermiso) throws Exception {
+	public int ValidarPermisos(Long idUsuario, Long idPermiso) throws Exception {
 		
 		int rpta=0;
 		
+		
+		//validacion cuando idusuario es 0
+		
 		try {
-			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.validarPermiso");
-			spq.setParameter("idUsuario", idUsuario);
-			spq.setParameter("idPermiso", idPermiso);
-			spq.execute();
-			em.close();
-			rpta=1;
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.validarPermiso");
+				spq.setParameter("idUsuario", idUsuario);
+				spq.setParameter("idPermiso", idPermiso);
+				spq.execute();
+				
+				em.close();
+			
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
+				e.printStackTrace();
+			}
+		
 		return rpta;
 	}
 

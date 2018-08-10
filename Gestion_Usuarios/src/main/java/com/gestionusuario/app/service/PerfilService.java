@@ -5,7 +5,7 @@ import com.gestionusuario.app.entity.Perfil;
 public interface PerfilService extends GenericService<Perfil> {
 	
 	
-	public int ValidarPermisos(Integer idUsuario, int idPermiso) throws Exception;
+	public int ValidarPermisos(Long idUsuario, Long idPermiso) throws Exception;
 	
 	
 

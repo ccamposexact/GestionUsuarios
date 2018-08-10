@@ -72,19 +72,17 @@ public class GestionUsuarioController {
 	@RequestMapping(value = "/crearPerfil", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
 	public @ResponseBody String crearPerfil(@RequestBody String request) throws Exception {
 		
+		int rpta;
 		ObjectMapper mapper = new ObjectMapper();
 		JSONObject requestJson = new JSONObject(request);		
-		String idUsuario = requestJson.getString("idUsuario");	
-		int valor = Integer.parseInt(idUsuario);
+		String idUsuario = requestJson.getString("idUsuario");
+		
 		Perfil perfil = mapper.readValue(requestJson.getString("Perfil"), Perfil.class);
-		System.out.println(idUsuario);
 		
-		int rpta=0;
-		
-		rpta=this.getPerfilservice().ValidarPermisos(valor,PermisosLista.CreadorPerfil);
-	
-		if(rpta==1) {
-			
+		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.CreadorPerfil);
+		System.out.println(rpta);
+		if(rpta==1) 
+		{
 			try {
 				this.getPerfilservice().insertar(perfil);
 			} catch (Exception e) {
@@ -93,19 +91,33 @@ public class GestionUsuarioController {
 			
 			return "{\"ret\":\"Se registro Perfil\"}";
 			
-		}else
-				
+		}else 
+		{
 			return "{\"ret\":\"No se registro Perfil\"}";
+		}
+				
+			
 	}
 	
 	
 	@RequestMapping(value = "/ModificarPerfil", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
-	public @ResponseBody String ModificarBody(@RequestBody Perfil perfil) throws Exception{
-		int rpta=0;
+	public @ResponseBody String ModificarBody(@RequestBody String request) throws Exception{
 		
-		rpta=this.getPerfilservice().ValidarPermisos(1,PermisosLista.ModificadorPerfil);
+		boolean sw=false;
+		Perfil perfil = new Perfil();
+		JSONObject requestJson = new JSONObject(request);
+		String idUsuario = requestJson.getString("idUsuario");
+		String idPerfil = requestJson.getString("idPerfil");
+		String nombre = requestJson.getString("nombre");
+		String descripcion = requestJson.getString("descripcion");
 		
-		if(rpta==1) {
+		perfil.setIdPerfil(Long.parseLong(idPerfil));
+		perfil.setNombre(nombre);
+		perfil.setDescripcion(descripcion);
+		
+		//sw=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.ModificadorPerfil);
+		
+		if(sw) {
 			
 			try {
 				this.getPerfilservice().modificar(perfil);
@@ -113,6 +125,7 @@ public class GestionUsuarioController {
 				e.printStackTrace();
 			}
 			
+			//System.out.println(rpta);
 			return "{\"ret\":\"Se modifico Perfil\"}";
 			
 		}else
@@ -121,16 +134,19 @@ public class GestionUsuarioController {
 	}
 	
 	
-	@RequestMapping(value = "/DesactivarPerfil/{id}", produces = "application/json; charset=utf-8", method = RequestMethod.DELETE)
-	public @ResponseBody String DesactivarPerfil(@PathVariable("id") String id) throws Exception {
+	@RequestMapping(value = "/DesactivarPerfil", produces = "application/json; charset=utf-8", method = RequestMethod.DELETE)
+	public @ResponseBody String DesactivarPerfil(@RequestBody String request) throws Exception {
 
+		boolean sw=false;
 		Perfil perfil = new Perfil();
-		perfil.setIdPerfil(Long.valueOf(id));
-		int rpta=0;
+		JSONObject requestJson = new JSONObject(request);		
+		String idUsuario = requestJson.getString("idUsuario");
+		String idPerfil = requestJson.getString("idPerfil");
+		perfil.setIdPerfil(Long.parseLong(idPerfil));
 		
-		rpta=this.getPerfilservice().ValidarPermisos(2,PermisosLista.DesactivadorPerfil);
+		this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.DesactivadorPerfil);
 		
-		if(rpta==1)
+		if(sw)
 		{
 			try {
 				this.getPerfilservice().eliminar(perfil);
@@ -139,6 +155,7 @@ public class GestionUsuarioController {
 				e.printStackTrace();
 			}
 			
+			
 			return "{\"ret\":\"Se desactivo Perfil\"}";
 		}
 		else
@@ -146,18 +163,6 @@ public class GestionUsuarioController {
 		
 	}
 	
-	@RequestMapping(value = "/prueba", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
-	public @ResponseBody String prueba(@RequestBody String request) throws Exception {
-		ObjectMapper mapper = new ObjectMapper();
-		JSONObject requestJson = new JSONObject(request);		
-		String idUsuario = requestJson.getString("idUsuario");		
-		Perfil perfil = mapper.readValue(requestJson.getString("Perfil"), Perfil.class);
-		
-		return idUsuario;
-		
-	}
-	
 
-	
 
 }
