@@ -10,6 +10,7 @@ import javax.xml.ws.http.HTTPException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,10 +42,6 @@ public class GestionUsuarioController {
 	private UsuarioService usuarioservice;
 	
 	
-	
-	
-	
-	
 	public UsuarioService getUsuarioservice() {
 		return usuarioservice;
 	}
@@ -69,23 +66,19 @@ public class GestionUsuarioController {
 
 
 	
-	@RequestMapping(value = "/crearPerfil", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+	@RequestMapping(value = "/CrearPerfil", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
 	public @ResponseBody String crearPerfil(@RequestBody String request) throws Exception {
 		
 		int rpta;
 		ObjectMapper mapper = new ObjectMapper();
 		JSONObject requestJson = new JSONObject(request);		
 		String idUsuario = requestJson.getString("idUsuario");
-		
 		Perfil perfil = mapper.readValue(requestJson.getString("Perfil"), Perfil.class);
-		
 		
 		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.CreadorPerfil);
 		
-		
 		if(rpta==1) 
-			
-		{
+		{	//VALIDAR PERFIL REPETIDO
 			try {
 				this.getPerfilservice().insertar(perfil);
 				System.out.println(rpta);
@@ -93,11 +86,11 @@ public class GestionUsuarioController {
 				e.printStackTrace();
 			}
 			
-			return "{\"ret\":\"Se registro Perfil\"}";
+			return "{\"RPTA\":\"SE REGISTRO PERFIL\"}";
 			
 		}else 
 		{
-			return "{\"ret\":\"No se registro Perfil\"}";
+			return "{\"RPTA\":\"NO SE REGISTRO PERFIL\"}";
 		}
 				
 			
@@ -105,9 +98,9 @@ public class GestionUsuarioController {
 	
 	
 	@RequestMapping(value = "/ModificarPerfil", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
-	public @ResponseBody String ModificarBody(@RequestBody String request) throws Exception{
+	public @ResponseBody String ModificarPerfil(@RequestBody String request) throws Exception{
 		
-		boolean sw=false;
+		int rpta;
 		Perfil perfil = new Perfil();
 		JSONObject requestJson = new JSONObject(request);
 		String idUsuario = requestJson.getString("idUsuario");
@@ -119,38 +112,37 @@ public class GestionUsuarioController {
 		perfil.setNombre(nombre);
 		perfil.setDescripcion(descripcion);
 		
-		//sw=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.ModificadorPerfil);
+		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.ModificadorPerfil);
 		
-		if(sw) {
-			
+		if(rpta==1)
+		{
 			try {
 				this.getPerfilservice().modificar(perfil);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
-			//System.out.println(rpta);
-			return "{\"ret\":\"Se modifico Perfil\"}";
+			return "{\"RPTA\":\"SE MODIFICO PERFIL\"}";
 			
 		}else
 			
-			return "{\"ret\":\"No se modifico Perfil\"}";
+			return "{\"RPTA\":\"NO SE MODIFICO PERFIL\"}";
 	}
 	
 	
 	@RequestMapping(value = "/DesactivarPerfil", produces = "application/json; charset=utf-8", method = RequestMethod.DELETE)
 	public @ResponseBody String DesactivarPerfil(@RequestBody String request) throws Exception {
 
-		boolean sw=false;
+		int rpta;
 		Perfil perfil = new Perfil();
 		JSONObject requestJson = new JSONObject(request);		
 		String idUsuario = requestJson.getString("idUsuario");
 		String idPerfil = requestJson.getString("idPerfil");
 		perfil.setIdPerfil(Long.parseLong(idPerfil));
 		
-		this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.DesactivadorPerfil);
+		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.DesactivadorPerfil);
 		
-		if(sw)
+		if(rpta==1)
 		{
 			try {
 				this.getPerfilservice().eliminar(perfil);
@@ -160,10 +152,10 @@ public class GestionUsuarioController {
 			}
 			
 			
-			return "{\"ret\":\"Se desactivo Perfil\"}";
+			return "{\"RPTA\":\"SE DESACTIVO PERFIL\"}";
 		}
 		else
-			return "{\"ret\":\"No Se desactivo Perfil\"}";
+			return "{\"RPTA\":\"NO SE DESACTIVO PERFIL\"}";
 		
 	}
 	

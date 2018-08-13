@@ -7,4 +7,6 @@ public class PermisosLista  {
 	public static final Long DesactivadorPerfil = (long) 3;
 	public static final Long AsignadorPerfil = (long) 4;
 	
+	
+	
 }

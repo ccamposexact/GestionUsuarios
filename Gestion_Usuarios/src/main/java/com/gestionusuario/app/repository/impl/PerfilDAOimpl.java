@@ -1,19 +1,20 @@
 package com.gestionusuario.app.repository.impl;
 
 import java.util.List;
-import java.util.Map;
+
 
 import javax.persistence.EntityManager;
+
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
-import javax.transaction.Transactional;
+
 
 import org.springframework.stereotype.Repository;
 
 import com.gestionusuario.app.entity.Perfil;
-import com.gestionusuario.app.entity.Usuario;
+
 import com.gestionusuario.app.repository.PerfilDAO;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+
 
 @Repository("perfildao")
 public class PerfilDAOimpl implements PerfilDAO{
@@ -30,16 +31,12 @@ public class PerfilDAOimpl implements PerfilDAO{
 		
 		try {
 			
-			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.insertar");
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.InsertarPerfiles");
 			spq.setParameter("nombre", perfil.getNombre());
 			spq.setParameter("descripcion", perfil.getDescripcion());
-			
 			spq.execute();
-			
-			sw=true;
-			
 			em.close();
-			
+			sw=true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception();
@@ -53,8 +50,8 @@ public class PerfilDAOimpl implements PerfilDAO{
 		boolean sw=false;
 		
 		try {
-			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.modificar");
-			spq.setParameter("id", perfil.getIdPerfil());
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ModificarPerfiles");
+			spq.setParameter("idPerfil", perfil.getIdPerfil());
 			spq.setParameter("nombre", perfil.getNombre());
 			spq.setParameter("descripcion", perfil.getDescripcion());
 			spq.execute();
@@ -72,9 +69,8 @@ public class PerfilDAOimpl implements PerfilDAO{
 		
 		boolean sw=false;
 		try {
-			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.eliminar");
-			spq.setParameter("id", perfil.getIdPerfil());
-			System.out.println(perfil.getIdPerfil());
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.DesactivarPerfiles");
+			spq.setParameter("idPerfil", perfil.getIdPerfil());
 			spq.execute();
 			em.close();
 			sw=true;
@@ -94,15 +90,14 @@ public class PerfilDAOimpl implements PerfilDAO{
 	public int ValidarPermisos(Long idUsuario, Long idPermiso) throws Exception {
 		
 		int rpta=0;
-	
-		
 		try {
-				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.validarPermiso");
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ValidarPermisos");
 				spq.setParameter("idUsuario", idUsuario);
 				spq.setParameter("idPermiso", idPermiso);
 				spq.execute();
-				rpta = (int) spq.getOutputParameterValue(1);
-				
+				Object ret = spq.getOutputParameterValue("rpta");
+				rpta=Integer.parseInt(ret.toString());
+				//System.out.println("rpta"+rpta);
 				em.close();
 			
 		} catch (Exception e) {

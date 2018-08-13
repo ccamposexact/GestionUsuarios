@@ -35,7 +35,7 @@ import javax.persistence.ParameterMode;
 						}					
 				),
 				@NamedStoredProcedureQuery(
-						name="perfiles.insertar", 
+						name="perfiles.InsertarPerfiles", 
 						procedureName="InsertarPerfiles",
 						resultClasses= Perfil.class,
 						parameters={
@@ -44,31 +44,31 @@ import javax.persistence.ParameterMode;
 							}					
 					),
 				@NamedStoredProcedureQuery(
-						name="perfiles.eliminar", 
-						procedureName="EliminarPerfiles",
+						name="perfiles.DesactivarPerfiles", 
+						procedureName="DesactivarPerfiles",
 						resultClasses= Perfil.class,
 						parameters={
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="id",type=Long.class),
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
 							}					
 				),
 				@NamedStoredProcedureQuery(
-						name="perfiles.modificar", 
+						name="perfiles.ModificarPerfiles", 
 						procedureName="ModificarPerfiles",
 						resultClasses= Perfil.class,
 						parameters={
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="id",type=Long.class),
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="nombre",type=String.class),
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="descripcion",type=String.class)
 							}					
 				),
 				@NamedStoredProcedureQuery(
-						name="perfiles.validarPermiso", 
-						procedureName="ValidarPermiso",
+						name="perfiles.ValidarPermisos", 
+						procedureName="ValidarPermisos",
 						resultClasses= Perfil.class,
 						parameters={
-								@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Integer.class),
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class),
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPermiso",type=Long.class)
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPermiso",type=Long.class),
+								@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
 							}					
 				)
 				
@@ -93,12 +93,18 @@ public class Perfil implements Serializable{
 	private Date fCreacion;
 	
 	private String descripcion;
-	
-	
 	protected String activo;
 	
 	@ManyToMany
 	private List<Permiso> permisos;
+	
+	public Long getIdPerfil() {
+		return idPerfil;
+	}
+
+	public void setIdPerfil(Long idPerfil) {
+		this.idPerfil = idPerfil;
+	}
 	
 	public String getActivo() {
 		return activo;
@@ -108,14 +114,6 @@ public class Perfil implements Serializable{
 		this.activo = activo;
 	}
 	
-	public Long getIdPerfil() {
-		return idPerfil;
-	}
-
-	public void setIdPerfil(Long idPerfil) {
-		this.idPerfil = idPerfil;
-	}
-
 	public String getNombre() {
 		return nombre;
 	}
