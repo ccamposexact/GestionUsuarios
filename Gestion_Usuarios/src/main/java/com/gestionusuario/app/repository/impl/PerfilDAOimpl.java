@@ -107,5 +107,24 @@ public class PerfilDAOimpl implements PerfilDAO{
 		return rpta;
 	}
 
+	@Override
+	public int ValidarFormatoPerfil(String nombre) throws Exception {
+		int rpta=0;
+		try {
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ValidarFormatoPerfil");
+				spq.setParameter("nombre", nombre);
+				spq.execute();
+				Object ret = spq.getOutputParameterValue("rpta");
+				rpta=Integer.parseInt(ret.toString());
+				//System.out.println("rpta"+rpta);
+				em.close();
+			
+		} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		return rpta;
+	}
+
 
 }

@@ -63,6 +63,15 @@ public class PerfilServiceImpl implements PerfilService{
 		
 	}
 
+	@Override
+	public int ValidarFormatoPerfil(String nombre) throws Exception {
+		try {
+			return this.perfildao.ValidarFormatoPerfil(nombre);
+		} catch (Exception e) {
+			throw new Exception(e); 
+		}
+	}
+
 
 	
 

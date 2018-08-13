@@ -70,25 +70,32 @@ public class GestionUsuarioController {
 	public @ResponseBody String crearPerfil(@RequestBody String request) throws Exception {
 		
 		int rpta;
+		int validar;
 		ObjectMapper mapper = new ObjectMapper();
 		JSONObject requestJson = new JSONObject(request);		
 		String idUsuario = requestJson.getString("idUsuario");
 		Perfil perfil = mapper.readValue(requestJson.getString("Perfil"), Perfil.class);
 		
 		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.CreadorPerfil);
+		//validar=
 		
 		if(rpta==1) 
-		{	//VALIDAR PERFIL REPETIDO
-			try {
-				this.getPerfilservice().insertar(perfil);
-				System.out.println(rpta);
-			} catch (Exception e) {
-				e.printStackTrace();
+		{	
+			if(validar==1)
+			{
+				try {
+					this.getPerfilservice().insertar(perfil);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				return "{\"RPTA\":\"SE REGISTRO PERFIL\"}";
 			}
-			
-			return "{\"RPTA\":\"SE REGISTRO PERFIL\"}";
-			
-		}else 
+			else
+				
+				return "{\"RPTA\":\"FORMATO INCORRECTO\"}";
+		}
+		else 
 		{
 			return "{\"RPTA\":\"NO SE REGISTRO PERFIL\"}";
 		}

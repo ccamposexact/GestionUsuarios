@@ -7,6 +7,8 @@ public interface PerfilService extends GenericService<Perfil> {
 	
 	public int ValidarPermisos(Long idUsuario, Long idPermiso) throws Exception;
 	
+	public int ValidarFormatoPerfil(String nombre) throws Exception;
+	
 	
 
 }
