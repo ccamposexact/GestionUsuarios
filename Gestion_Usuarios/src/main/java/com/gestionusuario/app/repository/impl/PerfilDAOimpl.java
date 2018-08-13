@@ -97,7 +97,6 @@ public class PerfilDAOimpl implements PerfilDAO{
 				spq.execute();
 				Object ret = spq.getOutputParameterValue("rpta");
 				rpta=Integer.parseInt(ret.toString());
-				//System.out.println("rpta"+rpta);
 				em.close();
 			
 		} catch (Exception e) {
@@ -116,7 +115,6 @@ public class PerfilDAOimpl implements PerfilDAO{
 				spq.execute();
 				Object ret = spq.getOutputParameterValue("rpta");
 				rpta=Integer.parseInt(ret.toString());
-				//System.out.println("rpta"+rpta);
 				em.close();
 			
 		} catch (Exception e) {
@@ -124,6 +122,56 @@ public class PerfilDAOimpl implements PerfilDAO{
 			}
 		
 		return rpta;
+	}
+
+	@Override
+	public boolean AsignarPermisosAPerfiles(Long idPerfil, Long idPermiso) throws Exception {
+		boolean sw=false;
+		try {
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.AsignarPermisosAPerfiles");
+			spq.setParameter("idPerfil", idPerfil);
+			spq.setParameter("idPermiso", idPermiso);
+			spq.execute();
+			em.close();
+			sw=true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sw;
+	}
+
+	@Override
+	public boolean QuitarPermisosAPerfiles(Long idPerfil, Long idPermiso) throws Exception {
+		boolean sw=false;
+		try {
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.QuitarPermisosAPerfiles");
+			spq.setParameter("idPerfil", idPerfil);
+			spq.setParameter("idPermiso", idPermiso);
+			spq.execute();
+			em.close();
+			sw=true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sw;
+	}
+
+	@Override
+	public int ValidarAsignacionPermisos(Long idPerfil, Long idPermiso) throws Exception {
+		int rpta=0;
+		try {
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ValidarAsignacionPermisos");
+			spq.setParameter("idPerfil", idPerfil);
+			spq.setParameter("idPermiso", idPermiso);
+			spq.execute();
+			Object ret = spq.getOutputParameterValue("rpta");
+			rpta=Integer.parseInt(ret.toString());
+			em.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rpta;
+		
 	}
 
 

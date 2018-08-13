@@ -3,6 +3,8 @@ package com.gestionusuario.app.controller;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.gestionusuario.app.entity.Perfil;
+import com.gestionusuario.app.entity.Permiso;
 import com.gestionusuario.app.entity.Usuario;
 import com.gestionusuario.app.enumerator.PermisosLista;
 import com.gestionusuario.app.service.PerfilService;
@@ -75,9 +78,10 @@ public class GestionUsuarioController {
 		JSONObject requestJson = new JSONObject(request);		
 		String idUsuario = requestJson.getString("idUsuario");
 		Perfil perfil = mapper.readValue(requestJson.getString("Perfil"), Perfil.class);
-		
+		 
 		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.CreadorPerfil);
-		//validar=
+		validar=this.getPerfilservice().ValidarFormatoPerfil(perfil.getNombre());
+		
 		
 		if(rpta==1) 
 		{	
@@ -104,10 +108,59 @@ public class GestionUsuarioController {
 	}
 	
 	
+	@RequestMapping(value = "/AsignarPermisosPerfiles", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+	public @ResponseBody String AsignarPermisosPerfiles(@RequestBody String request) throws Exception {
+		
+		int validar=0;
+		JSONObject requestJson = new JSONObject(request);
+		String idPerfil = requestJson.getString("idPerfil");
+		String idPermiso = requestJson.getString("idPermiso");
+		
+		validar=this.getPerfilservice().ValidarAsignacionPermisos(Long.parseLong(idPerfil), Long.parseLong(idPermiso));
+		
+		if(validar==1) {
+			try {
+				this.getPerfilservice().AsignarPermisosAPerfiles(Long.parseLong(idPerfil), Long.parseLong(idPermiso));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return "{\"RPTA\":\"SE AGREGARON LOS PERMISOS AL PERFIL\"}";
+		}
+		else
+			
+			return "{\"RPTA\":\"NO SE AGREGARON LOS PERMISOS\"}";
+		
+		
+	}
+	
+	@RequestMapping(value = "/QuitarPermisosPerfiles", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+	public @ResponseBody String QuitarPermisosPerfiles(@RequestBody String request) throws Exception {
+		
+		int validar=0;
+		JSONObject requestJson = new JSONObject(request);
+		String idPerfil = requestJson.getString("idPerfil");
+		String idPermiso = requestJson.getString("idPermiso");
+		
+		try {
+			this.getPerfilservice().QuitarPermisosAPerfiles(Long.parseLong(idPerfil), Long.parseLong(idPermiso));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "{\"RPTA\":\"SE QUITARON LOS PERMISOS AL PERFIL\"}";
+	
+	
+	//validar=this.getPerfilservice().ValidarAsignacionPermisos(Long.parseLong(idPerfil), Long.parseLong(idPermiso));
+	
+	
+	}
+	
+	
+	
 	@RequestMapping(value = "/ModificarPerfil", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
 	public @ResponseBody String ModificarPerfil(@RequestBody String request) throws Exception{
 		
 		int rpta;
+		int validar;
 		Perfil perfil = new Perfil();
 		JSONObject requestJson = new JSONObject(request);
 		String idUsuario = requestJson.getString("idUsuario");
@@ -115,21 +168,28 @@ public class GestionUsuarioController {
 		String nombre = requestJson.getString("nombre");
 		String descripcion = requestJson.getString("descripcion");
 		
+		
 		perfil.setIdPerfil(Long.parseLong(idPerfil));
 		perfil.setNombre(nombre);
 		perfil.setDescripcion(descripcion);
 		
 		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.ModificadorPerfil);
+		validar=this.getPerfilservice().ValidarFormatoPerfil(perfil.getNombre());
 		
 		if(rpta==1)
 		{
-			try {
-				this.getPerfilservice().modificar(perfil);
-			} catch (Exception e) {
-				e.printStackTrace();
+			if(validar==1) {
+
+				try {
+					this.getPerfilservice().modificar(perfil);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				return "{\"RPTA\":\"SE MODIFICO PERFIL\"}";
 			}
-			
-			return "{\"RPTA\":\"SE MODIFICO PERFIL\"}";
+			else
+				return "{\"RPTA\":\"FORMATO INCORRECTO\"}";
 			
 		}else
 			
