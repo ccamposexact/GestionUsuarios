@@ -23,9 +23,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 
 	@Override
-	public boolean modificar(Usuario objeto) throws Exception {
+	public int modificar(Usuario objeto) throws Exception {
 		// TODO Auto-generated method stub
-		return false;
+		return 0;
 	}
 
 	@Override

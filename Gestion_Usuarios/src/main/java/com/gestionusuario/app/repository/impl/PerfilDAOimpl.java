@@ -46,8 +46,8 @@ public class PerfilDAOimpl implements PerfilDAO{
 	}
 
 	@Override
-	public boolean modificar(Perfil perfil) throws Exception {
-		boolean sw=false;
+	public int modificar(Perfil perfil) throws Exception {
+		int rpta=0;
 		
 		try {
 			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ModificarPerfiles");
@@ -55,13 +55,14 @@ public class PerfilDAOimpl implements PerfilDAO{
 			spq.setParameter("nombre", perfil.getNombre());
 			spq.setParameter("descripcion", perfil.getDescripcion());
 			spq.execute();
+			Object ret = spq.getOutputParameterValue("rpta");
+			rpta=Integer.parseInt(ret.toString());
 			em.close();
-			sw=true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception();
 		}
-		return sw;
+		return rpta;
 	}
 
 	@Override
@@ -85,26 +86,7 @@ public class PerfilDAOimpl implements PerfilDAO{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	@SuppressWarnings("unchecked")
-	@Override
-	public int ValidarPermisos(Long idUsuario, Long idPermiso) throws Exception {
-		
-		int rpta=0;
-		try {
-				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ValidarPermisos");
-				spq.setParameter("idUsuario", idUsuario);
-				spq.setParameter("idPermiso", idPermiso);
-				spq.execute();
-				Object ret = spq.getOutputParameterValue("rpta");
-				rpta=Integer.parseInt(ret.toString());
-				em.close();
-			
-		} catch (Exception e) {
-				e.printStackTrace();
-			}
-		
-		return rpta;
-	}
+	
 
 	@Override
 	public int ValidarFormatoPerfil(String nombre) throws Exception {
@@ -172,6 +154,46 @@ public class PerfilDAOimpl implements PerfilDAO{
 		}
 		return rpta;
 		
+	}
+
+	@Override
+	public int ValidarModificarPermisos(Long idUsuario, Long idPermiso, Long idPerfil) throws Exception {
+
+		int rpta=0;
+		try {
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ValidarModificarPermisos");
+				spq.setParameter("idUsuario", idUsuario);
+				spq.setParameter("idPermiso", idPermiso);
+				spq.setParameter("idPerfil", idPerfil);
+				spq.execute();
+				Object ret = spq.getOutputParameterValue("rpta");
+				rpta=Integer.parseInt(ret.toString());
+				em.close();
+			
+		} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		return rpta;
+	}
+
+	@Override
+	public int ValidarPermisos(Long idUsuario, Long idPermiso) throws Exception {
+		int rpta=0;
+		try {
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ValidarPermisos");
+				spq.setParameter("idUsuario", idUsuario);
+				spq.setParameter("idPermiso", idPermiso);
+				spq.execute();
+				Object ret = spq.getOutputParameterValue("rpta");
+				rpta=Integer.parseInt(ret.toString());
+				em.close();
+			
+		} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		return rpta;
 	}
 
 

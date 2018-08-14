@@ -58,7 +58,19 @@ import javax.persistence.ParameterMode;
 						parameters={
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="nombre",type=String.class),
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="descripcion",type=String.class)
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="descripcion",type=String.class),
+								@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
+							}					
+				),
+				@NamedStoredProcedureQuery(
+						name="perfiles.ValidarModificarPermisos", 
+						procedureName="ValidarModificarPermisos",
+						resultClasses= Perfil.class,
+						parameters={
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class),
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPermiso",type=Long.class),
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
+								@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
 							}					
 				),
 				@NamedStoredProcedureQuery(

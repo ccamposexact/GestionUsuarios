@@ -8,6 +8,8 @@ public interface PerfilDAO extends GenericDAO<Perfil>{
 	
 	public List<Perfil> ListarPerfiles() throws Exception;
 	
+	public int ValidarModificarPermisos(Long idUsuario, Long idPermiso, Long idPerfil) throws Exception;
+	
 	public int ValidarPermisos(Long idUsuario, Long idPermiso) throws Exception;
 	
 	public int ValidarFormatoPerfil(String nombre) throws Exception;

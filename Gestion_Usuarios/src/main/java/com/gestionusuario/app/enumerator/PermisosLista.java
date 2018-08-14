@@ -9,6 +9,7 @@ public class PermisosLista  {
 	public static final Long CreadorPermisos = (long) 5;
 	public static final Long ModificadorPermisos= (long) 6;
 	public static final Long AsignadorPermisos = (long) 7;
+	public static final Long QuitarPermisos = (long) 8;
 	
 	
 	

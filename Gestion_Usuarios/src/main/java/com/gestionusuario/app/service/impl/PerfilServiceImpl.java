@@ -26,7 +26,7 @@ public class PerfilServiceImpl implements PerfilService{
 	}
 
 	@Override
-	public boolean modificar(Perfil perfil) throws Exception {
+	public int modificar(Perfil perfil) throws Exception {
 		try {
 			return this.getPerfildao().modificar(perfil);
 		} catch (Exception e) {
@@ -52,16 +52,7 @@ public class PerfilServiceImpl implements PerfilService{
 		this.perfildao = perfildao;
 	}
 
-	@Override
-	public int ValidarPermisos(Long idUsuario, Long idPermiso) throws Exception {
-	
-		try {
-			return this.perfildao.ValidarPermisos(idUsuario, idPermiso);
-		} catch (Exception e) {
-			throw new Exception(e);
-		}
-		
-	}
+
 
 	@Override
 	public int ValidarFormatoPerfil(String nombre) throws Exception {
@@ -96,6 +87,24 @@ public class PerfilServiceImpl implements PerfilService{
 			return this.perfildao.ValidarAsignacionPermisos(idPerfil, idPermiso);
 		}catch (Exception e) {
 			throw new Exception(e); 
+		}
+	}
+
+	@Override
+	public int ValidarModificarPermisos(Long idUsuario, Long idPermiso, Long idPerfil) throws Exception {
+		try {
+			return this.perfildao.ValidarModificarPermisos(idUsuario, idPermiso, idPerfil);
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+	}
+
+	@Override
+	public int ValidarPermisos(Long idUsuario, Long idPermiso) throws Exception {
+		try {
+			return this.perfildao.ValidarPermisos(idUsuario, idPermiso);
+		} catch (Exception e) {
+			throw new Exception(e);
 		}
 	}
 	
