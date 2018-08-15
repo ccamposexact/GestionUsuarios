@@ -26,8 +26,8 @@ public class PerfilDAOimpl implements PerfilDAO{
 
 	@SuppressWarnings("uncheked")
 	@Override
-	public boolean insertar(Perfil perfil) throws Exception {
-		boolean sw =false;
+	public int insertar(Perfil perfil) throws Exception {
+		int rpta =0;
 		
 		try {
 			
@@ -35,14 +35,15 @@ public class PerfilDAOimpl implements PerfilDAO{
 			spq.setParameter("nombre", perfil.getNombre());
 			spq.setParameter("descripcion", perfil.getDescripcion());
 			spq.execute();
+			Object ret = spq.getOutputParameterValue("idPerfil");
+			rpta=Integer.parseInt(ret.toString());
 			em.close();
-			sw=true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception();
 		}
 		
-		return sw;
+		return rpta;
 	}
 
 	@Override

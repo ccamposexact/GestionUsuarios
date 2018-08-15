@@ -2,11 +2,8 @@ package com.gestionusuario.app.controller;
 
 
 
-
-
-
-
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.gestionusuario.app.entity.Perfil;
-
 import com.gestionusuario.app.enumerator.PermisosLista;
 import com.gestionusuario.app.service.PerfilService;
 import com.gestionusuario.app.service.UsuarioService;
+
+
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
@@ -64,13 +63,12 @@ public class GestionUsuarioController {
 		
 		int rpta;
 		int validar;
+		Integer idperfil;
 		ObjectMapper mapper = new ObjectMapper();
 		JSONObject requestJson = new JSONObject(request);		
 		String idUsuario = requestJson.getString("idUsuario");
 		Perfil perfil = mapper.readValue(requestJson.getString("Perfil"), Perfil.class);
-		String permisos = requestJson.getString("Permisos");
-		System.out.println(permisos);
-		
+		JSONArray lstPermisos = requestJson.getJSONArray("Permisos");
 		 
 		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.CreadorPerfil);
 		validar=this.getPerfilservice().ValidarFormatoPerfil(perfil.getNombre());
@@ -81,7 +79,12 @@ public class GestionUsuarioController {
 			if(validar==1)
 			{
 				try {
-					this.getPerfilservice().insertar(perfil);
+					idperfil=this.getPerfilservice().insertar(perfil);
+					for (int i = 0; i < lstPermisos.length(); ++i) {
+						JSONObject rec = lstPermisos.getJSONObject(i);
+						Long id =rec.getLong("idPermiso");
+						this.getPerfilservice().AsignarPermisosAPerfiles(Long.valueOf(idperfil.longValue()) ,id);
+					}
 					} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -135,31 +138,38 @@ public class GestionUsuarioController {
 	@RequestMapping(value = "/QuitarPermisosPerfiles", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.DELETE)
 	public @ResponseBody String QuitarPermisosPerfiles(@RequestBody String request) throws Exception {
 		
-		int vasig=0;
+		//int vasig=0;
 		int vperm=0;
 		JSONObject requestJson = new JSONObject(request);
 		String idUsuario = requestJson.getString("idUsuario");
 		String idPerfil = requestJson.getString("idPerfil");
-		String idPermiso = requestJson.getString("idPermiso");
-		
+		JSONArray recs = requestJson.getJSONArray("Permisos");
 		
 		vperm=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario) ,PermisosLista.QuitarPermisos);
-		vasig=this.getPerfilservice().ValidarAsignacionPermisos(Long.parseLong(idPerfil), Long.parseLong(idPermiso));
+		//vasig=this.getPerfilservice().ValidarAsignacionPermisos(Long.parseLong(idPerfil), Long.parseLong(idPermiso));
 		
 		if(vperm==1)
 		{
 			
-			if(vasig==1)
-			{
+			
+			//if(vasig==1)
+			//{
 				try {
-					this.getPerfilservice().QuitarPermisosAPerfiles(Long.parseLong(idPerfil), Long.parseLong(idPermiso));
+					
+					for (int i = 0; i < recs.length(); ++i) {
+						JSONObject rec = recs.getJSONObject(i);
+						Long id =rec.getLong("idPermiso");
+						this.getPerfilservice().QuitarPermisosAPerfiles(Long.parseLong(idPerfil),id);
+					}
+					
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 					return "{\"RPTA\":\"SE QUITARON LOS PERMISOS AL PERFIL\"}";
-			}
-			else
-				return "{\"RPTA\":\"PERMISO NO VALIDO \"}";
+			//}
+			//else
+				//return "{\"RPTA\":\"PERMISO NO VALIDO \"}";
 			
 		}
 			return "{\"RPTA\":\"USUARIO NO AUTORIZADO\"}";

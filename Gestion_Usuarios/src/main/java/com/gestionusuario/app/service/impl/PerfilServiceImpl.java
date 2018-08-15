@@ -15,7 +15,7 @@ public class PerfilServiceImpl implements PerfilService{
 	private PerfilDAO perfildao;
 	
 	@Override
-	public boolean insertar(Perfil perfil) throws Exception {
+	public int insertar(Perfil perfil) throws Exception {
 		
 		try {
 			return this.getPerfildao().insertar(perfil);

@@ -17,9 +17,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	@PersistenceContext
 	private EntityManager em;
 	@Override
-	public boolean insertar(Usuario objeto) throws Exception {
+	public int insertar(Usuario objeto) throws Exception {
 		// TODO Auto-generated method stub
-		return false;
+		return 0;
 	}
 
 	@Override
