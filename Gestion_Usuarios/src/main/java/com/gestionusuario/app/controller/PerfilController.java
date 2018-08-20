@@ -73,11 +73,11 @@ public class PerfilController {
 			}
 			else
 				
-				return "{\"RPTA\":\"FORMATO INCORRECTO\"}";
+				return "{\"RPTA\":\"PERFIL INCORRECTO\"}";
 		}
 		else 
 		{
-			return "{\"RPTA\":\"USUARIO NO AUTORIZADO\"}";
+			return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
 		}
 				
 			
@@ -106,7 +106,7 @@ public class PerfilController {
 			if(perm) 
 			{
 				this.getPerfilservice().BorrarPermisosDePerfil(Long.parseLong(idPerfil));
-				return "{\"RPTA\":\"SE ELIMINARON LOS PERMISOS AL PERFIL\"}";
+				return "{\"RPTA\":\"SE ELIMINARON LOS PERMISOS \"}";
 			}
 			else
 			{
@@ -119,7 +119,7 @@ public class PerfilController {
 				}
 				if(Lista.contains(0)) 
 				{
-					return "{\"RPTA\":\"no hay permisos\"}";
+					return "{\"RPTA\":\"EL PERMISO QUE INTENTA AGREGAR NO EXISTE\"}";
 				}
 				else {
 					this.getPerfilservice().BorrarPermisosDePerfil(Long.parseLong(idPerfil));
@@ -127,18 +127,13 @@ public class PerfilController {
 						JSONObject rec = lstPermisos.getJSONObject(i);
 						Long id =rec.getLong("idPermiso");
 						System.out.println(lstPermisos);
-						this.getPerfilservice().AgregarPermisosAPerfil(Long.parseLong(idPerfil),id);
+						this.getPerfilservice().AsignarPermisosAPerfiles(Long.parseLong(idPerfil),id);
 					}
-					return "{\"RPTA\":\"permisos agregados\"}";
+					return "{\"RPTA\":\"EL PERFIL HA SIDO ACTUALIZADO CORRECTAMENTE\"}";
 				}
-				
-				
 			}
-			
 		}
-		
-		
-		return "{\"RPTA\":\"Usuario mop\"}";
+		return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
 		
 	}
 	
@@ -177,14 +172,14 @@ public class PerfilController {
 					e.printStackTrace();
 				}
 				
-				return "{\"RPTA\":\"PERFIL MODIFICADO\"}";
+				return "{\"RPTA\":\"REGISTROS ACTUALIZADOS\"}";
 				
 			}
 			else 
 				return "{\"RPTA\":\"FORMATO INCORRECTO\"}";
 			}
 		
-		return "{\"RPTA\":\"USUARIO NO AUTORIZADO\"}";
+		return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
 		
 	}
 	
@@ -210,45 +205,11 @@ public class PerfilController {
 			}
 			
 			
-			return "{\"RPTA\":\"SE DESACTIVO PERFIL\"}";
+			return "{\"RPTA\":\"PERFIL DESACTIVADO\"}";
 		}
 		else
-			return "{\"RPTA\":\"USUARIO NO AUTORIZADO\"}";
+			return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
 		
 	}
-	
-	@RequestMapping(value = "/QuitarPermisosPerfiles", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.DELETE)
-	public @ResponseBody String QuitarPermisosPerfiles(@RequestBody String request) throws Exception {
-		
-		
-		int vperm=0;
-		JSONObject requestJson = new JSONObject(request);
-		String idUsuario = requestJson.getString("idUsuario");
-		String idPerfil = requestJson.getString("idPerfil");
-		JSONArray recs = requestJson.getJSONArray("Permisos");
-		
-		vperm=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario) ,PermisosLista.QuitarPermisos);
-		
-		
-		if(vperm==1)
-		{
-			try {
-					
-					for (int i = 0; i < recs.length(); ++i) {
-						JSONObject rec = recs.getJSONObject(i);
-						Long id =rec.getLong("idPermiso");
-						this.getPerfilservice().QuitarPermisosAPerfiles(Long.parseLong(idPerfil),id);
-					}
-					
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-					return "{\"RPTA\":\"SE QUITARON LOS PERMISOS AL PERFIL\"}";
-		}
-			return "{\"RPTA\":\"USUARIO NO AUTORIZADO\"}";
-			
-		
-		}
 	
 }

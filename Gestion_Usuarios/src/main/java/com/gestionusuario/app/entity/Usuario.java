@@ -20,14 +20,7 @@ import javax.persistence.Table;
 
 @NamedStoredProcedureQueries(
 		{
-				@NamedStoredProcedureQuery(
-						name="usuario.validarCrear", 
-						procedureName="ValidarCrearPerfil",
-						resultClasses= Usuario.class,
-						parameters={
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="id",type=Long.class)
-							}					
-				)
+				
 				
 		}
 	)

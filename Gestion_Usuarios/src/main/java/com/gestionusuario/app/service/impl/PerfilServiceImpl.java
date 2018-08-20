@@ -72,32 +72,6 @@ public class PerfilServiceImpl implements PerfilService{
 		}
 	}
 
-	@Override
-	public boolean QuitarPermisosAPerfiles(Long idPerfil, Long idPermiso) throws Exception {
-		try {
-			return this.perfildao.QuitarPermisosAPerfiles(idPerfil, idPermiso);
-		}catch (Exception e) {
-			throw new Exception(e); 
-		}
-	}
-
-	@Override
-	public int ValidarAsignacionPermisos(Long idPerfil, Long idPermiso) throws Exception {
-		try {
-			return this.perfildao.ValidarAsignacionPermisos(idPerfil, idPermiso);
-		}catch (Exception e) {
-			throw new Exception(e); 
-		}
-	}
-
-	@Override
-	public int ValidarModificarPermisos(Long idUsuario, Long idPermiso, Long idPerfil) throws Exception {
-		try {
-			return this.perfildao.ValidarModificarPermisos(idUsuario, idPermiso, idPerfil);
-		} catch (Exception e) {
-			throw new Exception(e);
-		}
-	}
 
 	@Override
 	public int ValidarPermisos(Long idUsuario, Long idPermiso) throws Exception {
@@ -125,16 +99,5 @@ public class PerfilServiceImpl implements PerfilService{
 			throw new Exception(e);
 		}
 	}
-
-	@Override
-	public boolean AgregarPermisosAPerfil(Long idPerfil, Long idPermiso) throws Exception {
-		try {
-			return this.perfildao.AgregarPermisosAPerfil(idPerfil, idPermiso);
-		} catch (Exception e) {
-			throw new Exception(e);
-		}
-	}
-	
-	
 
 }

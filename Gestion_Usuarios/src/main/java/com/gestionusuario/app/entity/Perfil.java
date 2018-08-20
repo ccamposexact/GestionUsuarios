@@ -27,14 +27,6 @@ import javax.persistence.ParameterMode;
 @NamedStoredProcedureQueries(
 		{
 				@NamedStoredProcedureQuery(
-					name="perfiles.listar", 
-					procedureName="ListarPerfiles",
-					resultClasses= Perfil.class,
-					parameters={
-								@StoredProcedureParameter(type=void.class )
-						}					
-				),
-				@NamedStoredProcedureQuery(
 						name="perfiles.InsertarPerfiles", 
 						procedureName="InsertarPerfiles",
 						resultClasses= Perfil.class,
@@ -64,17 +56,6 @@ import javax.persistence.ParameterMode;
 							}					
 				),
 				@NamedStoredProcedureQuery(
-						name="perfiles.ValidarModificarPermisos", 
-						procedureName="ValidarModificarPermisos",
-						resultClasses= Perfil.class,
-						parameters={
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class),
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPermiso",type=Long.class),
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
-								@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
-							}					
-				),
-				@NamedStoredProcedureQuery(
 						name="perfiles.ValidarPermisos", 
 						procedureName="ValidarPermisos",
 						resultClasses= Perfil.class,
@@ -94,36 +75,16 @@ import javax.persistence.ParameterMode;
 							}					
 				),
 				@NamedStoredProcedureQuery(
-						name="perfiles.AsignarPermisosAPerfiles", 
-						procedureName="AsignarPermisosAPerfiles",
+						name="perfiles.AsignarPermisosAPerfil", 
+						procedureName="AsignarPermisosAPerfil",
 						resultClasses= Perfil.class,
 						parameters={
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPermiso",type=Long.class)
 							}					
-				),
-				@NamedStoredProcedureQuery(
-						name="perfiles.QuitarPermisosAPerfiles", 
-						procedureName="QuitarPermisosAPerfiles",
-						resultClasses= Perfil.class,
-						parameters={
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPermiso",type=Long.class)
-							}					
-				),
-				@NamedStoredProcedureQuery(
-						name="perfiles.ValidarAsignacionPermisos", 
-						procedureName="ValidarAsignacionPermisos",
-						resultClasses= Perfil.class,
-						parameters={
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPermiso",type=Long.class),
-								@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
-							}					
-				),
-				@NamedStoredProcedureQuery(
+				),@NamedStoredProcedureQuery(
 						name="perfiles.BorrarPermisosDePerfil", 
-						procedureName="BorrarPermisos",
+						procedureName="BorrarPermisosAPerfil",
 						resultClasses= Perfil.class,
 						parameters={
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
@@ -137,22 +98,8 @@ import javax.persistence.ParameterMode;
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPermiso",type=Long.class),
 								@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
 							}					
-				),
-				@NamedStoredProcedureQuery(
-						name="perfiles.AgregarPermisosAPerfil", 
-						procedureName="AgregarPermisosAPerfil",
-						resultClasses= Perfil.class,
-						parameters={
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPermiso",type=Long.class)
-								
-							}					
 				)
-				
-				
-				
-				
-		}
+			}
 		
 )
 
