@@ -15,7 +15,6 @@ import com.gestionusuario.app.entity.Perfil;
 
 import com.gestionusuario.app.repository.PerfilDAO;
 
-
 @Repository("perfildao")
 public class PerfilDAOimpl implements PerfilDAO{
 	
@@ -195,6 +194,59 @@ public class PerfilDAOimpl implements PerfilDAO{
 			}
 		
 		return rpta;
+	}
+
+	@Override
+	public boolean BorrarPermisosDePerfil(Long idPerfil) throws Exception {
+		boolean rpta=false;
+		try {
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.BorrarPermisosDePerfil");
+				spq.setParameter("idPerfil", idPerfil);
+				spq.execute();
+				rpta=true;
+				em.close();
+			
+		} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		return rpta;
+	}
+
+	@Override
+	public int ValidarPermisosExistentes(Long idPermiso) throws Exception {
+		int rpta=0;
+		try {
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ValidarPermisosExistentes");
+				spq.setParameter("idPermiso", idPermiso);
+				spq.execute();
+				Object ret = spq.getOutputParameterValue("rpta");
+				rpta=Integer.parseInt(ret.toString());
+				em.close();
+			
+		} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		return rpta;
+	}
+
+	@Override
+	public boolean AgregarPermisosAPerfil(Long idPerfil, Long idPermiso) throws Exception {
+		boolean rpta=false;
+		try {
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.AgregarPermisosAPerfil");
+			spq.setParameter("idPerfil", idPerfil);
+			spq.setParameter("idPermiso", idPermiso);
+			spq.execute();
+			rpta=true;
+			em.close();
+		
+	} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+	return rpta;
 	}
 
 

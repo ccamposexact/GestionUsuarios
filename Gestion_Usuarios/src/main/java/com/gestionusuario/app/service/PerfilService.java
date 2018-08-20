@@ -17,6 +17,12 @@ public interface PerfilService extends GenericService<Perfil> {
 	
 	public int ValidarAsignacionPermisos(Long idPerfil, Long idPermiso) throws Exception;
 	
+	public boolean BorrarPermisosDePerfil(Long idPerfil ) throws Exception;
+	
+	public int ValidarPermisosExistentes (Long idPermiso) throws Exception ;
+	
+	public boolean AgregarPermisosAPerfil(Long idPerfil, Long idPermiso) throws Exception;
+	
 	
 
 }
