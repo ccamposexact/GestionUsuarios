@@ -53,7 +53,6 @@ public class PerfilController {
 		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.CreadorPerfil);
 		validar=this.getPerfilservice().ValidarFormatoPerfil(perfil.getNombre());
 		
-		
 		if(rpta==1) 
 		{	
 			if(validar==1)

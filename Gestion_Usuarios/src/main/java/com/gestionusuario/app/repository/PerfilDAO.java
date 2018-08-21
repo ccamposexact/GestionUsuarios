@@ -16,6 +16,10 @@ public interface PerfilDAO extends GenericDAO<Perfil>{
 	
 	public int ValidarPermisosExistentes (Long idPermiso) throws Exception ;
 	
+	public int ValidarPerfilesExistentes(Long idPerfil) throws Exception;
+	
+	public int ValidarPerfilActivo(Long idPerfil) throws Exception;
+	
 	
 	
 }

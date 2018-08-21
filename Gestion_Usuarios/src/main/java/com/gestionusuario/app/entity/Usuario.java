@@ -20,7 +20,51 @@ import javax.persistence.Table;
 
 @NamedStoredProcedureQueries(
 		{
-				
+			
+			@NamedStoredProcedureQuery(
+					name="usuario.InsertarUsuarios", 
+					procedureName="InsertarUsuarios",
+					resultClasses= Usuario.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="nombre",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="apellido",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="correo",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="dni",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="matricula",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.OUT,name="idUsuario",type=Long.class)
+						}					
+			),
+			
+			@NamedStoredProcedureQuery(
+					name="usuario.ValidarUsuarioExistente", 
+					procedureName="ValidarUsuarioExistente",
+					resultClasses= Usuario.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class),
+							@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
+						}					
+			),
+			@NamedStoredProcedureQuery(
+					name="usuario.ValidarUsuarioActivo", 
+					procedureName="ValidarUsuarioActivo",
+					resultClasses= Usuario.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class),
+							@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
+						}					
+			),
+			@NamedStoredProcedureQuery(
+					name="usuario.ValidarDatosExistentes", 
+					procedureName="ValidarDatosExistentes",
+					resultClasses= Usuario.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="dni",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="correo",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="matricula",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
+						}					
+			)
+			
 				
 		}
 	)
@@ -37,15 +81,14 @@ public class Usuario implements Serializable {
 	
 	private String nombre;
 	private String apellido;
-	private int edad;
 	protected String activo;
-	private int dni;
+	private String dni;
 	private String matricula;
 	private String correo;
 	
 	
 	public Usuario() {
-		this.setActivo("1");
+		
 	}
 	public String getActivo() {
 		return activo;
@@ -78,16 +121,10 @@ public class Usuario implements Serializable {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
-	public int getEdad() {
-		return edad;
-	}
-	public void setEdad(int edad) {
-		this.edad = edad;
-	}
-	public int getDni() {
+	public String getDni() {
 		return dni;
 	}
-	public void setDni(int dni) {
+	public void setDni(String dni) {
 		this.dni = dni;
 	}
 	public String getMatricula() {
@@ -97,13 +134,12 @@ public class Usuario implements Serializable {
 		this.matricula = matricula;
 	}
 	
-	public Usuario(Long idUsuario, String nombre, String apellido, int edad, String activo, int dni, String matricula,
+	public Usuario(Long idUsuario, String nombre, String apellido, String activo, String dni, String matricula,
 			String correo) {
 		super();
 		this.idUsuario = idUsuario;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.edad = edad;
 		this.activo = activo;
 		this.dni = dni;
 		this.matricula = matricula;

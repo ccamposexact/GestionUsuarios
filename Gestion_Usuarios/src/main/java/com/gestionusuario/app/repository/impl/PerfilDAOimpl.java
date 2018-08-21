@@ -167,6 +167,42 @@ public class PerfilDAOimpl implements PerfilDAO{
 		return rpta;
 	}
 
+	@Override
+	public int ValidarPerfilesExistentes(Long idPerfil) throws Exception {
+		int rpta=0;
+		try {
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ValidarPerfilesExistentes");
+				spq.setParameter("idPerfil", idPerfil);
+				spq.execute();
+				Object ret = spq.getOutputParameterValue("rpta");
+				rpta=Integer.parseInt(ret.toString());
+				em.close();
+			
+		} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		return rpta;
+	}
+
+	@Override
+	public int ValidarPerfilActivo(Long idPerfil) throws Exception {
+		int rpta=0;
+		try {
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ValidarPerfilActivo");
+				spq.setParameter("idPerfil", idPerfil);
+				spq.execute();
+				Object ret = spq.getOutputParameterValue("rpta");
+				rpta=Integer.parseInt(ret.toString());
+				em.close();
+			
+		} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		return rpta;
+	}
+
 
 
 }

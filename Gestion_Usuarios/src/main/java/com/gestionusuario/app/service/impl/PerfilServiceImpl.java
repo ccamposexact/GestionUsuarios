@@ -100,4 +100,22 @@ public class PerfilServiceImpl implements PerfilService{
 		}
 	}
 
+	@Override
+	public int ValidarPerfilesExistentes(Long idPerfil) throws Exception {
+		try {
+			return this.perfildao.ValidarPerfilesExistentes(idPerfil);	
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+	}
+
+	@Override
+	public int ValidarPerfilActivo(Long idPerfil) throws Exception {
+		try {
+			return this.perfildao.ValidarPerfilActivo(idPerfil);
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+	}
+
 }
