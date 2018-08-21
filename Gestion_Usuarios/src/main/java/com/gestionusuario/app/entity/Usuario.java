@@ -37,9 +37,11 @@ public class Usuario implements Serializable {
 	
 	private String nombre;
 	private String apellido;
-	private String correo;
+	private int edad;
 	protected String activo;
-	
+	private int dni;
+	private String matricula;
+	private String correo;
 	
 	
 	public Usuario() {
@@ -76,21 +78,38 @@ public class Usuario implements Serializable {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
-
-
-	public Usuario(Long idUsuario, String nombre, String apellido, String correo, String activo) {
+	public int getEdad() {
+		return edad;
+	}
+	public void setEdad(int edad) {
+		this.edad = edad;
+	}
+	public int getDni() {
+		return dni;
+	}
+	public void setDni(int dni) {
+		this.dni = dni;
+	}
+	public String getMatricula() {
+		return matricula;
+	}
+	public void setMatricula(String matricula) {
+		this.matricula = matricula;
+	}
+	
+	public Usuario(Long idUsuario, String nombre, String apellido, int edad, String activo, int dni, String matricula,
+			String correo) {
 		super();
 		this.idUsuario = idUsuario;
 		this.nombre = nombre;
 		this.apellido = apellido;
+		this.edad = edad;
+		this.activo = activo;
+		this.dni = dni;
+		this.matricula = matricula;
 		this.correo = correo;
-		this.activo= activo;
 	}
-	
-	
-	
-	
-	
+
 	
 	
 }

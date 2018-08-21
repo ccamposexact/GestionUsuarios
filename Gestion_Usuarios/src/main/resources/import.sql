@@ -13,10 +13,10 @@ insert into perfiles values (1,'ES EL ENCARGADO DE REALIZAR LAS ACTIVIDADES DIAR
 insert into perfiles values (1,'ES EL ENCARGADO DE GUARDAR TARJETAS DE CREDITO',GETDATE(),'ASISTENTE')
 
 --debe estar por defecto activo a '1'
-insert into usuarios values (1,'VEGA','kvega@exact.com.pe','KATHERINE')
-insert into usuarios values (1,'SANTOS','rsantos@exact.com.pe','RONALD')
-insert into usuarios values (1,'CAMPOS','ccampos@exact.com.pe','CHRISTIAN')
-insert into usuarios values (1,'HEREDIA','oheredia@exact.com.pe','ORLANDO')
+insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (1,'KATHERINE','VEGA',79461382,'S25113','kvega@exact.com.pe')
+insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (1,'RONALD','SANTOS',46059112,'S13369','rsantos@exact.com.pe')
+insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (1,'CHRISTIAN','CAMPOS',75435710,'S57188','ccampos@exact.com.pe')
+insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (1,'ORLANDO','HEREDIA',12345698,'S46697','oheredia@exact.com.pe')
 
 insert into perfiles_permisos values (1,1)
 insert into perfiles_permisos values (2,2)
