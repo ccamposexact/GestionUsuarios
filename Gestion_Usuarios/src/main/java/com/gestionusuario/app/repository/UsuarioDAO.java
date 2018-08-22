@@ -16,4 +16,6 @@ public interface UsuarioDAO extends GenericDAO<Usuario> {
 	
 	public int ValidarDatosExistentes(String dni, String correo, String matricula) throws Exception;
 	
+	public boolean AsignarPerfilAUsuario(Long idUsuario, Long idPerfil) throws Exception;
+	
 }

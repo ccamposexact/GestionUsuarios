@@ -89,4 +89,13 @@ public class UsuarioServiceImpl  implements UsuarioService{
 		}
 	}
 
+	@Override
+	public boolean AsignarPerfilAUsuario(Long idUsuario, Long idPerfil) throws Exception {
+		try {
+			return this.getUsuariodao().AsignarPerfilAUsuario(idUsuario, idPerfil);
+		} catch (Exception e) {
+			throw new Exception();
+		}
+	}
+
 }
