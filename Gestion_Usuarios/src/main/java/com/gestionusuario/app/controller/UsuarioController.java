@@ -94,7 +94,7 @@ public class UsuarioController {
 							}
 							else 
 							{	
-							return "{\"RPTA\":\"EL PERFIL NO EXISTE \"}";
+							return "{\"RPTA\":\"EL PERFIL NO EXISTEE \"}";
 							}
 						}
 									
