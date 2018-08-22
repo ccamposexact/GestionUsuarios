@@ -83,9 +83,9 @@ public class PerfilServiceImpl implements PerfilService{
 	}
 
 	@Override
-	public boolean BorrarPermisosDePerfil(Long idPerfil) throws Exception {
+	public boolean BorrarPermisosAPerfil(Long idPerfil) throws Exception {
 		try {
-			return this.perfildao.BorrarPermisosDePerfil(idPerfil);
+			return this.perfildao.BorrarPermisosAPerfil(idPerfil);
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
@@ -101,9 +101,9 @@ public class PerfilServiceImpl implements PerfilService{
 	}
 
 	@Override
-	public int ValidarPerfilesExistentes(Long idPerfil) throws Exception {
+	public int ValidarPerfilExistente(Long idPerfil) throws Exception {
 		try {
-			return this.perfildao.ValidarPerfilesExistentes(idPerfil);	
+			return this.perfildao.ValidarPerfilExistente(idPerfil);	
 		} catch (Exception e) {
 			throw new Exception(e);
 		}

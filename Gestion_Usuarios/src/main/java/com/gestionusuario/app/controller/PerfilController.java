@@ -104,7 +104,7 @@ public class PerfilController {
 		{
 			if(perm) 
 			{
-				this.getPerfilservice().BorrarPermisosDePerfil(Long.parseLong(idPerfil));
+				this.getPerfilservice().BorrarPermisosAPerfil(Long.parseLong(idPerfil));
 				return "{\"RPTA\":\"SE ELIMINARON LOS PERMISOS \"}";
 			}
 			else
@@ -121,7 +121,7 @@ public class PerfilController {
 					return "{\"RPTA\":\"EL PERMISO QUE INTENTA AGREGAR NO EXISTE\"}";
 				}
 				else {
-					this.getPerfilservice().BorrarPermisosDePerfil(Long.parseLong(idPerfil));
+					this.getPerfilservice().BorrarPermisosAPerfil(Long.parseLong(idPerfil));
 					for (int i = 0; i < lstPermisos.length(); ++i) {
 						JSONObject rec = lstPermisos.getJSONObject(i);
 						Long id =rec.getLong("idPermiso");

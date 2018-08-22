@@ -22,7 +22,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		
 		try {
 			
-			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("usuario.InsertarUsuarios");
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("usuario.InsertarUsuario");
 			spq.setParameter("nombre", usuario.getNombre());
 			spq.setParameter("apellido", usuario.getApellido());
 			spq.setParameter("correo", usuario.getCorreo());

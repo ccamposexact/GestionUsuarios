@@ -22,8 +22,8 @@ import javax.persistence.Table;
 		{
 			
 			@NamedStoredProcedureQuery(
-					name="usuario.InsertarUsuarios", 
-					procedureName="InsertarUsuarios",
+					name="usuario.InsertarUsuario", 
+					procedureName="InsertarUsuario",
 					resultClasses= Usuario.class,
 					parameters={
 							@StoredProcedureParameter(mode=ParameterMode.IN,name="nombre",type=String.class),

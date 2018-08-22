@@ -27,8 +27,8 @@ import javax.persistence.ParameterMode;
 @NamedStoredProcedureQueries(
 		{
 				@NamedStoredProcedureQuery(
-						name="perfiles.InsertarPerfiles", 
-						procedureName="InsertarPerfiles",
+						name="perfiles.InsertarPerfil", 
+						procedureName="InsertarPerfil",
 						resultClasses= Perfil.class,
 						parameters={
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="nombre", type=String.class),
@@ -37,16 +37,16 @@ import javax.persistence.ParameterMode;
 							}					
 					),
 				@NamedStoredProcedureQuery(
-						name="perfiles.DesactivarPerfiles", 
-						procedureName="DesactivarPerfiles",
+						name="perfiles.DesactivarPerfil", 
+						procedureName="DesactivarPerfil",
 						resultClasses= Perfil.class,
 						parameters={
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
 							}					
 				),
 				@NamedStoredProcedureQuery(
-						name="perfiles.ModificarPerfiles", 
-						procedureName="ModificarPerfiles",
+						name="perfiles.ModificarPerfil", 
+						procedureName="ModificarPerfil",
 						resultClasses= Perfil.class,
 						parameters={
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
@@ -83,7 +83,7 @@ import javax.persistence.ParameterMode;
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPermiso",type=Long.class)
 							}					
 				),@NamedStoredProcedureQuery(
-						name="perfiles.BorrarPermisosDePerfil", 
+						name="perfiles.BorrarPermisosAPerfil", 
 						procedureName="BorrarPermisosAPerfil",
 						resultClasses= Perfil.class,
 						parameters={
@@ -100,8 +100,8 @@ import javax.persistence.ParameterMode;
 							}					
 				),
 				@NamedStoredProcedureQuery(
-						name="perfiles.ValidarPerfilesExistentes", 
-						procedureName="ValidarPerfilesExistentes",
+						name="perfiles.ValidarPerfilExistente", 
+						procedureName="ValidarPerfilExistente",
 						resultClasses= Perfil.class,
 						parameters={
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),

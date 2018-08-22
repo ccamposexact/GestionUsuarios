@@ -26,7 +26,7 @@ public class PerfilDAOimpl implements PerfilDAO{
 		
 		try {
 			
-			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.InsertarPerfiles");
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.InsertarPerfil");
 			spq.setParameter("nombre", perfil.getNombre());
 			spq.setParameter("descripcion", perfil.getDescripcion());
 			spq.execute();
@@ -46,7 +46,7 @@ public class PerfilDAOimpl implements PerfilDAO{
 		int rpta=0;
 		
 		try {
-			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ModificarPerfiles");
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ModificarPerfil");
 			spq.setParameter("idPerfil", perfil.getIdPerfil());
 			spq.setParameter("nombre", perfil.getNombre());
 			spq.setParameter("descripcion", perfil.getDescripcion());
@@ -66,7 +66,7 @@ public class PerfilDAOimpl implements PerfilDAO{
 		
 		boolean sw=false;
 		try {
-			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.DesactivarPerfiles");
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.DesactivarPerfil");
 			spq.setParameter("idPerfil", perfil.getIdPerfil());
 			spq.execute();
 			em.close();
@@ -133,10 +133,10 @@ public class PerfilDAOimpl implements PerfilDAO{
 	}
 
 	@Override
-	public boolean BorrarPermisosDePerfil(Long idPerfil) throws Exception {
+	public boolean BorrarPermisosAPerfil(Long idPerfil) throws Exception {
 		boolean rpta=false;
 		try {
-				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.BorrarPermisosDePerfil");
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.BorrarPermisosAPerfil");
 				spq.setParameter("idPerfil", idPerfil);
 				spq.execute();
 				rpta=true;
@@ -168,10 +168,10 @@ public class PerfilDAOimpl implements PerfilDAO{
 	}
 
 	@Override
-	public int ValidarPerfilesExistentes(Long idPerfil) throws Exception {
+	public int ValidarPerfilExistente(Long idPerfil) throws Exception {
 		int rpta=0;
 		try {
-				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ValidarPerfilesExistentes");
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ValidarPerfilExistente");
 				spq.setParameter("idPerfil", idPerfil);
 				spq.execute();
 				Object ret = spq.getOutputParameterValue("rpta");

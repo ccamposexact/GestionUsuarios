@@ -12,11 +12,11 @@ public interface PerfilDAO extends GenericDAO<Perfil>{
 	
 	public boolean AsignarPermisosAPerfiles(Long idPerfil, Long idPermiso) throws Exception;
 		
-	public boolean BorrarPermisosDePerfil(Long idPerfil ) throws Exception;
+	public boolean BorrarPermisosAPerfil(Long idPerfil ) throws Exception;
 	
 	public int ValidarPermisosExistentes (Long idPermiso) throws Exception ;
 	
-	public int ValidarPerfilesExistentes(Long idPerfil) throws Exception;
+	public int ValidarPerfilExistente(Long idPerfil) throws Exception;
 	
 	public int ValidarPerfilActivo(Long idPerfil) throws Exception;
 	

@@ -78,7 +78,7 @@ public class UsuarioController {
 						case 3:
 							return "{\"RPTA\":\"CORREO REPETIDO\"}";
 						default:
-							perf=this.getPerfilservice().ValidarPerfilesExistentes(Long.parseLong(idPerfil));
+							perf=this.getPerfilservice().ValidarPerfilExistente(Long.parseLong(idPerfil));
 							if(perf==1)
 							{
 								pactivo=this.getPerfilservice().ValidarPerfilActivo(Long.parseLong(idPerfil));
