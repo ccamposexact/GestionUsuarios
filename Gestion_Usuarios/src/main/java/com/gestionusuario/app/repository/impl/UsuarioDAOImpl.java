@@ -151,7 +151,25 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 	
 	
-
+	@Override
+	public int ValidarSiActivaDesactiva(Long idUsuarioDest, int activo) throws Exception {
+		int rpta=0;
+		try {
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("usuario.ValidarSiActivaDesactiva");
+				spq.setParameter("idUsuarioDest", idUsuarioDest);
+				spq.setParameter("activo", activo);
+				spq.execute();
+				Object ret = spq.getOutputParameterValue("rpta");
+				rpta=Integer.parseInt(ret.toString());
+				em.close();
+				
+							
+		} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		return rpta;
+	}
 
 
 

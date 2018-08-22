@@ -16,4 +16,5 @@ public interface UsuarioDAO extends GenericDAO<Usuario> {
 	
 	public int ValidarDatosExistentes(String dni, String correo, String matricula) throws Exception;
 	
+	public int ValidarSiActivaDesactiva(Long idUsuarioDest, int activo) throws Exception;
 }

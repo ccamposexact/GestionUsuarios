@@ -118,4 +118,70 @@ public class UsuarioController {
 	}
 	
 	
+	@RequestMapping(value = "/ModificarEstado", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+	public @ResponseBody String ModificarEstado(@RequestBody String request) throws Exception 
+	{
+		
+		int existe = 0; //si existe el que ejecuta
+		int uactivo = 0;// si esta activo el que ejecuta
+		int permiso = 0; //si tiene permiso el que ejecuta
+		int estado = 0; //
+		
+		ObjectMapper mapper = new ObjectMapper();
+		JSONObject requestJson = new JSONObject(request);
+		String idUsuario = requestJson.getString("idUsuario");
+		String idUsuarioDest = requestJson.getString("idUsuarioDest");
+		String activo = requestJson.getString("activo");
+		
+		existe=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
+		System.out.println("Este es : " + existe );
+		if(existe==1) 
+		{
+			
+			uactivo=this.getUsuarioservice().ValidarUsuarioActivo(Long.parseLong(idUsuario));
+			System.out.println("Este es : " + uactivo );
+			if(uactivo==1)
+			{
+				
+				permiso=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario), PermisosLista.ModificadorEstadoUsuarios);
+				System.out.println("Este es : " + permiso );
+				if(permiso==1) 
+				{
+					
+					if(valor==1)
+						this.getUsuarioservice().ValidarSiActivaDesactiva(a, Integer.parseInt(activo));
+					else
+						this.getUsuarioservice().ValidarSiActivaDesactiva(b, Integer.parseInt(activo));
+					
+					
+					
+					estado=this.getUsuarioservice().ValidarSiActivaDesactiva(Long.parseLong(idUsuarioDest), Integer.parseInt(activo));
+					System.out.println("Este es : " + estado );
+					switch(estado) 
+					{
+					case 1:
+						return "{\"RPTA\":\"EL USUARIO YA SE ENCUENTRA ACTIVADO\"}"; 
+					case 2:
+						return "{\"RPTA\":\"EL USUARIO YA SE ENCUENTRA DESACTIVADO\"}";
+					case 3:
+						return "{\"LA ACTIVACIÓN DEL USUARIO SE LOGRÓ CON ÉXITO\"}";
+					default:
+						return "{\"RPTA\":\"SE REALIZÓ LA DESACTIVACIÓN DEL USUARIO\"}";
+					}
+				}
+				else 
+				{
+					return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA MODIFICAR\"}";
+				}
+			}
+			else 
+			{
+				return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA MODIFICACION ESTA DESACTIVADO\"}";
+			}
+		}
+		
+		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
+	}
+	
+	
 }

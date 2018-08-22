@@ -59,6 +59,7 @@ public class PerfilController {
 			{
 				try {
 					idperfil=this.getPerfilservice().insertar(perfil);
+					System.out.println("Este es el " + idperfil);
 					for (int i = 0; i < lstPermisos.length(); ++i) {
 						JSONObject rec = lstPermisos.getJSONObject(i);
 						Long id =rec.getLong("idPermiso");

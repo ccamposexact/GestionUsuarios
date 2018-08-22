@@ -89,4 +89,13 @@ public class UsuarioServiceImpl  implements UsuarioService{
 		}
 	}
 
+	@Override
+	public int ValidarSiActivaDesactiva(Long idUsuarioDest, int activo) throws Exception {
+		try {
+			return this.getUsuariodao().ValidarSiActivaDesactiva(idUsuarioDest, activo);
+		} catch (Exception e) {
+			throw new Exception();
+		}
+	}
+
 }

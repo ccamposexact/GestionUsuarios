@@ -15,4 +15,6 @@ public interface UsuarioService extends GenericService<Usuario>{
 	public int ValidarUsuarioActivo(Long idUsuario) throws Exception;
 	
 	public int ValidarDatosExistentes(String dni, String correo, String matricula) throws Exception;
+	
+	public int ValidarSiActivaDesactiva(Long idUsuarioDest, int activo) throws Exception;
 }

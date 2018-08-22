@@ -63,6 +63,16 @@ import javax.persistence.Table;
 							@StoredProcedureParameter(mode=ParameterMode.IN,name="matricula",type=String.class),
 							@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
 						}					
+			),
+			@NamedStoredProcedureQuery(
+					name="usuario.ValidarSiActivaDesactiva", 
+					procedureName="ValidarSiActivaDesactiva",
+					resultClasses= Usuario.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuarioDest",type=Long.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="activo",type=Integer.class),
+							@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
+						}					
 			)
 			
 				
