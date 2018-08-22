@@ -65,7 +65,7 @@ import javax.persistence.Table;
 						}					
 			),
 			@NamedStoredProcedureQuery(
-<<<<<<< HEAD
+
 					name="usuario.ValidarSiActivaDesactiva", 
 					procedureName="ValidarSiActivaDesactiva",
 					resultClasses= Usuario.class,
@@ -74,7 +74,8 @@ import javax.persistence.Table;
 							@StoredProcedureParameter(mode=ParameterMode.IN,name="activo",type=Integer.class),
 							@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
 						}					
-=======
+			),
+			@NamedStoredProcedureQuery(
 					name="usuario.AsignarPerfilAUsuario", 
 					procedureName="AsignarPerfilAUsuario",
 					resultClasses= Usuario.class,
@@ -82,7 +83,7 @@ import javax.persistence.Table;
 							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class),
 							@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class)
 							}					
->>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
+
 			)
 			
 				
@@ -101,7 +102,7 @@ public class Usuario implements Serializable {
 	
 	private String nombre;
 	private String apellido;
-	protected String activo;
+	protected int activo;
 	private String dni;
 	private String matricula;
 	private String correo;
@@ -110,10 +111,10 @@ public class Usuario implements Serializable {
 	public Usuario() {
 		
 	}
-	public String getActivo() {
+	public int getActivo() {
 		return activo;
 	}
-	public void setActivo(String activo) {
+	public void setActivo(int activo) {
 		this.activo = activo;
 	}
 
@@ -154,7 +155,7 @@ public class Usuario implements Serializable {
 		this.matricula = matricula;
 	}
 	
-	public Usuario(Long idUsuario, String nombre, String apellido, String activo, String dni, String matricula,
+	public Usuario(Long idUsuario, String nombre, String apellido, int activo, String dni, String matricula,
 			String correo) {
 		super();
 		this.idUsuario = idUsuario;

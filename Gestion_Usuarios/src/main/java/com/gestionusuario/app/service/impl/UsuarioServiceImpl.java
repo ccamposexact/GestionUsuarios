@@ -10,14 +10,12 @@ import com.gestionusuario.app.repository.UsuarioDAO;
 import com.gestionusuario.app.service.UsuarioService;
 
 @Service("usuarioservice")
-public class UsuarioServiceImpl  implements UsuarioService{
+public class UsuarioServiceImpl implements UsuarioService {
 
 	@SuppressWarnings("uncheked")
 	@Autowired
 	private UsuarioDAO usuariodao;
-	
-	
-	
+
 	public UsuarioDAO getUsuariodao() {
 		return usuariodao;
 	}
@@ -90,15 +88,18 @@ public class UsuarioServiceImpl  implements UsuarioService{
 	}
 
 	@Override
-<<<<<<< HEAD
 	public int ValidarSiActivaDesactiva(Long idUsuarioDest, int activo) throws Exception {
 		try {
 			return this.getUsuariodao().ValidarSiActivaDesactiva(idUsuarioDest, activo);
-=======
+		} catch (Exception e) {
+			throw new Exception();
+		}
+	}
+
+	@Override
 	public boolean AsignarPerfilAUsuario(Long idUsuario, Long idPerfil) throws Exception {
 		try {
 			return this.getUsuariodao().AsignarPerfilAUsuario(idUsuario, idPerfil);
->>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
 		} catch (Exception e) {
 			throw new Exception();
 		}
