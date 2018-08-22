@@ -10,7 +10,7 @@ public interface PerfilDAO extends GenericDAO<Perfil>{
 	
 	public int ValidarFormatoPerfil(String nombre) throws Exception;
 	
-	public boolean AsignarPermisosAPerfiles(Long idPerfil, Long idPermiso) throws Exception;
+	public boolean AsignarPermisosAPerfil(Long idPerfil, Long idPermiso) throws Exception;
 		
 	public boolean BorrarPermisosAPerfil(Long idPerfil ) throws Exception;
 	

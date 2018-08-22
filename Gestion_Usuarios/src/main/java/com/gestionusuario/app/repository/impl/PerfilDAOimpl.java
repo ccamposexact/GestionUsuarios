@@ -96,7 +96,7 @@ public class PerfilDAOimpl implements PerfilDAO{
 	}
 
 	@Override
-	public boolean AsignarPermisosAPerfiles(Long idPerfil, Long idPermiso) throws Exception {
+	public boolean AsignarPermisosAPerfil(Long idPerfil, Long idPermiso) throws Exception {
 		boolean sw=false;
 		try {
 			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.AsignarPermisosAPerfil");

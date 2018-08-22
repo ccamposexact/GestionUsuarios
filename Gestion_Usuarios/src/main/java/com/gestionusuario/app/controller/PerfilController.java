@@ -63,7 +63,7 @@ public class PerfilController {
 					for (int i = 0; i < lstPermisos.length(); ++i) {
 						JSONObject rec = lstPermisos.getJSONObject(i);
 						Long id =rec.getLong("idPermiso");
-						this.getPerfilservice().AsignarPermisosAPerfiles(Long.valueOf(idperfil.longValue()) ,id);
+						this.getPerfilservice().AsignarPermisosAPerfil(Long.valueOf(idperfil.longValue()) ,id);
 					}
 					} catch (Exception e) {
 					e.printStackTrace();

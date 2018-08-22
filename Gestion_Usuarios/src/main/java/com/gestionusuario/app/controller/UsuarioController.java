@@ -80,16 +80,16 @@ public class UsuarioController {
 							if (perf == 1) {
 								pactivo = this.getPerfilservice().ValidarPerfilActivo(Long.parseLong(idPerfil));
 								if (pactivo == 1) {
+									
 									idusr = this.getUsuarioservice().insertar(usuario);
-
-									this.getUsuarioservice().AsignarPerfilAUsuario(Long.valueOf(idusr.longValue()),
-											Long.parseLong(idPerfil));
+									this.getUsuarioservice().AsignarPerfilAUsuario(Long.valueOf(idusr.longValue()), Long.parseLong(idPerfil));
+									
 									return "{\"RPTA\":\"SE INSERTO EL USUARIO\"}";
 								} else {
 									return "{\"RPTA\":\"EL PERFIL NO ESTÁ ACTIVO\"}";
 								}
 							} else {
-								return "{\"RPTA\":\"EL PERFIL NO EXISTEE \"}";
+								return "{\"RPTA\":\"EL PERFIL NO EXISTE O ESTA DESACTIVADO \"}";
 							}
 						}
 
@@ -107,6 +107,9 @@ public class UsuarioController {
 		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
 	}
 
+	
+	
+	
 	@RequestMapping(value = "/ModificarEstado", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
 	public @ResponseBody String ModificarEstado(@RequestBody String request) throws Exception {
 
