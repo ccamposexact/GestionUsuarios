@@ -149,6 +149,24 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			}
 		return valor;
 	}
+
+	@Override
+	public boolean AsignarPerfilAUsuario(Long idUsuario, Long idPerfil) throws Exception {
+		boolean rpta=false;
+		try {
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("usuario.AsignarPerfilAUsuario");
+				spq.setParameter("idUsuario", idUsuario);
+				spq.setParameter("idPerfil", idPerfil);
+				spq.execute();
+				rpta=true;
+				em.close();
+			
+		} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		return rpta;
+	}
 	
 	
 	@Override

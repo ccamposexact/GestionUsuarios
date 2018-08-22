@@ -50,6 +50,7 @@ public class UsuarioController {
 		int valor=0;
 		int perf=0;
 		int pactivo=0;
+		Integer idusr=0;
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JSONObject requestJson = new JSONObject(request);
@@ -84,7 +85,9 @@ public class UsuarioController {
 								pactivo=this.getPerfilservice().ValidarPerfilActivo(Long.parseLong(idPerfil));
 								if(pactivo==1)
 								{
-									this.getUsuarioservice().insertar(usuario);
+									idusr=this.getUsuarioservice().insertar(usuario);
+									
+									this.getUsuarioservice().AsignarPerfilAUsuario(Long.valueOf(idusr.longValue()), Long.parseLong(idPerfil));
 									return "{\"RPTA\":\"SE INSERTO EL USUARIO\"}";
 								}
 								else

@@ -16,5 +16,9 @@ public interface UsuarioService extends GenericService<Usuario>{
 	
 	public int ValidarDatosExistentes(String dni, String correo, String matricula) throws Exception;
 	
+<<<<<<< HEAD
 	public int ValidarSiActivaDesactiva(Long idUsuarioDest, int activo) throws Exception;
+=======
+	public boolean AsignarPerfilAUsuario(Long idUsuario, Long idPerfil) throws Exception;
+>>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
 }

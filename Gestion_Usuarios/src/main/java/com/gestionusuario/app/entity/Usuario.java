@@ -65,6 +65,7 @@ import javax.persistence.Table;
 						}					
 			),
 			@NamedStoredProcedureQuery(
+<<<<<<< HEAD
 					name="usuario.ValidarSiActivaDesactiva", 
 					procedureName="ValidarSiActivaDesactiva",
 					resultClasses= Usuario.class,
@@ -73,6 +74,15 @@ import javax.persistence.Table;
 							@StoredProcedureParameter(mode=ParameterMode.IN,name="activo",type=Integer.class),
 							@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
 						}					
+=======
+					name="usuario.AsignarPerfilAUsuario", 
+					procedureName="AsignarPerfilAUsuario",
+					resultClasses= Usuario.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class)
+							}					
+>>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
 			)
 			
 				

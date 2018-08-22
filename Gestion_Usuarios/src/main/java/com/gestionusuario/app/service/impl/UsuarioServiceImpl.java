@@ -90,9 +90,15 @@ public class UsuarioServiceImpl  implements UsuarioService{
 	}
 
 	@Override
+<<<<<<< HEAD
 	public int ValidarSiActivaDesactiva(Long idUsuarioDest, int activo) throws Exception {
 		try {
 			return this.getUsuariodao().ValidarSiActivaDesactiva(idUsuarioDest, activo);
+=======
+	public boolean AsignarPerfilAUsuario(Long idUsuario, Long idPerfil) throws Exception {
+		try {
+			return this.getUsuariodao().AsignarPerfilAUsuario(idUsuario, idPerfil);
+>>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
 		} catch (Exception e) {
 			throw new Exception();
 		}
