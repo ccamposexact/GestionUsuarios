@@ -1,4 +1,4 @@
-package com.gestionusuario.app.controller;
+																																																																																																																																																																																																																																																																																																																																																																																																																																																													package com.gestionusuario.app.controller;
 
 import java.util.ArrayList;
 
@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionusuario.app.entity.Perfil;
 import com.gestionusuario.app.enumerator.PermisosLista;
 import com.gestionusuario.app.service.PerfilService;
+import com.gestionusuario.app.service.UsuarioService;
 
 @Controller
 @RequestMapping("/perfil")
@@ -24,7 +25,21 @@ public class PerfilController {
 	@Autowired
 	private PerfilService perfilservice;
 	
+	@Autowired
+	private UsuarioService usuarioservice;
 	
+	
+	public UsuarioService getUsuarioservice() {
+		return usuarioservice;
+	}
+
+
+
+	public void setUsuarioservice(UsuarioService usuarioservice) {
+		this.usuarioservice = usuarioservice;
+	}
+
+
 
 	public PerfilService getPerfilservice() {
 		return perfilservice;
@@ -43,6 +58,8 @@ public class PerfilController {
 		
 		int rpta;
 		int validar;
+		int existe;
+		int uactivo;
 		Integer idperfil;
 		ObjectMapper mapper = new ObjectMapper();
 		JSONObject requestJson = new JSONObject(request);		
@@ -50,37 +67,52 @@ public class PerfilController {
 		Perfil perfil = mapper.readValue(requestJson.getString("Perfil"), Perfil.class);
 		JSONArray lstPermisos = requestJson.getJSONArray("Permisos");
 		 
-		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.CreadorPerfil);
-		validar=this.getPerfilservice().ValidarFormatoPerfil(perfil.getNombre());
 		
-		if(rpta==1) 
-		{	
-			if(validar==1)
-			{
-				try {
-					idperfil=this.getPerfilservice().insertar(perfil);
-					System.out.println("Este es el " + idperfil);
-					for (int i = 0; i < lstPermisos.length(); ++i) {
-						JSONObject rec = lstPermisos.getJSONObject(i);
-						Long id =rec.getLong("idPermiso");
-						this.getPerfilservice().AsignarPermisosAPerfil(Long.valueOf(idperfil.longValue()) ,id);
-					}
-					} catch (Exception e) {
-					e.printStackTrace();
-				}
+		
+		existe=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
+		
+		if(existe==1) {
+			
+			uactivo = this.getUsuarioservice().ValidarUsuarioActivo(Long.parseLong(idUsuario));
+			
+			if(uactivo==1) {
 				
-				return "{\"RPTA\":\"SE REGISTRO PERFIL\"}";
+				rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.CreadorPerfil);
+				
+				if(rpta==1) 
+				{	
+					validar=this.getPerfilservice().ValidarFormatoPerfil(perfil.getNombre());
+					
+					if(validar==1)
+					{
+						try {
+							idperfil=this.getPerfilservice().insertar(perfil);
+							for (int i = 0; i < lstPermisos.length(); ++i) {
+								JSONObject rec = lstPermisos.getJSONObject(i);
+								Long id =rec.getLong("idPermiso");
+								this.getPerfilservice().AsignarPermisosAPerfil(Long.valueOf(idperfil.longValue()) ,id);
+							}
+							} catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+						return "{\"RPTA\":\"SE REGISTRO PERFIL\"}";
+					}
+					else
+						
+						return "{\"RPTA\":\"PERFIL INCORRECTO\"}";
+				}
+				else 
+				{
+					return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+				}
 			}
 			else
-				
-				return "{\"RPTA\":\"PERFIL INCORRECTO\"}";
+			{
+			return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
+			}
 		}
-		else 
-		{
-			return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
-		}
-				
-			
+		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
 	}
 	
 	@RequestMapping(value = "/AsignarPermisosPerfiles", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
@@ -127,7 +159,7 @@ public class PerfilController {
 						JSONObject rec = lstPermisos.getJSONObject(i);
 						Long id =rec.getLong("idPermiso");
 						System.out.println(lstPermisos);
-						this.getPerfilservice().AsignarPermisosAPerfiles(Long.parseLong(idPerfil),id);
+						this.getPerfilservice().AsignarPermisosAPerfil(Long.parseLong(idPerfil),id);
 					}
 					return "{\"RPTA\":\"EL PERFIL HA SIDO ACTUALIZADO CORRECTAMENTE\"}";
 				}

@@ -92,7 +92,7 @@ public class UsuarioController {
 								return "{\"RPTA\":\"EL PERFIL NO EXISTE O ESTA DESACTIVADO \"}";
 							}
 						}
-
+							
 					} else {
 						return "{\"RPTA\":\"POR FAVOR, REGISTRE TODOS LOS DATOS DEL USUARIO\"}";
 					}
