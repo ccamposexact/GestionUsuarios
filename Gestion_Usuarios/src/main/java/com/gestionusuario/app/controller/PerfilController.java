@@ -60,15 +60,12 @@ public class PerfilController {
 		int validar;
 		int existe;
 		int uactivo;
-		Integer idperfil;
+		
 		ObjectMapper mapper = new ObjectMapper();
 		JSONObject requestJson = new JSONObject(request);		
 		String idUsuario = requestJson.getString("idUsuario");
 		Perfil perfil = mapper.readValue(requestJson.getString("Perfil"), Perfil.class);
-		JSONArray lstPermisos = requestJson.getJSONArray("Permisos");
-		 
-		
-		
+	
 		existe=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
 		
 		if(existe==1) {
@@ -83,24 +80,18 @@ public class PerfilController {
 				{	
 					validar=this.getPerfilservice().ValidarFormatoPerfil(perfil.getNombre());
 					
-					if(validar==1)
-					{
-						try {
-							idperfil=this.getPerfilservice().insertar(perfil);
-							for (int i = 0; i < lstPermisos.length(); ++i) {
-								JSONObject rec = lstPermisos.getJSONObject(i);
-								Long id =rec.getLong("idPermiso");
-								this.getPerfilservice().AsignarPermisosAPerfil(Long.valueOf(idperfil.longValue()) ,id);
+					switch(validar) {
+					case 1: return "{\"RPTA\":\"NOMBRE DE PERFIL INCORRECTO\"}";
+					case 2: return "{\"RPTA\":\"FORMATO DE NOMBRE INCORRECTO (SOLO LETRAS)\"}";
+					default:
+						
+							try {
+								this.getPerfilservice().insertar(perfil);
+								} catch (Exception e) {
+								e.printStackTrace();
 							}
-							} catch (Exception e) {
-							e.printStackTrace();
-						}
-						
-						return "{\"RPTA\":\"SE REGISTRO PERFIL\"}";
+							return "{\"RPTA\":\"SE REGISTRO PERFIL\"}";
 					}
-					else
-						
-						return "{\"RPTA\":\"PERFIL INCORRECTO\"}";
 				}
 				else 
 				{
@@ -120,52 +111,66 @@ public class PerfilController {
 		
 		int existe=0;
 		int vperm=0;
+		int uexiste;
+		int uactivo=0;
 		boolean perm=false;
 		ArrayList<Integer> Lista = new ArrayList<Integer>();
-		
-		
 		JSONObject requestJson = new JSONObject(request);
 		String idUsuario = requestJson.getString("idUsuario");
 		String idPerfil = requestJson.getString("idPerfil");
 		JSONArray lstPermisos = requestJson.getJSONArray("Permisos");
 		perm=lstPermisos.isNull(0);
 		
-		vperm=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario) ,PermisosLista.AsignadorPermisos);
 		
 		
-		if(vperm==1) 
-		{
-			if(perm) 
-			{
-				this.getPerfilservice().BorrarPermisosAPerfil(Long.parseLong(idPerfil));
-				return "{\"RPTA\":\"SE ELIMINARON LOS PERMISOS \"}";
-			}
-			else
-			{
-				for(int i = 0; i < lstPermisos.length(); ++i) {
-					JSONObject rec = lstPermisos.getJSONObject(i);
-					Long id =rec.getLong("idPermiso");
-					existe=getPerfilservice().ValidarPermisosExistentes(id);
-					Lista.add(existe);
-					System.out.println(Lista);
-				}
-				if(Lista.contains(0)) 
+		uexiste=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
+		
+		if(uexiste==1) {
+			uactivo = this.getUsuarioservice().ValidarUsuarioActivo(Long.parseLong(idUsuario));
+			if(uactivo==1) {
+				vperm=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario) ,PermisosLista.AsignadorPermisos);
+				if(vperm==1) 
 				{
-					return "{\"RPTA\":\"EL PERMISO QUE INTENTA AGREGAR NO EXISTE\"}";
-				}
-				else {
-					this.getPerfilservice().BorrarPermisosAPerfil(Long.parseLong(idPerfil));
-					for (int i = 0; i < lstPermisos.length(); ++i) {
-						JSONObject rec = lstPermisos.getJSONObject(i);
-						Long id =rec.getLong("idPermiso");
-						System.out.println(lstPermisos);
-						this.getPerfilservice().AsignarPermisosAPerfil(Long.parseLong(idPerfil),id);
+					if(perm) 
+					{
+						this.getPerfilservice().BorrarPermisosAPerfil(Long.parseLong(idPerfil));
+						return "{\"RPTA\":\"SE ELIMINARON LOS PERMISOS \"}";
 					}
-					return "{\"RPTA\":\"EL PERFIL HA SIDO ACTUALIZADO CORRECTAMENTE\"}";
+					else
+					{
+						for(int i = 0; i < lstPermisos.length(); ++i) {
+							JSONObject rec = lstPermisos.getJSONObject(i);
+							Long id =rec.getLong("idPermiso");
+							existe=getPerfilservice().ValidarPermisosExistentes(id);
+							Lista.add(existe);
+						}
+						if(Lista.contains(0)) 
+						{
+							return "{\"RPTA\":\"EL PERMISO QUE INTENTA AGREGAR NO EXISTE\"}";
+						}
+						else 
+						{
+							this.getPerfilservice().BorrarPermisosAPerfil(Long.parseLong(idPerfil));
+							for (int i = 0; i < lstPermisos.length(); ++i) {
+								JSONObject rec = lstPermisos.getJSONObject(i);
+								Long id =rec.getLong("idPermiso");
+								this.getPerfilservice().AsignarPermisosAPerfil(Long.parseLong(idPerfil),id);
+							}
+							return "{\"RPTA\":\"EL PERFIL HA SIDO ACTUALIZADO CORRECTAMENTE\"}";
+						}
+					}
 				}
+				else 
+				{
+					return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+				}
+			}
+			else 
+			{
+				return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
 			}
 		}
-		return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
 		
 	}
 	
@@ -176,42 +181,59 @@ public class PerfilController {
 		int rpta;
 		int validar;
 		int existe;
+		int uexiste;
+		int uactivo;
 		Perfil perfil = new Perfil();
 		JSONObject requestJson = new JSONObject(request);
 		String idUsuario = requestJson.getString("idUsuario");
 		String idPerfil = requestJson.getString("idPerfil");
 		String nombre = requestJson.getString("nombre");
 		String descripcion = requestJson.getString("descripcion");
-		System.out.println(idPerfil);
 		
 		perfil.setIdPerfil(Long.parseLong(idPerfil));
 		perfil.setNombre(nombre);
 		perfil.setDescripcion(descripcion);
 		
+		uexiste=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
 		
-		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario) ,PermisosLista.ModificadorPerfil);
-		validar=this.getPerfilservice().ValidarFormatoPerfil(perfil.getNombre());
-		
-		if(rpta==1)
-		{
-			if(validar==1) {
-				try {
-					existe=this.perfilservice.modificar(perfil);
-					if(existe==0) {
-						return "{\"RPTA\":\"NO EXISTE PERFIL\"}";
+		if(uexiste==1) {
+			
+			uactivo = this.getUsuarioservice().ValidarUsuarioActivo(Long.parseLong(idUsuario));
+			
+			if(uactivo==1) 
+			{
+				rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario) ,PermisosLista.ModificadorPerfil);
+				
+				if(rpta==1)
+				{
+					validar=this.getPerfilservice().ValidarFormatoPerfil(perfil.getNombre());
+					
+					switch(validar) {
+					case 1: return "{\"RPTA\":\"NOMBRE DE PERFIL INCORRECTO\"}";
+					case 2: return "{\"RPTA\":\"FORMATO DE NOMBRE INCORRECTO (SOLO LETRAS)\"}";
+					default:
+						try {
+							existe=this.perfilservice.modificar(perfil);
+							if(existe==0) {
+								return "{\"RPTA\":\"NO EXISTE PERFIL\"}";
+							}
+						}catch (Exception e){
+							e.printStackTrace();
+						}
+						return "{\"RPTA\":\"REGISTROS ACTUALIZADOS\"}";
 					}
-				}catch (Exception e){
-					e.printStackTrace();
 				}
-				
-				return "{\"RPTA\":\"REGISTROS ACTUALIZADOS\"}";
-				
+				else 
+				{
+					return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+				}
 			}
 			else 
-				return "{\"RPTA\":\"FORMATO INCORRECTO\"}";
+			{
+				return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
 			}
-		
-		return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+		}
+		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
 		
 	}
 	
@@ -219,28 +241,46 @@ public class PerfilController {
 	public @ResponseBody String DesactivarPerfil(@RequestBody String request) throws Exception {
 
 		int rpta;
+		int existe;
+		int uactivo;
 		Perfil perfil = new Perfil();
 		JSONObject requestJson = new JSONObject(request);		
 		String idUsuario = requestJson.getString("idUsuario");
 		String idPerfil = requestJson.getString("idPerfil");
 		perfil.setIdPerfil(Long.parseLong(idPerfil));
 		
-		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.DesactivadorPerfil);
+		existe=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
 		
-		if(rpta==1)
-		{
-			try {
-				this.getPerfilservice().eliminar(perfil);
+		if(existe==1) {
+			
+			uactivo = this.getUsuarioservice().ValidarUsuarioActivo(Long.parseLong(idUsuario));
+			
+			if(uactivo==1) 
+			{
+				rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.DesactivadorPerfil);
 				
-			} catch (Exception e) {
-				e.printStackTrace();
+				if(rpta==1)
+				{
+					try {
+						this.getPerfilservice().eliminar(perfil);
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					return "{\"RPTA\":\"PERFIL DESACTIVADO\"}";
+				}
+				else
+					return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+				
+			}else
+			{
+				return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
 			}
 			
-			
-			return "{\"RPTA\":\"PERFIL DESACTIVADO\"}";
 		}
-		else
-			return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+		
+		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
 		
 	}
 	
