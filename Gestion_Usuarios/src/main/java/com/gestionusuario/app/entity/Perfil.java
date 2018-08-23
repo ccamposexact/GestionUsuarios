@@ -132,6 +132,7 @@ public class Perfil implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idPerfil;
+	//Prueba Cambio
 	
 	private String nombre;
 
