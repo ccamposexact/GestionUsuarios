@@ -18,7 +18,7 @@ insert into perfiles values (1,'ES EL ENCARGADO DE GUARDAR TARJETAS DE CREDITO',
 --debe estar por defecto activo a '1'
 insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (1,'KATHERINE','VEGA',79461382,'S25113','kvega@exact.com.pe')
 insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (1,'RONALD','SANTOS',46059112,'S13369','rsantos@exact.com.pe')
-insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (0,'CHRISTIAN','CAMPOS',75435710,'S57188','ccampos@exact.com.pe')
+insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (1,'CHRISTIAN','CAMPOS',75435710,'S57188','ccampos@exact.com.pe')
 insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (1,'ORLANDO','HEREDIA',12345698,'S46697','oheredia@exact.com.pe')
 
 insert into perfiles_permisos values (1,1)

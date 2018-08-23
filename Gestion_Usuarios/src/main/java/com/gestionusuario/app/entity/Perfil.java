@@ -32,8 +32,7 @@ import javax.persistence.ParameterMode;
 						resultClasses= Perfil.class,
 						parameters={
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="nombre", type=String.class),
-								@StoredProcedureParameter(mode=ParameterMode.IN,name="descripcion", type=String.class),
-								@StoredProcedureParameter(mode=ParameterMode.OUT,name="idPerfil", type=Long.class),
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="descripcion", type=String.class)
 							}					
 					),
 				@NamedStoredProcedureQuery(

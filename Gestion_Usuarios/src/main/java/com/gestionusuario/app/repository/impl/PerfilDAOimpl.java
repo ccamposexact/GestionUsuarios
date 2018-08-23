@@ -29,9 +29,8 @@ public class PerfilDAOimpl implements PerfilDAO{
 			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.InsertarPerfil");
 			spq.setParameter("nombre", perfil.getNombre());
 			spq.setParameter("descripcion", perfil.getDescripcion());
+			rpta=1;
 			spq.execute();
-			Object ret = spq.getOutputParameterValue("idPerfil");
-			rpta=Integer.parseInt(ret.toString());
 			em.close();
 		} catch (Exception e) {
 			e.printStackTrace();
