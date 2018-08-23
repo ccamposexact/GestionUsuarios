@@ -110,7 +110,7 @@ public class UsuarioController {
 	
 	
 	
-	@RequestMapping(value = "/ModificarEstado", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+	@RequestMapping(value = "/ModificarEstado", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.PATCH)
 	public @ResponseBody String ModificarEstado(@RequestBody String request) throws Exception {
 
 		int existe = 0; // si existe el que ejecuta
