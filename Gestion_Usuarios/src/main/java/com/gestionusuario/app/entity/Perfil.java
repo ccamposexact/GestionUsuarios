@@ -37,11 +37,13 @@ import javax.persistence.ParameterMode;
 							}					
 					),
 				@NamedStoredProcedureQuery(
-						name="perfiles.DesactivarPerfil", 
-						procedureName="DesactivarPerfil",
+						name="perfiles.ValidarSiActivaDesactivaPerfil", 
+						procedureName="ValidarSiActivaDesactivaPerfil",
 						resultClasses= Perfil.class,
 						parameters={
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
+								@StoredProcedureParameter(mode=ParameterMode.IN,name="activo",type=Integer.class),
+								@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
 							}					
 				),
 				@NamedStoredProcedureQuery(
@@ -139,7 +141,7 @@ public class Perfil implements Serializable{
 	private Date fCreacion;
 	
 	private String descripcion;
-	protected String activo;
+	protected int activo;
 	
 	@ManyToMany
 	private List<Permiso> permisos;
@@ -152,11 +154,11 @@ public class Perfil implements Serializable{
 		this.idPerfil = idPerfil;
 	}
 	
-	public String getActivo() {
+	public int getActivo() {
 		return activo;
 	}
 
-	public void setActivo(String activo) {
+	public void setActivo(int activo) {
 		this.activo = activo;
 	}
 	

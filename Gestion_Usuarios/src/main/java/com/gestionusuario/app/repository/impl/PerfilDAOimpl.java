@@ -203,6 +203,25 @@ public class PerfilDAOimpl implements PerfilDAO{
 		return rpta;
 	}
 
+	@Override
+	public int ValidarSiActivaDesactivaPerfil(Long idPerfil, int activo) throws Exception {
+		int rpta=0;
+		try {
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ValidarSiActivaDesactivaPerfil");
+				spq.setParameter("idPerfil", idPerfil);
+				spq.setParameter("activo", activo);
+				spq.execute();
+				Object ret = spq.getOutputParameterValue("rpta");
+				rpta=Integer.parseInt(ret.toString());
+				em.close();
+			
+		} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		return rpta;
+	}
 
+	
 
 }

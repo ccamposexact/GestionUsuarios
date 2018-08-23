@@ -17,5 +17,8 @@ public interface PerfilService extends GenericService<Perfil> {
 	public int ValidarPerfilExistente(Long idPerfil) throws Exception;
 	
 	public int ValidarPerfilActivo(Long idPerfil) throws Exception;
+	
+	public int ValidarSiActivaDesactivaPerfil(Long idPerfil, int activo) throws Exception;
+	
 
 }

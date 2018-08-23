@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionusuario.app.entity.Perfil;
 import com.gestionusuario.app.enumerator.PermisosLista;
 import com.gestionusuario.app.service.PerfilService;
+import com.gestionusuario.app.service.UsuarioService;
 
 @Controller
 @RequestMapping("/perfil")
@@ -24,19 +25,25 @@ public class PerfilController {
 	@Autowired
 	private PerfilService perfilservice;
 	
-	
+	@Autowired
+	private UsuarioService usuarioservice;
 
+	
 	public PerfilService getPerfilservice() {
 		return perfilservice;
 	}
-
-
 
 	public void setPerfilservice(PerfilService perfilservice) {
 		this.perfilservice = perfilservice;
 	}
 
+	public UsuarioService getUsuarioservice() {
+		return usuarioservice;
+	}
 
+	public void setUsuarioservice(UsuarioService usuarioservice) {
+		this.usuarioservice = usuarioservice;
+	}
 
 	@RequestMapping(value = "/CrearPerfil", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
 	public @ResponseBody String crearPerfil(@RequestBody String request) throws Exception {
@@ -127,7 +134,7 @@ public class PerfilController {
 						JSONObject rec = lstPermisos.getJSONObject(i);
 						Long id =rec.getLong("idPermiso");
 						System.out.println(lstPermisos);
-						this.getPerfilservice().AsignarPermisosAPerfiles(Long.parseLong(idPerfil),id);
+						this.getPerfilservice().AsignarPermisosAPerfil(Long.parseLong(idPerfil),id);
 					}
 					return "{\"RPTA\":\"EL PERFIL HA SIDO ACTUALIZADO CORRECTAMENTE\"}";
 				}
@@ -183,32 +190,57 @@ public class PerfilController {
 		
 	}
 	
-	@RequestMapping(value = "/DesactivarPerfil", produces = "application/json; charset=utf-8", method = RequestMethod.DELETE)
-	public @ResponseBody String DesactivarPerfil(@RequestBody String request) throws Exception {
+	@RequestMapping(value = "/ModificarEstado", produces = "application/json; charset=utf-8", method = RequestMethod.PATCH)
+	public @ResponseBody String ModificarEstado(@RequestBody String request) throws Exception {
 
-		int rpta;
-		Perfil perfil = new Perfil();
-		JSONObject requestJson = new JSONObject(request);		
+		int existe=0;
+		int uactivo=0;
+		int permiso=0;
+		int estado=0;
+		
+		JSONObject requestJson = new JSONObject(request);
 		String idUsuario = requestJson.getString("idUsuario");
 		String idPerfil = requestJson.getString("idPerfil");
-		perfil.setIdPerfil(Long.parseLong(idPerfil));
+		String activo = requestJson.getString("activo");
+		//perfil.setIdPerfil(Long.parseLong(idPerfil));
 		
-		rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.DesactivadorPerfil);
-		
-		if(rpta==1)
+		existe=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
+		if(existe==1) 
 		{
-			try {
-				this.getPerfilservice().eliminar(perfil);
+			uactivo=this.getUsuarioservice().ValidarUsuarioActivo(Long.parseLong(idUsuario));
+			if(uactivo==1) 
+			{
+				permiso=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario), PermisosLista.ModificadorEstadoPerfiles);
+				if(permiso==1) 
+				{
+					
+					estado = this.getPerfilservice().ValidarSiActivaDesactivaPerfil(Long.parseLong(idPerfil), Integer.parseInt(activo));
+					
+					switch (estado) 
+					{
+					case 1:
+						return "{\"RPTA\":\"EL PERFIL YA SE ENCUENTRA ACTIVADO\"}";
+					case 2:
+						return "{\"RPTA\":\"EL PERFIL YA SE ENCUENTRA DESACTIVADO\"}";
+					case 3:
+						return "{\"RPTA\":\"LA ACTIVACIÓN DEL PERFIL SE LOGRÓ CON ÉXITO\"}";
+					default:
+						return "{\"RPTA\":\"SE REALIZÓ LA DESACTIVACIÓN DEL PERFIL\"}";
+					}
+				}
+				else 
+				{
+					return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA MODIFICAR\"}";
+				}
 				
-			} catch (Exception e) {
-				e.printStackTrace();
+			}else 
+			{
+				return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA MODIFICACION ESTA DESACTIVADO\"}";
 			}
 			
-			
-			return "{\"RPTA\":\"PERFIL DESACTIVADO\"}";
 		}
-		else
-			return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
+
 		
 	}
 	
