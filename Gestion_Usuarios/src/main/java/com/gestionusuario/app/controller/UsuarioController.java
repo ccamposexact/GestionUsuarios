@@ -125,20 +125,19 @@ public class UsuarioController {
 		int activo = requestJson.getInt("activo");
 
 		existe = this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
-		System.out.println("Este es : " + existe);
-		if (existe == 1) {
-
+		
+		if (existe == 1) 
+		{
 			uactivo = this.getUsuarioservice().ValidarUsuarioActivo(Long.parseLong(idUsuario));
-			System.out.println("Este es : " + uactivo);
-			if (uactivo == 1) {
-
-				permiso = this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),
-						PermisosLista.ModificadorEstadoUsuarios);
-				System.out.println("Este es : " + permiso);
-				if (permiso == 1) {
-
+			
+			if (uactivo == 1) 
+			{
+				permiso = this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.ModificadorEstadoUsuarios);
+				
+				if (permiso == 1) 
+				{
 					estado = this.getUsuarioservice().ValidarSiActivaDesactiva(Long.parseLong(idUsuarioDest), activo);
-					System.out.println("Este es : " + estado);
+					
 					switch (estado) {
 					case 1:
 						return "{\"RPTA\":\"EL USUARIO YA SE ENCUENTRA ACTIVADO\"}";
@@ -149,10 +148,12 @@ public class UsuarioController {
 					default:
 						return "{\"RPTA\":\"SE REALIZÓ LA DESACTIVACIÓN DEL USUARIO\"}";
 					}
-				} else {
+				} else
+				{
 					return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA MODIFICAR\"}";
 				}
-			} else {
+			}else 
+			{
 				return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA MODIFICACION ESTA DESACTIVADO\"}";
 			}
 		}
