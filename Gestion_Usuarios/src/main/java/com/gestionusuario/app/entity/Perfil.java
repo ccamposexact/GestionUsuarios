@@ -115,8 +115,19 @@ import javax.persistence.ParameterMode;
 								@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
 								@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
 							}					
-				)
-				
+				),
+
+			   @NamedStoredProcedureQuery(
+					   name = "perfiles.ValidarSiActivaDesactivaPerfil", 
+					   procedureName = "ValidarSiActivaDesactivaPerfil", 
+					   resultClasses = Perfil.class, 
+					   parameters = {
+							   	@StoredProcedureParameter(mode = ParameterMode.IN, name = "idPerfil", type = Long.class),
+							   	@StoredProcedureParameter(mode = ParameterMode.IN, name = "activo", type = Integer.class),
+							   	@StoredProcedureParameter(mode = ParameterMode.OUT, name = "rpta", type = Long.class) 
+							   	}
+					   )
+					
 			}
 		
 )
