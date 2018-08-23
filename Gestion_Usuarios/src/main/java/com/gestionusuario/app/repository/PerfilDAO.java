@@ -20,6 +20,7 @@ public interface PerfilDAO extends GenericDAO<Perfil>{
 	
 	public int ValidarPerfilActivo(Long idPerfil) throws Exception;
 	
+	public int ValidarSiActivaDesactivaPerfil(Long idPerfil, int activo) throws Exception;
 	
 	
 }

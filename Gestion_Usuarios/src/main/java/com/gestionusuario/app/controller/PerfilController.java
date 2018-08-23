@@ -121,8 +121,6 @@ public class PerfilController {
 		JSONArray lstPermisos = requestJson.getJSONArray("Permisos");
 		perm=lstPermisos.isNull(0);
 		
-		
-		
 		uexiste=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
 		
 		if(uexiste==1) {
@@ -237,51 +235,56 @@ public class PerfilController {
 		
 	}
 	
-	@RequestMapping(value = "/DesactivarPerfil", produces = "application/json; charset=utf-8", method = RequestMethod.DELETE)
-	public @ResponseBody String DesactivarPerfil(@RequestBody String request) throws Exception {
-
-		int rpta;
-		int existe;
-		int uactivo;
-		Perfil perfil = new Perfil();
-		JSONObject requestJson = new JSONObject(request);		
+	@RequestMapping(value = "/ModificarEstado", produces = "application/json; charset=utf-8", method = RequestMethod.PATCH)
+	public @ResponseBody String ModificarEstado(@RequestBody String request) throws Exception {
+	
+		int existe=0;
+		int uactivo=0;
+		int permiso=0;
+		int estado=0;
+		JSONObject requestJson = new JSONObject(request);
 		String idUsuario = requestJson.getString("idUsuario");
 		String idPerfil = requestJson.getString("idPerfil");
-		perfil.setIdPerfil(Long.parseLong(idPerfil));
+		String activo = requestJson.getString("activo");
+		//perfil.setIdPerfil(Long.parseLong(idPerfil));
 		
 		existe=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
-		
-		if(existe==1) {
-			
+
+		if(existe==1) 
+		{
 			uactivo = this.getUsuarioservice().ValidarUsuarioActivo(Long.parseLong(idUsuario));
-			
 			if(uactivo==1) 
 			{
-				rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.DesactivadorPerfil);
-				
-				if(rpta==1)
+				permiso=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario),PermisosLista.ModificadorEstadoPerfiles);
+				if(permiso==1)
 				{
-					try {
-						this.getPerfilservice().eliminar(perfil);
-						
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
 					
-					return "{\"RPTA\":\"PERFIL DESACTIVADO\"}";
+					estado = this.getPerfilservice().ValidarSiActivaDesactivaPerfil(Long.parseLong(idPerfil), Integer.parseInt(activo));
+					switch (estado) 
+					{
+					case 1:
+						return "{\"RPTA\":\"EL PERFIL YA SE ENCUENTRA ACTIVADO\"}";
+					case 2:
+						return "{\"RPTA\":\"EL PERFIL YA SE ENCUENTRA DESACTIVADO\"}";
+					case 3:
+						return "{\"RPTA\":\"LA ACTIVACIÓN DEL PERFIL SE LOGRÓ CON ÉXITO\"}";
+					default:
+						return "{\"RPTA\":\"SE REALIZÓ LA DESACTIVACIÓN DEL PERFIL\"}";
+					}
 				}
-				else
-					return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
-				
-			}else
+				return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA MODIFICAR\"}";
+			}
+			else 
 			{
 				return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
 			}
-			
-		}
-		
+		}	
 		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
-		
 	}
+
+	
+	
+	
+	
 	
 }

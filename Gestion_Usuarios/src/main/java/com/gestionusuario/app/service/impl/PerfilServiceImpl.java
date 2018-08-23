@@ -118,4 +118,13 @@ public class PerfilServiceImpl implements PerfilService{
 		}
 	}
 
+	@Override
+	public int ValidarSiActivaDesactivaPerfil(Long idPerfil, int activo) throws Exception {
+		try {
+			return this.perfildao.ValidarSiActivaDesactivaPerfil(idPerfil, activo);
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+	}
+
 }
