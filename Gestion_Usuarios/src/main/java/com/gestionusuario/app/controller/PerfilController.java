@@ -196,11 +196,17 @@ public class PerfilController {
 		int uactivo= 0;
 		int pexiste= 0;
 		
-		ObjectMapper mapper = new ObjectMapper();
+		Perfil perfil = new Perfil();
 		JSONObject requestJson = new JSONObject(request);
 		String idUsuario = requestJson.getString("idUsuario");
 		String idPerfil = requestJson.getString("idPerfil");
-		Perfil perfil= mapper.readValue(requestJson.getString("Perfil"), Perfil.class);
+		String nombre = requestJson.getString("nombre");
+		String descripcion = requestJson.getString("descripcion");
+		
+		perfil.setIdPerfil(Long.parseLong(idPerfil));
+		perfil.setNombre(nombre);
+		perfil.setDescripcion(descripcion);
+
 		
 		System.out.println("ESTE ES: " + perfil.getNombre());
 		
@@ -230,6 +236,7 @@ public class PerfilController {
 						default:
 						
 								existe=this.perfilservice.modificar(perfil);
+								System.out.println("ESTE ES: " + existe);
 								if(existe==0) 
 								{
 									return "{\"RPTA\":\"NO EXISTE PERFIL\"}";
