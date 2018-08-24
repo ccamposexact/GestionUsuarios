@@ -1,10 +1,13 @@
 package com.gestionusuario.app.repository.impl;
 
+
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
+import javax.sql.DataSource;
+
 
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +17,18 @@ import com.gestionusuario.app.repository.UsuarioDAO;
 @Repository("usuariodao")
 public class UsuarioDAOImpl implements UsuarioDAO {
 
+	
+	
+	
+	private DataSource dataSource;
+	
+	
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+	
+	
+	
 	@PersistenceContext
 	private EntityManager em;
 	@Override
@@ -85,17 +100,23 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	@Override
 	public int ValidarUsuarioExistente(Long idUsuario) throws Exception {
 		int rpta=0;
+		//Connection conn=null;
+		//conn = dataSource.getConnection();
 		try {
+				
 				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("usuario.ValidarUsuarioExistente");
 				spq.setParameter("idUsuario", idUsuario);
 				spq.execute();
 				Object ret = spq.getOutputParameterValue("rpta");
 				rpta=Integer.parseInt(ret.toString());
 				em.close();
+				//System.out.println(conn);
 			
 		} catch (Exception e) {
 				e.printStackTrace();
 			}
+		
+		
 		
 		return rpta;
 	}

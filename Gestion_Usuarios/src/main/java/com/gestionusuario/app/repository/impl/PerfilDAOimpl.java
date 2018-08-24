@@ -17,6 +17,13 @@ import com.gestionusuario.app.repository.PerfilDAO;
 @Repository("perfildao")
 public class PerfilDAOimpl implements PerfilDAO{
 	
+	
+	
+	
+	
+	
+	
+	
 	@PersistenceContext
 	private EntityManager em;
 	
