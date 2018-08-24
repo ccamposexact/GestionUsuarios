@@ -2,6 +2,7 @@
 
 import java.util.ArrayList;
 
+import org.apache.catalina.mapper.Mapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionusuario.app.entity.Perfil;
+import com.gestionusuario.app.entity.Usuario;
 import com.gestionusuario.app.enumerator.PermisosLista;
 import com.gestionusuario.app.service.PerfilService;
 import com.gestionusuario.app.service.UsuarioService;
@@ -187,56 +189,55 @@ public class PerfilController {
 	@RequestMapping(value = "/ModificarPerfil", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.PATCH)
 	public @ResponseBody String ModificarPerfil(@RequestBody String request) throws Exception{
 		
-		int rpta;
-		int validar;
-		int existe;
-		int uexiste;
-		int uactivo;
-		int pexiste;
-		Perfil perfil = new Perfil();
+		int rpta = 0;
+		int validar= 0;
+		int existe= 0;
+		int uexiste= 0;
+		int uactivo= 0;
+		int pexiste= 0;
+		
+		ObjectMapper mapper = new ObjectMapper();
 		JSONObject requestJson = new JSONObject(request);
 		String idUsuario = requestJson.getString("idUsuario");
 		String idPerfil = requestJson.getString("idPerfil");
-		String nombre = requestJson.getString("nombre");
-		String descripcion = requestJson.getString("descripcion");
+		Perfil perfil= mapper.readValue(requestJson.getString("Perfil"), Perfil.class);
 		
-		perfil.setIdPerfil(Long.parseLong(idPerfil));
-		perfil.setNombre(nombre);
-		perfil.setDescripcion(descripcion);
+		System.out.println("ESTE ES: " + perfil.getNombre());
 		
 		uexiste=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
-		
+		System.out.println("ESTE ES: " + perfil.getNombre());
 		if(uexiste==1) {
 			
 			uactivo = this.getUsuarioservice().ValidarUsuarioActivo(Long.parseLong(idUsuario));
-			
+			System.out.println("ESTE ES: " + perfil.getNombre());
 			if(uactivo==1) 
 			{
 				pexiste=this.getPerfilservice().ValidarPerfilExistente(Long.parseLong(idPerfil));
-				
+				System.out.println("ESTE ES: " + perfil.getNombre());
 				if(pexiste==1) 
 				{
-
 					rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario) ,PermisosLista.ModificadorPerfil);
-					
+					System.out.println("ESTE ES: " + perfil.getNombre());
 					if(rpta==1)
 					{
 						validar=this.getPerfilservice().ValidarFormatoPerfil(perfil.getNombre());
-						
+						System.out.println("ESTE ES: " + perfil.getNombre());
+						System.out.println("ESTE ES: " + validar);
 						switch(validar) {
-						case 1: return "{\"RPTA\":\"NOMBRE DE PERFIL INCORRECTO\"}";
-						case 2: return "{\"RPTA\":\"FORMATO DE NOMBRE INCORRECTO (SOLO LETRAS)\"}";
+						case 1: return "{\"RPTA\":\"EL NOMBRE DE PERFIL ESTA VACIO\"}";
+						case 2: return "{\"RPTA\":\"EL NOMBRE DEL PERFIL YA EXISTE EN LA BASE DE DATOS\"}";
+						case 3: return "{\"RPTA\":\"FORMATO DE NOMBRE INCORRECTO (SOLO LETRAS)\"}";
 						default:
-							try {
+						
 								existe=this.perfilservice.modificar(perfil);
 								if(existe==0) 
 								{
 									return "{\"RPTA\":\"NO EXISTE PERFIL\"}";
 								}
-							}catch (Exception e){
-								e.printStackTrace();
-							}
-							return "{\"RPTA\":\"REGISTROS ACTUALIZADOS\"}";
+														
+								return "{\"RPTA\":\"REGISTROS ACTUALIZADOS\"}";
+							
+							
 						}
 					}
 					else 
