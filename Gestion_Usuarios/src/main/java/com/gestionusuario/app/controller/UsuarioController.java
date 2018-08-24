@@ -118,6 +118,7 @@ public class UsuarioController {
 		int uactivo = 0;// si esta activo el que ejecuta
 		int permiso = 0; // si tiene permiso el que ejecuta
 		int estado = 0; //
+		int udest=0;
 
 		ObjectMapper mapper = new ObjectMapper();
 		JSONObject requestJson = new JSONObject(request);
@@ -137,17 +138,26 @@ public class UsuarioController {
 				
 				if (permiso == 1) 
 				{
-					estado = this.getUsuarioservice().ValidarSiActivaDesactiva(Long.parseLong(idUsuarioDest), activo);
+					udest=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuarioDest));
 					
-					switch (estado) {
-					case 1:
-						return "{\"RPTA\":\"EL USUARIO YA SE ENCUENTRA ACTIVADO\"}";
-					case 2:
-						return "{\"RPTA\":\"EL USUARIO YA SE ENCUENTRA DESACTIVADO\"}";
-					case 3:
-						return "{\"RPTA\":\"LA ACTIVACIÓN DEL USUARIO SE LOGRÓ CON ÉXITO\"}";
-					default:
-						return "{\"RPTA\":\"SE REALIZÓ LA DESACTIVACIÓN DEL USUARIO\"}";
+					if(udest==1)
+					{
+						estado = this.getUsuarioservice().ValidarSiActivaDesactiva(Long.parseLong(idUsuarioDest), activo);
+						
+						switch (estado) {
+						case 1:
+							return "{\"RPTA\":\"EL USUARIO YA SE ENCUENTRA ACTIVADO\"}";
+						case 2:
+							return "{\"RPTA\":\"EL USUARIO YA SE ENCUENTRA DESACTIVADO\"}";
+						case 3:
+							return "{\"RPTA\":\"LA ACTIVACIÓN DEL USUARIO SE LOGRÓ CON ÉXITO\"}";
+						default:
+							return "{\"RPTA\":\"SE REALIZÓ LA DESACTIVACIÓN DEL USUARIO\"}";
+						}
+					}
+					else
+					{
+						return "{\"RPTA\":\"EL USUARIO AL QUE SE DESEA MODIFICAR NO EXISTE\"}";
 					}
 				} else
 				{
