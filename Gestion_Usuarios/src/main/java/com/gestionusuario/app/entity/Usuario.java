@@ -98,7 +98,7 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idUsuario;
-	
+	//COMENTARIO DE CHRIS EN USUARIO
 	private String nombre;
 	private String apellido;
 	protected int activo;

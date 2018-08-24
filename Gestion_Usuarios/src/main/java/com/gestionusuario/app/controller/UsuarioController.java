@@ -65,7 +65,8 @@ public class UsuarioController {
 				aut = this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario), PermisosLista.CreadorUsuarios);
 				if (aut == 1) {
 					if ((usuario.getNombre() != "") & (usuario.getApellido() != "") & (usuario.getMatricula() != "")
-							& (usuario.getDni() != "") & (usuario.getCorreo() != "")) {
+							& (usuario.getDni() != "") & (usuario.getCorreo() != "")) 
+					{
 						valor = this.getUsuarioservice().ValidarDatosExistentes(usuario.getDni(), usuario.getCorreo(),
 								usuario.getMatricula());
 						switch (valor) {
