@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionusuario.app.configuration.Conectar;
 import com.gestionusuario.app.entity.Usuario;
 import com.gestionusuario.app.enumerator.PermisosLista;
 import com.gestionusuario.app.service.PerfilService;
@@ -17,6 +18,10 @@ import com.gestionusuario.app.service.UsuarioService;
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioController {
+	
+	
+	@Autowired
+	private Conectar conectar;
 
 	@Autowired
 	private UsuarioService usuarioservice;
@@ -57,6 +62,11 @@ public class UsuarioController {
 		Usuario usuario = mapper.readValue(requestJson.getString("Usuario"), Usuario.class);
 		String idPerfil = requestJson.getString("idPerfil");
 
+		if(!conectar.validarcnx()) {
+			return "{\"RPTA\":\"NO SE PUDO ESTABLECER UNA CONEXIÓN CON LA BASE DE DATOS\"}";
+		}
+		
+		
 		existe = this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
 
 		if (existe == 1) {
@@ -125,6 +135,11 @@ public class UsuarioController {
 		String idUsuario = requestJson.getString("idUsuario");
 		String idUsuarioDest = requestJson.getString("idUsuarioDest");
 		int activo = requestJson.getInt("activo");
+		
+		if(!conectar.validarcnx()) {
+			return "{\"RPTA\":\"NO SE PUDO ESTABLECER UNA CONEXIÓN CON LA BASE DE DATOS\"}";
+		}
+		
 
 		existe = this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
 		

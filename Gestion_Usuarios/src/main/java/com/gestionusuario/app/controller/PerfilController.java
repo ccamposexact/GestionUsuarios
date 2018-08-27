@@ -1,15 +1,9 @@
 																																																																																																																																																																																																																																																																																																																																																																																																																																																													package com.gestionusuario.app.controller;
 
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
+
+
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
-import javax.sql.DataSource;
-
-import org.apache.catalina.mapper.Mapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionusuario.app.configuration.Conectar;
 import com.gestionusuario.app.entity.Perfil;
-import com.gestionusuario.app.entity.Usuario;
 import com.gestionusuario.app.enumerator.PermisosLista;
 import com.gestionusuario.app.service.PerfilService;
 import com.gestionusuario.app.service.UsuarioService;
@@ -31,62 +25,8 @@ import com.gestionusuario.app.service.UsuarioService;
 @RequestMapping("/perfil")
 public class PerfilController {
 	
-	DataSource ds= new DataSource() {
-		
-		@Override
-		public <T> T unwrap(Class<T> iface) throws SQLException {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public boolean isWrapperFor(Class<?> iface) throws SQLException {
-			// TODO Auto-generated method stub
-			return false;
-		}
-		
-		@Override
-		public void setLoginTimeout(int arg0) throws SQLException {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void setLogWriter(PrintWriter arg0) throws SQLException {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public int getLoginTimeout() throws SQLException {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-		
-		@Override
-		public PrintWriter getLogWriter() throws SQLException {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Connection getConnection(String username, String password) throws SQLException {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Connection getConnection() throws SQLException {
-			// TODO Auto-generated method stub
-			return null;
-		}
-	};
+	@Autowired
+	private Conectar conectar;
 	
 	@Autowired
 	private PerfilService perfilservice;
@@ -132,6 +72,11 @@ public class PerfilController {
 		String idUsuario = requestJson.getString("idUsuario");
 		Perfil perfil = mapper.readValue(requestJson.getString("Perfil"), Perfil.class);
 	
+		if(!conectar.validarcnx()) {
+			return "{\"RPTA\":\"NO SE PUDO ESTABLECER UNA CONEXIÓN CON LA BASE DE DATOS\"}";
+		}
+		
+		
 		existe=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
 		
 		if(existe==1) {
@@ -187,6 +132,10 @@ public class PerfilController {
 		String idPerfil = requestJson.getString("idPerfil");
 		JSONArray lstPermisos = requestJson.getJSONArray("Permisos");
 		perm=lstPermisos.isNull(0);
+		
+		if(!conectar.validarcnx()) {
+			return "{\"RPTA\":\"NO SE PUDO ESTABLECER UNA CONEXIÓN CON LA BASE DE DATOS\"}";
+		}
 		
 		uexiste=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
 		
@@ -270,6 +219,10 @@ public class PerfilController {
 		perfil.setIdPerfil(Long.parseLong(idPerfil));
 		perfil.setNombre(nombre);
 		perfil.setDescripcion(descripcion);
+		
+		if(!conectar.validarcnx()) {
+			return "{\"RPTA\":\"NO SE PUDO ESTABLECER UNA CONEXIÓN CON LA BASE DE DATOS\"}";
+		}
 
 		
 		System.out.println("ESTE ES: " + perfil.getNombre());
@@ -344,6 +297,10 @@ public class PerfilController {
 		String activo = requestJson.getString("activo");
 		//perfil.setIdPerfil(Long.parseLong(idPerfil));
 		
+		if(!conectar.validarcnx()) {
+			return "{\"RPTA\":\"NO SE PUDO ESTABLECER UNA CONEXIÓN CON LA BASE DE DATOS\"}";
+		}
+		
 		existe=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
 
 		if(existe==1) 
@@ -390,9 +347,5 @@ public class PerfilController {
 		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
 	}
 
-	
-	
-	
-	
 	
 }
