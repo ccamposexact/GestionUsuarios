@@ -3,26 +3,14 @@ package com.gestionusuario.app.repository.impl;
 
 
 import javax.persistence.EntityManager;
-
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
-
-
 import org.springframework.stereotype.Repository;
-
 import com.gestionusuario.app.entity.Perfil;
-
 import com.gestionusuario.app.repository.PerfilDAO;
 
 @Repository("perfildao")
 public class PerfilDAOimpl implements PerfilDAO{
-	
-	
-	
-	
-	
-	
-	
 	
 	@PersistenceContext
 	private EntityManager em;

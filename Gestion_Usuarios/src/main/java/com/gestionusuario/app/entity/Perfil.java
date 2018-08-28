@@ -142,7 +142,7 @@ public class Perfil implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idPerfil;
-	//Prueba Cambios
+	
 	
 	private String nombre;
 
@@ -209,13 +209,5 @@ public class Perfil implements Serializable{
 		return "Perfil [idPerfil=" + idPerfil + ", nombre=" + nombre + ", fCreacion=" + fCreacion + ", descripcion="
 				+ descripcion + ", activo=" + activo + ", permisos=" + permisos + "]";
 	}
-
-	
-	
-	
-	
-	
-	
-	
 
 }

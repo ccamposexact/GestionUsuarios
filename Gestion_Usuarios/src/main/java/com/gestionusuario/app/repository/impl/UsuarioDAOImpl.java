@@ -18,17 +18,6 @@ import com.gestionusuario.app.repository.UsuarioDAO;
 public class UsuarioDAOImpl implements UsuarioDAO {
 
 	
-	
-	
-	private DataSource dataSource;
-	
-	
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
-	
-	
-	
 	@PersistenceContext
 	private EntityManager em;
 	@Override
@@ -100,8 +89,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	@Override
 	public int ValidarUsuarioExistente(Long idUsuario) throws Exception {
 		int rpta=0;
-		//Connection conn=null;
-		//conn = dataSource.getConnection();
+		
 		try {
 				
 				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("usuario.ValidarUsuarioExistente");
@@ -110,9 +98,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				Object ret = spq.getOutputParameterValue("rpta");
 				rpta=Integer.parseInt(ret.toString());
 				em.close();
-				//System.out.println(conn);
-			
-		} catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		

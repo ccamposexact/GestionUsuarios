@@ -1,7 +1,6 @@
 package com.gestionusuario.app.repository;
 
 
-
 import com.gestionusuario.app.entity.Perfil;
 
 public interface PerfilDAO extends GenericDAO<Perfil>{

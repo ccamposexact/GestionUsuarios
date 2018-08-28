@@ -1,6 +1,5 @@
 package com.gestionusuario.app.entity;
 
-
 import java.io.Serializable;
 
 import javax.persistence.Entity;

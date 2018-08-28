@@ -19,6 +19,11 @@ import com.gestionusuario.app.service.UsuarioService;
 @RequestMapping("/usuario")
 public class UsuarioController {
 	
+	private static final String CONEXIONBD = "{\"RPTA\":\"NO SE PUDO ESTABLECER CONEXIÓN CON LA BASE DE DATOS\"}";
+	private static final String PERFILEXISTE="{\"RPTA\":\"EL PERFIL NO EXISTE O ESTA DESACTIVADO \"}";
+	private static final String PERMISO="{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+	private static final String USUARIOESTADO="{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
+	private static final String USUARIOEXISTE="{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
 	
 	@Autowired
 	private Conectar conectar;
@@ -63,7 +68,7 @@ public class UsuarioController {
 		String idPerfil = requestJson.getString("idPerfil");
 
 		if(!conectar.validarcnx()) {
-			return "{\"RPTA\":\"NO SE PUDO ESTABLECER UNA CONEXIÓN CON LA BASE DE DATOS\"}";
+			return CONEXIONBD;
 		}
 		
 		
@@ -83,7 +88,7 @@ public class UsuarioController {
 						case 1:
 							return "{\"RPTA\":\"DNI REPETIDO\"}";
 						case 2:
-							return "{\"RPTA\":\"MATRICULA REPETIDO\"}";
+							return "{\"RPTA\":\"MATRICULA REPETIDA\"}";
 						case 3:
 							return "{\"RPTA\":\"CORREO REPETIDO\"}";
 						default:
@@ -100,7 +105,7 @@ public class UsuarioController {
 									return "{\"RPTA\":\"EL PERFIL NO ESTÁ ACTIVO\"}";
 								}
 							} else {
-								return "{\"RPTA\":\"EL PERFIL NO EXISTE O ESTA DESACTIVADO \"}";
+								return PERFILEXISTE;
 							}
 						}
 							
@@ -108,26 +113,26 @@ public class UsuarioController {
 						return "{\"RPTA\":\"POR FAVOR, REGISTRE TODOS LOS DATOS DEL USUARIO\"}";
 					}
 				} else {
-					return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+					return PERMISO;
 				}
 			} else {
-				return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
+				return USUARIOESTADO;
 			}
 		}
 
-		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
+		return USUARIOEXISTE;
 	}
 
 	
 	
 	
-	@RequestMapping(value = "/ModificarEstado", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.PATCH)
-	public @ResponseBody String ModificarEstado(@RequestBody String request) throws Exception {
+	@RequestMapping(value = "/ModificarEstadoUsuario", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.PATCH)
+	public @ResponseBody String ModificarEstadoUsuario(@RequestBody String request) throws Exception {
 
-		int existe = 0; // si existe el que ejecuta
-		int uactivo = 0;// si esta activo el que ejecuta
-		int permiso = 0; // si tiene permiso el que ejecuta
-		int estado = 0; //
+		int existe = 0; 
+		int uactivo = 0;
+		int permiso = 0; 
+		int estado = 0; 
 		int udest=0;
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -137,10 +142,9 @@ public class UsuarioController {
 		int activo = requestJson.getInt("activo");
 		
 		if(!conectar.validarcnx()) {
-			return "{\"RPTA\":\"NO SE PUDO ESTABLECER UNA CONEXIÓN CON LA BASE DE DATOS\"}";
+			return CONEXIONBD;
 		}
 		
-
 		existe = this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
 		
 		if (existe == 1) 
@@ -176,15 +180,14 @@ public class UsuarioController {
 					}
 				} else
 				{
-					return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA MODIFICAR\"}";
+					return PERMISO;
 				}
 			}else 
 			{
-				return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA MODIFICACION ESTA DESACTIVADO\"}";
+				return USUARIOESTADO;
 			}
 		}
-
-		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
+			return USUARIOEXISTE;
 	}
 
 }

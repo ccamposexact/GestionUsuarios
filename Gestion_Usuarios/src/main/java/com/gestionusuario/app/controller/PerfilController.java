@@ -1,6 +1,4 @@
-																																																																																																																																																																																																																																																																																																																																																																																																																																																													package com.gestionusuario.app.controller;
-
-
+package com.gestionusuario.app.controller;
 
 import java.util.ArrayList;
 
@@ -24,6 +22,12 @@ import com.gestionusuario.app.service.UsuarioService;
 @Controller
 @RequestMapping("/perfil")
 public class PerfilController {
+	
+	private static final String CONEXIONBD = "{\"RPTA\":\"NO SE PUDO ESTABLECER CONEXIÓN CON LA BASE DE DATOS\"}";
+	private static final String PERFILEXISTE="{\"RPTA\":\"EL PERFIL NO EXISTE O ESTA DESACTIVADO \"}";
+	private static final String PERMISO="{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+	private static final String USUARIOESTADO="{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
+	private static final String USUARIOEXISTE="{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
 	
 	@Autowired
 	private Conectar conectar;
@@ -73,7 +77,7 @@ public class PerfilController {
 		Perfil perfil = mapper.readValue(requestJson.getString("Perfil"), Perfil.class);
 	
 		if(!conectar.validarcnx()) {
-			return "{\"RPTA\":\"NO SE PUDO ESTABLECER UNA CONEXIÓN CON LA BASE DE DATOS\"}";
+			return CONEXIONBD;
 		}
 		
 		
@@ -106,15 +110,15 @@ public class PerfilController {
 				}
 				else 
 				{
-					return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+					return PERMISO;
 				}
 			}
 			else
 			{
-			return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
+			return USUARIOESTADO;
 			}
 		}
-		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
+		return USUARIOEXISTE;
 	}
 	
 	@RequestMapping(value = "/AsignarPermisosPerfiles", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
@@ -126,7 +130,7 @@ public class PerfilController {
 		int uactivo=0;
 		int pexiste=0;
 		boolean perm=false;
-		ArrayList<Integer> Lista = new ArrayList<Integer>();
+		ArrayList<Integer> Lista = new ArrayList<>();
 		JSONObject requestJson = new JSONObject(request);
 		String idUsuario = requestJson.getString("idUsuario");
 		String idPerfil = requestJson.getString("idPerfil");
@@ -134,7 +138,7 @@ public class PerfilController {
 		perm=lstPermisos.isNull(0);
 		
 		if(!conectar.validarcnx()) {
-			return "{\"RPTA\":\"NO SE PUDO ESTABLECER UNA CONEXIÓN CON LA BASE DE DATOS\"}";
+			return CONEXIONBD;
 		}
 		
 		uexiste=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
@@ -145,6 +149,7 @@ public class PerfilController {
 				vperm=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario) ,PermisosLista.AsignadorPermisos);
 				if(vperm==1) 
 				{
+					pexiste=this.getPerfilservice().ValidarPerfilExistente(Long.parseLong(idPerfil));
 					
 					if(pexiste==1) {
 
@@ -180,21 +185,21 @@ public class PerfilController {
 					}
 					else
 					{
-						return "{\"RPTA\":\"NO EXISTE EL PERFIL EN LA BASE DE DATOS\"}";
+						return PERFILEXISTE;
 					}
 					
 				}
 				else 
 				{
-					return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+					return PERMISO;
 				}
 			}
 			else 
 			{
-				return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
+				return USUARIOESTADO;
 			}
 		}
-		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
+		return USUARIOEXISTE;
 		
 	}
 	
@@ -221,31 +226,26 @@ public class PerfilController {
 		perfil.setDescripcion(descripcion);
 		
 		if(!conectar.validarcnx()) {
-			return "{\"RPTA\":\"NO SE PUDO ESTABLECER UNA CONEXIÓN CON LA BASE DE DATOS\"}";
+			return CONEXIONBD;
 		}
 
-		
-		System.out.println("ESTE ES: " + perfil.getNombre());
-		
 		uexiste=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
-		System.out.println("ESTE ES: " + perfil.getNombre());
+		
 		if(uexiste==1) {
 			
 			uactivo = this.getUsuarioservice().ValidarUsuarioActivo(Long.parseLong(idUsuario));
-			System.out.println("ESTE ES: " + perfil.getNombre());
+			
 			if(uactivo==1) 
 			{
 				pexiste=this.getPerfilservice().ValidarPerfilExistente(Long.parseLong(idPerfil));
-				System.out.println("ESTE ES: " + perfil.getNombre());
+				
 				if(pexiste==1) 
 				{
 					rpta=this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario) ,PermisosLista.ModificadorPerfil);
-					System.out.println("ESTE ES: " + perfil.getNombre());
+					
 					if(rpta==1)
 					{
 						validar=this.getPerfilservice().ValidarFormatoPerfil(perfil.getNombre());
-						System.out.println("ESTE ES: " + perfil.getNombre());
-						System.out.println("ESTE ES: " + validar);
 						switch(validar) {
 						case 1: return "{\"RPTA\":\"EL NOMBRE DE PERFIL ESTA VACIO\"}";
 						case 2: return "{\"RPTA\":\"EL NOMBRE DEL PERFIL YA EXISTE EN LA BASE DE DATOS\"}";
@@ -253,38 +253,35 @@ public class PerfilController {
 						default:
 						
 								existe=this.perfilservice.modificar(perfil);
-								System.out.println("ESTE ES: " + existe);
 								if(existe==0) 
 								{
 									return "{\"RPTA\":\"NO EXISTE PERFIL\"}";
 								}
 														
 								return "{\"RPTA\":\"REGISTROS ACTUALIZADOS\"}";
-							
-							
-						}
+							}
 					}
 					else 
 					{
-						return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
+						return PERMISO;
 					}
 				}
 				else 
 				{
-					return "{\"RPTA\":\"NO EXISTE EL PERFIL EN LA BASE DE DATOS\"}";
+					return PERFILEXISTE;
 				}
 			}
 			else 
 			{
-				return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
+				return USUARIOESTADO;
 			}
 		}
-		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
+		return USUARIOEXISTE;
 		
 	}
 	
-	@RequestMapping(value = "/ModificarEstado", produces = "application/json; charset=utf-8", method = RequestMethod.PATCH)
-	public @ResponseBody String ModificarEstado(@RequestBody String request) throws Exception {
+	@RequestMapping(value = "/ModificarEstadoPerfil", produces = "application/json; charset=utf-8", method = RequestMethod.PATCH)
+	public @ResponseBody String ModificarEstadoPerfil(@RequestBody String request) throws Exception {
 	
 		int existe=0;
 		int uactivo=0;
@@ -295,10 +292,10 @@ public class PerfilController {
 		String idUsuario = requestJson.getString("idUsuario");
 		String idPerfil = requestJson.getString("idPerfil");
 		String activo = requestJson.getString("activo");
-		//perfil.setIdPerfil(Long.parseLong(idPerfil));
+		
 		
 		if(!conectar.validarcnx()) {
-			return "{\"RPTA\":\"NO SE PUDO ESTABLECER UNA CONEXIÓN CON LA BASE DE DATOS\"}";
+			return CONEXIONBD;
 		}
 		
 		existe=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
@@ -332,20 +329,17 @@ public class PerfilController {
 					}
 					else
 					{
-						return "{\"RPTA\":\"NO EXISTE EL PERFIL EN LA BASE DE DATOS\"}";
+						return PERFILEXISTE;
 					}
 					
-					
 				}
-				return "{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA MODIFICAR\"}";
+				return PERMISO;
 			}
 			else 
 			{
-				return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
+				return USUARIOESTADO;
 			}
 		}	
-		return "{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
+		return USUARIOEXISTE;
 	}
-
-	
 }

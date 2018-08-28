@@ -21,6 +21,7 @@ insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (
 insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (1,'RONALD','SANTOS',46059112,'S13369','rsantos@exact.com.pe')
 insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (1,'CHRISTIAN','CAMPOS',75435710,'S57188','ccampos@exact.com.pe')
 insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (1,'ORLANDO','HEREDIA',12345698,'S46697','oheredia@exact.com.pe')
+insert into usuarios (activo, nombre, apellido, dni, matricula, correo) values (1,'CESAR','BALTAZAR',58963258,'S45687','cbaltazar@exact.com.pe')
 
 insert into perfiles_permisos values (1,1)
 insert into perfiles_permisos values (1,9)
@@ -41,6 +42,8 @@ insert into usuario_perfil values (1,GETDATE(),'',1,1)
 insert into usuario_perfil values (1,GETDATE(),'',2,2)
 insert into usuario_perfil values (1,GETDATE(),'',3,3)
 insert into usuario_perfil values (1,GETDATE(),'',4,4)
+insert into usuario_perfil values (1,GETDATE(),'',4,5)
+
 
 
 
