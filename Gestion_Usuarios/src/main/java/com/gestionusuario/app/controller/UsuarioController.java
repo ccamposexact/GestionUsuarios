@@ -24,6 +24,7 @@ public class UsuarioController {
 	private static final String PERFILDESEXISTE="{\"RPTA\":\"EL PERFIL QUE DESEA ASIGNAR, NO EXISTE \"}";
 	private static final String PERMISO="{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
 	private static final String USUARIOESTADO="{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
+	private static final String USUARIODESESTADO="{\"RPTA\":\"EL USUARIO AL QUE INTENTA MODIFICAR ESTA DESACTIVADO\"}";
 	private static final String USUARIOEXISTE="{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
 	private static final String USUARIODESEXISTE="{\"RPTA\":\"EL USUARIO AL QUE INTENTA MODIFICAR NO EXISTE\"}";
 	
@@ -126,6 +127,7 @@ public class UsuarioController {
 	}
 
 	
+<<<<<<< HEAD
 	@RequestMapping(value = "/ModificarUsuario", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.PUT)
 	public @ResponseBody String ModificarUsuario(@RequestBody String request) throws Exception {
 
@@ -224,6 +226,96 @@ public class UsuarioController {
 		return USUARIOEXISTE;
 	}
 
+=======
+	@RequestMapping(value = "/ModificarUsuario", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+	public @ResponseBody String ModificarUsuario(@RequestBody String request) throws Exception {
+
+		int existe = 0;
+		int uactivo = 0;
+		int aut = 0;
+		
+		int existedes = 0;
+		int uactivodes = 0;
+		
+		int valor = 0;
+		int perf = 0;
+		int pactivo = 0;
+
+		ObjectMapper mapper = new ObjectMapper();
+		JSONObject requestJson = new JSONObject(request);
+		String idUsuario = requestJson.getString("idUsuario");
+		Usuario usuario = mapper.readValue(requestJson.getString("Usuario"), Usuario.class);
+		String idPerfil = requestJson.getString("idPerfil");
+
+		if(!conectar.validarcnx()) {
+			return CONEXIONBD;
+		}
+		
+		
+		existe = this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
+
+		if (existe == 1) {
+			uactivo = this.getUsuarioservice().ValidarUsuarioActivo(Long.parseLong(idUsuario));
+			if (uactivo == 1) {
+				aut = this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario), PermisosLista.ModificadorUsuarios);
+				if (aut == 1) {
+
+					existedes=this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario)); //destino
+					if(existedes==1) {
+						uactivodes = this.getUsuarioservice().ValidarUsuarioActivo(Long.parseLong(idUsuario)); //destino
+						if(uactivodes==1) {
+							
+							if ((usuario.getNombre() != "") & (usuario.getApellido() != "") & (usuario.getDni() != "") & (usuario.getMatricula() != "")
+									& (usuario.getCorreo() != "")) 
+							{
+								valor = this.getUsuarioservice().ValidarDatosExistentes(usuario.getDni(), usuario.getCorreo(),
+										usuario.getMatricula());
+								switch (valor) {
+								case 1:
+									return "{\"RPTA\":\"DNI REPETIDO\"}";
+								case 2:
+									return "{\"RPTA\":\"MATRICULA REPETIDA\"}";
+								case 3:
+									return "{\"RPTA\":\"CORREO REPETIDO\"}";
+								default:
+									perf = this.getPerfilservice().ValidarPerfilExistente(Long.parseLong(idPerfil)); //destino
+									if (perf == 1) {
+										pactivo = this.getPerfilservice().ValidarPerfilActivo(Long.parseLong(idPerfil)); //destino
+										if (pactivo == 1) {
+											
+											//idusr = this.getUsuarioservice().modificar(usuario);
+											//this.getUsuarioservice().ModificarUsuario(Long.valueOf(idusr.longValue()), Long.parseLong(idPerfil));
+											
+											return "{\"RPTA\":\"SE MODIFICO EL USUARIO\"}";
+										} else {
+											return "{\"RPTA\":\"EL PERFIL ASIGNADO NO ESTÁ ACTIVO\"}";
+										}
+									} else {
+										return PERFILDESEXISTE;
+									}
+								}
+									
+							} else {
+								return "{\"RPTA\":\"POR FAVOR, REGISTRE TODOS LOS DATOS DEL USUARIO\"}";
+							}	
+						} else {
+							  return USUARIODESESTADO;
+						}
+					} else {
+					  return USUARIODESEXISTE;
+					}	
+				} else {
+					return PERMISO;
+				}
+			} else {
+				return USUARIOESTADO;
+			}
+		}
+
+		return USUARIOEXISTE;
+	}
+	
+>>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
 	
 	@RequestMapping(value = "/ModificarEstadoUsuario", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.PATCH)
 	public @ResponseBody String ModificarEstadoUsuario(@RequestBody String request) throws Exception {
