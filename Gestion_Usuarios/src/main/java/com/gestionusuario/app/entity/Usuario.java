@@ -32,7 +32,19 @@ import javax.persistence.Table;
 							@StoredProcedureParameter(mode=ParameterMode.OUT,name="idUsuario",type=Long.class)
 						}					
 			),
-			
+			@NamedStoredProcedureQuery(
+					name="usuario.ModificarUsuario", 
+					procedureName="ModificarUsuario",
+					resultClasses= Usuario.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="nombre",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="apellido",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="dni",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="matricula",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="correo",type=String.class)
+						}					
+			),
 			@NamedStoredProcedureQuery(
 					name="usuario.ValidarUsuarioExistente", 
 					procedureName="ValidarUsuarioExistente",

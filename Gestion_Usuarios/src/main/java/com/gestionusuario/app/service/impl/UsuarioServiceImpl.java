@@ -34,9 +34,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public int modificar(Usuario objeto) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int modificar(Usuario usuario) throws Exception {
+		try {
+			return this.getUsuariodao().insertar(usuario);
+		} catch (Exception e) {
+			throw new Exception();
+		}
 	}
 
 	@Override
