@@ -173,7 +173,7 @@ public class UsuarioController {
 								case 1:
 									return "{\"RPTA\":\"EL DNI INGRESADO SE REPITE EN LA BASE DE DATOS\"}";
 								case 2:
-									return "{\"RPTA\":\"EL MATRICULA INGRESADO SE REPITE EN LA BASE DE DATOS\"}";
+									return "{\"RPTA\":\"EL MATRICULA INGRESADO SE REPITE EN LA BASE DE DAToOS\"}";
 								case 3:
 									return "{\"RPTA\":\"EL CORREO INGRESADO SE REPITE EN LA BASE DE DATOS\"}";
 								default:
