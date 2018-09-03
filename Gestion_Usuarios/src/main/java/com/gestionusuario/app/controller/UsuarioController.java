@@ -21,9 +21,11 @@ public class UsuarioController {
 	
 	private static final String CONEXIONBD = "{\"RPTA\":\"NO SE PUDO ESTABLECER CONEXIÓN CON LA BASE DE DATOS\"}";
 	private static final String PERFILEXISTE="{\"RPTA\":\"EL PERFIL NO EXISTE O ESTA DESACTIVADO \"}";
+	private static final String PERFILDESEXISTE="{\"RPTA\":\"EL PERFIL QUE DESEA ASIGNAR, NO EXISTE \"}";
 	private static final String PERMISO="{\"RPTA\":\"EL USUARIO NO TIENE EL PERMISO PARA REALIZAR ESTA ACCIÓN\"}";
 	private static final String USUARIOESTADO="{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION ESTA DESACTIVADO\"}";
 	private static final String USUARIOEXISTE="{\"RPTA\":\"EL USUARIO QUE INTENTA REALIZAR LA CREACION NO EXISTE\"}";
+	private static final String USUARIODESEXISTE="{\"RPTA\":\"EL USUARIO AL QUE INTENTA MODIFICAR NO EXISTE\"}";
 	
 	@Autowired
 	private Conectar conectar;
@@ -124,7 +126,104 @@ public class UsuarioController {
 	}
 
 	
-	
+	@RequestMapping(value = "/ModificarUsuario", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.PUT)
+	public @ResponseBody String ModificarUsuario(@RequestBody String request) throws Exception {
+
+		int existe = 0;
+		int uactivo = 0;
+		int aut = 0;
+		
+		int existedes = 0;
+		int uactivodes = 0;
+		
+		int valor = 0;
+		int perf = 0;
+		int pactivo = 0;
+
+		ObjectMapper mapper = new ObjectMapper();
+		JSONObject requestJson = new JSONObject(request);
+		String idUsuario = requestJson.getString("idUsuario");
+		Usuario usuarioDest = mapper.readValue(requestJson.getString("Usuario"), Usuario.class);
+		String idPerfil = requestJson.getString("idPerfil");
+
+		if(!conectar.validarcnx()) {
+			return CONEXIONBD;
+		}
+		
+		
+		existe = this.getUsuarioservice().ValidarUsuarioExistente(Long.parseLong(idUsuario));
+
+		if (existe == 1) {
+			uactivo = this.getUsuarioservice().ValidarUsuarioActivo(Long.parseLong(idUsuario));
+			if (uactivo == 1) {
+				aut = this.getPerfilservice().ValidarPermisos(Long.parseLong(idUsuario), PermisosLista.ModificadorUsuarios);
+				if (aut == 1) {
+
+					existedes=this.getUsuarioservice().ValidarUsuarioExistente(usuarioDest.getIdUsuario()); //destino
+					if(existedes==1) {
+						uactivodes = this.getUsuarioservice().ValidarUsuarioActivo(usuarioDest.getIdUsuario()); //destino
+						if(uactivodes==1) {
+							
+							if ((usuarioDest.getNombre() != "") & (usuarioDest.getApellido() != "") & (usuarioDest.getDni() != "") & (usuarioDest.getMatricula() != "")
+									& (usuarioDest.getCorreo() != "")) 
+							{
+								valor = this.getUsuarioservice().ValidarDatosExistentes(usuarioDest.getDni(), usuarioDest.getCorreo(),
+										usuarioDest.getMatricula());
+								switch (valor) {
+								case 1:
+									return "{\"RPTA\":\"EL DNI INGRESADO SE REPITE EN LA BASE DE DATOS\"}";
+								case 2:
+									return "{\"RPTA\":\"EL MATRICULA INGRESADO SE REPITE EN LA BASE DE DATOS\"}";
+								case 3:
+									return "{\"RPTA\":\"EL CORREO INGRESADO SE REPITE EN LA BASE DE DATOS\"}";
+								default:
+									
+									if(idPerfil.length()<1) {
+										
+										this.getUsuarioservice().modificar(usuarioDest);
+										return "{\"RPTA\":\"SE HA ACTUALIZADO EL USUARIO CORRECTAMENTE (S/P)\"}";
+										
+										
+									}else {
+										
+										perf = this.getPerfilservice().ValidarPerfilExistente(Long.parseLong(idPerfil)); //destino
+										if (perf == 1) {
+											pactivo = this.getPerfilservice().ValidarPerfilActivo(Long.parseLong(idPerfil)); //destino
+											if (pactivo == 1) {
+												this.getUsuarioservice().modificar(usuarioDest);
+												this.getUsuarioservice().ModificarPerfilUsuario(usuarioDest.getIdUsuario(), Long.parseLong(idPerfil));
+												
+												return "{\"RPTA\":\"SE HA ACTUALIZADO EL USUARIO CORRECTAMENTE\"}";
+											} else {
+												
+												return "{\"RPTA\":\"EL PERFIL ASIGNADO NO ESTÁ ACTIVO\"}";
+											}
+										} else {
+											return PERFILDESEXISTE;
+										}
+									}
+								}
+									
+							} else {
+								return "{\"RPTA\":\"POR FAVOR, REGISTRE TODOS LOS DATOS DEL USUARIO\"}";
+							}	
+						} else {
+							  return "{\"RPTA\":\"NO PUEDE ACTUALIZAR LA INFORMACIÓN DE UN USUARIO DESACTIVADO\"}"; 
+						}
+					} else {
+					  return USUARIODESEXISTE;
+					}	
+				} else {
+					return PERMISO;
+				}
+			} else {
+				return USUARIOESTADO;
+			}
+		}
+
+		return USUARIOEXISTE;
+	}
+
 	
 	@RequestMapping(value = "/ModificarEstadoUsuario", consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8", method = RequestMethod.PATCH)
 	public @ResponseBody String ModificarEstadoUsuario(@RequestBody String request) throws Exception {

@@ -7,7 +7,8 @@ insert into permisos (nombre, descripcion) values ('MODIFICADOR DE PERMISOS','MO
 insert into permisos (nombre, descripcion) values ('ASIGNADOR DE PERMISOS','ASIGNAR PERMISOS A UN PERFIL')
 insert into permisos (nombre, descripcion) values ('QUITAR PERMISOS','QUITAR PERMISOS A UN PERFIL')
 insert into permisos (nombre, descripcion) values ('CREAR USUARIOS','CREA USUARIOS CON UN PERFIL')
-insert into permisos (nombre, descripcion) values ('MODIFICADOR USUARIOS','MODIFICA EL ESTADO')
+insert into permisos (nombre, descripcion) values ('MODIFICADOR DE ESTADO DE USUARIOS','MODIFICA EL ESTADO')
+insert into permisos (nombre, descripcion) values ('MODIFICADOR USUARIOS','MODIFICA LOS DATOS DEL USUARIO')
 
 
 --debe estar por defecto activo a '1'
@@ -37,6 +38,8 @@ insert into perfiles_permisos values (3,5)
 insert into perfiles_permisos values (3,6)
 insert into perfiles_permisos values (3,7)
 insert into perfiles_permisos values (4,6)
+insert into perfiles_permisos values (3,11)
+
 
 insert into usuario_perfil values (1,GETDATE(),'',1,1)
 insert into usuario_perfil values (1,GETDATE(),'',2,2)

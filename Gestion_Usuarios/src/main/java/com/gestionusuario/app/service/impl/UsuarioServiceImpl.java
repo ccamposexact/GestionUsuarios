@@ -34,9 +34,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public int modificar(Usuario objeto) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int modificar(Usuario usuario) throws Exception {
+		try {
+			return this.getUsuariodao().modificar(usuario);
+		} catch (Exception e) {
+			throw new Exception();
+		}
 	}
 
 	@Override
@@ -100,6 +103,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public boolean AsignarPerfilAUsuario(Long idUsuario, Long idPerfil) throws Exception {
 		try {
 			return this.getUsuariodao().AsignarPerfilAUsuario(idUsuario, idPerfil);
+		} catch (Exception e) {
+			throw new Exception();
+		}
+	}
+
+	@Override
+	public boolean ModificarPerfilUsuario(Long idUsuario, Long idPerfil) throws Exception {
+		try {
+			return this.getUsuariodao().ModificarPerfilUsuario(idUsuario, idPerfil);
 		} catch (Exception e) {
 			throw new Exception();
 		}

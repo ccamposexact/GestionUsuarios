@@ -45,9 +45,29 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 
 	@Override
-	public int modificar(Usuario objeto) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int modificar(Usuario usuario) throws Exception {
+
+		int rpta=0;
+		
+		try {
+
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("usuario.ModificarUsuario");
+			spq.setParameter("idUsuario", usuario.getIdUsuario());
+			spq.setParameter("nombre", usuario.getNombre());
+			spq.setParameter("apellido", usuario.getApellido());
+			spq.setParameter("dni", usuario.getDni());
+			spq.setParameter("matricula", usuario.getMatricula());
+			spq.setParameter("correo", usuario.getCorreo());
+			spq.execute();
+			rpta=1;
+			em.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception();
+			}
+		
+		return rpta;
+		
 	}
 
 	@Override
@@ -186,6 +206,25 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				spq.execute();
 				Object ret = spq.getOutputParameterValue("rpta");
 				rpta=Integer.parseInt(ret.toString());
+				em.close();
+				
+							
+		} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		return rpta;
+	}
+
+	@Override
+	public boolean ModificarPerfilUsuario(Long idUsuario, Long idPerfil) throws Exception {
+		boolean rpta=false;
+		try {
+				StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("usuario.ModificarPerfilUsuario");
+				spq.setParameter("idPerfil", idPerfil);
+				spq.setParameter("idUsuario", idUsuario);
+				spq.execute();
+				rpta=true;
 				em.close();
 				
 							

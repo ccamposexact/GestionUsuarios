@@ -11,6 +11,9 @@ import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
 
 
 
@@ -34,12 +37,36 @@ import javax.persistence.Table;
 			),
 			
 			@NamedStoredProcedureQuery(
+					name="usuario.ModificarUsuario", 
+					procedureName="ModificarUsuario",
+					resultClasses= Usuario.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="nombre",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="apellido",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="dni",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="matricula",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="correo",type=String.class)
+							
+						}
+				),
+			
+			@NamedStoredProcedureQuery(
 					name="usuario.ValidarUsuarioExistente", 
 					procedureName="ValidarUsuarioExistente",
 					resultClasses= Usuario.class,
 					parameters={
 							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class),
 							@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
+						}					
+			),
+			@NamedStoredProcedureQuery(
+					name="usuario.ModificarPerfilUsuario", 
+					procedureName="ModificarPerfilUsuario",
+					resultClasses= Usuario.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class)
 						}					
 			),
 			@NamedStoredProcedureQuery(
@@ -97,12 +124,14 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idUsuario;
-	//COMENTARIO DE CHRIS EN USUARIO
+	
 	private String nombre;
 	private String apellido;
 	protected int activo;
 	private String dni;
 	private String matricula;
+	
+	
 	private String correo;
 	
 	

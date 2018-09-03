@@ -20,4 +20,6 @@ public interface UsuarioDAO extends GenericDAO<Usuario> {
 
 	public boolean AsignarPerfilAUsuario(Long idUsuario, Long idPerfil) throws Exception;
 	
+	public boolean ModificarPerfilUsuario(Long idUsuario, Long idPerfil) throws Exception;
+	
 }
