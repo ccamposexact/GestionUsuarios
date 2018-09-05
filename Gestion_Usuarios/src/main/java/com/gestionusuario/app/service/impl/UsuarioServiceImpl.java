@@ -36,11 +36,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	public int modificar(Usuario usuario) throws Exception {
 		try {
-<<<<<<< HEAD
+
 			return this.getUsuariodao().modificar(usuario);
-=======
-			return this.getUsuariodao().insertar(usuario);
->>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
 		} catch (Exception e) {
 			throw new Exception();
 		}

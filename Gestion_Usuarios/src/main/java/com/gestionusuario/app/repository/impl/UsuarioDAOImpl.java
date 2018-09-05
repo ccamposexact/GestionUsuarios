@@ -44,7 +44,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 	@Override
 	public int modificar(Usuario usuario) throws Exception {
-<<<<<<< HEAD
+
 
 		int rpta=0;
 		
@@ -66,29 +66,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			}
 		
 		return rpta;
-		
-=======
-		int rpta = 0;
 
-		try {
-
-			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("usuario.ModificarUsuario");
-			spq.setParameter("nombre", usuario.getNombre());
-			spq.setParameter("apellido", usuario.getApellido());
-			spq.setParameter("dni", usuario.getDni());
-			spq.setParameter("matricula", usuario.getMatricula());
-			spq.setParameter("correo", usuario.getCorreo());
-			spq.execute();
-			Object ret = spq.getOutputParameterValue("idUsuario");
-			rpta = Integer.parseInt(ret.toString());
-			em.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new Exception();
-			}
-		return rpta;
-
->>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
 	}
 
 	@Override
