@@ -211,7 +211,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		return rpta;
 	}
 
-<<<<<<< HEAD
+
 	@Override
 	public boolean ModificarPerfilUsuario(Long idUsuario, Long idPerfil) throws Exception {
 		boolean rpta=false;
@@ -233,6 +233,5 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 
 
-=======
->>>>>>> branch 'master' of https://github.com/ccamposexact/GestionUsuarios.git
+
 }

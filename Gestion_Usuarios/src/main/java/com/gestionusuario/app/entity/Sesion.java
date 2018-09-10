@@ -23,17 +23,17 @@ public class Sesion implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idSesion;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date iSesion;
+	@Temporal(TemporalType.DATE)
+	private Date inisesion;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date fSesion;
-	
-	@ManyToOne
-	private Usuario usuario;	
+	@Temporal(TemporalType.DATE)
+	private Date finsesion;
 	
 	@ManyToOne
-	private Tipo_Autenticacion tipo_autenticacion;
+	private Usuario usesion;	
+	
+	@ManyToOne
+	private Tipo_Autenticacion autsesion;
 
 	public Long getIdSesion() {
 		return idSesion;
@@ -43,37 +43,40 @@ public class Sesion implements Serializable {
 		this.idSesion = idSesion;
 	}
 
-	public Date getiSesion() {
-		return iSesion;
+	
+	public Date getInisesion() {
+		return inisesion;
 	}
 
-	public void setiSesion(Date iSesion) {
-		this.iSesion = iSesion;
+	public void setInisesion(Date inisesion) {
+		this.inisesion = inisesion;
 	}
 
-	public Date getfSesion() {
-		return fSesion;
+	public Date getFinsesion() {
+		return finsesion;
 	}
 
-	public void setfSesion(Date fSesion) {
-		this.fSesion = fSesion;
+	public void setFinsesion(Date finsesion) {
+		this.finsesion = finsesion;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public Usuario getUsesion() {
+		return usesion;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setUsesion(Usuario usesion) {
+		this.usesion = usesion;
 	}
 
-	public Tipo_Autenticacion getTipo_autenticacion() {
-		return tipo_autenticacion;
+	public Tipo_Autenticacion getAutsesion() {
+		return autsesion;
 	}
 
-	public void setTipo_autenticacion(Tipo_Autenticacion tipo_autenticacion) {
-		this.tipo_autenticacion = tipo_autenticacion;
+	public void setAutsesion(Tipo_Autenticacion autsesion) {
+		this.autsesion = autsesion;
 	}
+
+	
 	
 	
 	
