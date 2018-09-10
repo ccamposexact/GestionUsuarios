@@ -231,6 +231,24 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		return rpta;
 	}
 
+	@Override
+	public int LoguearUsuario(String username, String password) throws Exception {
+		int rpta = 0;
+		try {
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("usuario.LoguearUsuario");
+			spq.setParameter("user", username);
+			spq.setParameter("password", password);
+			spq.execute();
+			Object ret = spq.getOutputParameterValue("rpta");
+			rpta = Integer.parseInt(ret.toString());
+			em.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rpta;
+	}
+
 
 
 

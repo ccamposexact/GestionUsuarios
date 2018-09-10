@@ -116,6 +116,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 							@StoredProcedureParameter(mode=ParameterMode.IN,name="idPerfil",type=Long.class)
 							}					
 
+			),
+			@NamedStoredProcedureQuery(
+					name="usuario.LoguearUsuario", 
+					procedureName="LoguearUsuario",
+					resultClasses= Usuario.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="username",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="password",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
+							}					
+
 			)
 			
 				
