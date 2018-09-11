@@ -118,4 +118,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 	}
 
+	@Override
+	public int LoguearUsuario(String username, String password) throws Exception {
+		try {
+			return this.getUsuariodao().LoguearUsuario(username, password);
+		} catch (Exception e) {
+			throw new Exception();
+		}
+	}
+	
+	
 }
