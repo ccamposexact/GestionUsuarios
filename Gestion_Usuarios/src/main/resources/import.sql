@@ -11,7 +11,7 @@ insert into permisos (nombre, descripcion) values ('MODIFICADOR DE ESTADO DE USU
 insert into permisos (nombre, descripcion) values ('MODIFICADOR USUARIOS','MODIFICA LOS DATOS DEL USUARIO')
 
 
---debe estar por defecto activo a '1'
+--debe estar por defecto activo a '1'11
 insert into perfiles values (1,'ESTA A CARGO DE UN AREA ASIGNADA',GETDATE(),'JEFE')
 insert into perfiles values (1,'ES EL RESPONSABLE DEL CONTROL DE ACTIVIDADES DIARIAS Y MANEJO DE LAS OPERACIONES',GETDATE(),'SUPERVISOR')
 insert into perfiles values (1,'ES EL ENCARGADO DE REALIZAR LAS ACTIVIDADES DIARIAS DE LA EMPRESA',GETDATE(),'OPERATIVO')
