@@ -34,6 +34,9 @@ public class JwtTokenUtil implements Serializable{
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
+    
+    
+    
 
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
@@ -48,17 +51,26 @@ public class JwtTokenUtil implements Serializable{
     }
 
     public String generateToken(Usuario usuario) {
-        return doGenerateToken(usuario.getUsername());
+        return doGenerateToken(usuario);
     }
+    
+    
+    
 
-    private String doGenerateToken(String subject) {
+    private String doGenerateToken(Usuario usuario) {
+    	
+    	
+    	
 
-        Claims claims = Jwts.claims().setSubject(subject);
-        claims.put("scopes", Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+    	
+    	
+        Claims claims = Jwts.claims().setSubject(String.valueOf(usuario.getIdUsuario()));
+        claims.put("permisos", Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        claims.put("matricula", usuario.getMatricula());
+        claims.put("usuario", usuario.getNombre());
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuer("http://devglan.com")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000))
                 .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)

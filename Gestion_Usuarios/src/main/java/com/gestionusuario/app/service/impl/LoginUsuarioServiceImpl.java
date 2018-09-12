@@ -17,6 +17,7 @@ import com.gestionusuario.app.repository.LoginUsuarioDAO;
 import com.gestionusuario.app.service.LoginUsuarioService;
 
 
+
 @Service(value = "loginUsuarioService")
 public class LoginUsuarioServiceImpl implements UserDetailsService, LoginUsuarioService {
 	

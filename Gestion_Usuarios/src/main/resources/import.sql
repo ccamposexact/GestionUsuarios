@@ -18,11 +18,12 @@ insert into perfiles values (1,'ES EL ENCARGADO DE REALIZAR LAS ACTIVIDADES DIAR
 insert into perfiles values (1,'ES EL ENCARGADO DE GUARDAR TARJETAS DE CREDITO',GETDATE(),'ASISTENTE')
 
 --debe estar por defecto activo a '1'
-insert into usuarios (activo, nombre, apellido, dni, matricula, correo, username, password) values (1,'KATHERINE','VEGA',79461382,'S25113','kvega@exact.com.pe','kvega','123456')
-insert into usuarios (activo, nombre, apellido, dni, matricula, correo, username, password) values (1,'RONALD','SANTOS',46059112,'S13369','rsantos@exact.com.pe','rsantos','123456')
-insert into usuarios (activo, nombre, apellido, dni, matricula, correo, username, password) values (1,'CHRISTIAN','CAMPOS',75435710,'S57188','ccampos@exact.com.pe','ccampos','123456')
-insert into usuarios (activo, nombre, apellido, dni, matricula, correo, username, password) values (1,'ORLANDO','HEREDIA',12345698,'S46697','oheredia@exact.com.pe','oheredia','123456')
-insert into usuarios (activo, nombre, apellido, dni, matricula, correo, username, password) values (1,'CESAR','BALTAZAR',58963258,'S45687','cbaltazar@exact.com.pe','cbaltazar','123456')
+--
+insert into usuarios (activo, nombre, apellido, dni, matricula, correo, username, password) values (1,'KATHERINE','VEGA',79461382,'S25113','kvega@exact.com.pe','kvega','$2a$04$VXlH1WjopIud3AagK45V1.lyv9Jpd8.WiCLEEzRR7hppuIpkOvDR2')
+insert into usuarios (activo, nombre, apellido, dni, matricula, correo, username, password) values (1,'RONALD','SANTOS',46059112,'S13369','rsantos@exact.com.pe','rsantos','$2a$04$95zHAMbf4jybXzbVSg0Xu.T1uEX.pgNpTNw1l539ntc4laRLvynYO')
+insert into usuarios (activo, nombre, apellido, dni, matricula, correo, username, password) values (1,'CHRISTIAN','CAMPOS',75435710,'S57188','ccampos@exact.com.pe','ccampos','$2a$04$NvvJE0k5kV2g3gIMxzLa0ungVBERTwH3psJ57SbFK51qDBbbAfM7q')
+insert into usuarios (activo, nombre, apellido, dni, matricula, correo, username, password) values (1,'ORLANDO','HEREDIA',12345698,'S46697','oheredia@exact.com.pe','oheredia','$2a$04$GKk2hQxmmUAyVqGQM3I7R.6Ua9av7/7XNz4kDE8ODzmVOFDnTxuEK')
+insert into usuarios (activo, nombre, apellido, dni, matricula, correo, username, password) values (1,'CESAR','BALTAZAR',58963258,'S45687','cbaltazar@exact.com.pe','cbaltazar','$2a$04$wqth2G7pFDu1yku6YkDFOu7MJH.T5LjBZpaElTo5BjSwMRTYME8Li')
 
 insert into perfiles_permisos values (1,1)
 insert into perfiles_permisos values (1,9)

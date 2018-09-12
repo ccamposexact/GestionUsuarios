@@ -22,7 +22,7 @@ import io.jsonwebtoken.SignatureException;
 
 import static com.gestionusuario.app.enumerator.Identificadores.HEADER_STRING;
 import static com.gestionusuario.app.enumerator.Identificadores.TOKEN_PREFIX;
-
+import static com.gestionusuario.app.enumerator.Identificadores.AUTHENTICATION_PREFIX;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Autowired
@@ -37,12 +37,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
         String header = req.getHeader(HEADER_STRING);
+        
         String username = null;
-        String authToken = null;
+        String Basictoken64 = null;
         if (header != null && header.startsWith(TOKEN_PREFIX)) {
-            authToken = header.replace(TOKEN_PREFIX,"");
+        	Basictoken64 = header.replace(TOKEN_PREFIX,"");
             try {
-                username = jwtTokenUtil.getUsernameFromToken(authToken);
+                username = jwtTokenUtil.getUsernameFromToken(Basictoken64);
             } catch (IllegalArgumentException e) {
                 logger.error("an error occured during getting username from token", e);
             } catch (ExpiredJwtException e) {
@@ -57,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            if (jwtTokenUtil.validateToken(authToken, userDetails)) {
+            if (jwtTokenUtil.validateToken(Basictoken64, userDetails)) {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
                 logger.info("authenticated user " + username + ", setting security context");

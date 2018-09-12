@@ -27,7 +27,7 @@ import com.gestionusuario.app.entity.Usuario;
 import com.gestionusuario.app.security.AuthToken;
 import com.gestionusuario.app.security.JwtTokenUtil;
 import com.gestionusuario.app.service.LoginUsuarioService;
-
+import com.gestionusuario.app.service.PermisoService;
 import com.gestionusuario.app.service.UsuarioService;
 
 
@@ -43,14 +43,20 @@ public class LoginController  {
 
 	    @Autowired
 	    private JwtTokenUtil jwtTokenUtil;
+	    
+	    @Autowired
+	    private PermisoService permisoService;
+	    
+	   
 
 	    @Autowired
 	    private LoginUsuarioService loginusuarioservice;
 	
 	
 	@RequestMapping(value = "/generate-token", method = RequestMethod.POST)
-    public ResponseEntity<?> register(@RequestBody LoginUsuario loginusuario) throws AuthenticationException {
-
+    public ResponseEntity<?> register(@RequestBody LoginUsuario loginusuario) throws AuthenticationException, Exception {
+		
+	
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                 		loginusuario.getUsername(),
@@ -59,7 +65,9 @@ public class LoginController  {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final Usuario usuario = loginusuarioservice.findOne(loginusuario.getUsername());
+        permisoService.ObtenerPermisos(usuario.getIdUsuario());
         final String token = jwtTokenUtil.generateToken(usuario);
+        System.out.println(token);
         return ResponseEntity.ok(new AuthToken(token));
     }
 	
