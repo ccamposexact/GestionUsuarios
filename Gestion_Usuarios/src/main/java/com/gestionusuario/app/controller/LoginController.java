@@ -80,7 +80,7 @@ public class LoginController  {
 			
 		
 			sesionservice.CerrarSesion(UsuarioActual);
-		
+		//chris
 	
        return "Cierre de sesion exitoso";
 	
