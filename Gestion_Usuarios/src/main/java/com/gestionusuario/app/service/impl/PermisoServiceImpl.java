@@ -14,27 +14,28 @@ public class PermisoServiceImpl implements PermisoService{
 	@Autowired
 	private PermisoDAO permisodao;
 	
-
-	
-	
 	public PermisoDAO getPermisodao() {
 		return permisodao;
 	}
-
-
-
 
 	public void setPermisodao(PermisoDAO permisodao) {
 		this.permisodao = permisodao;
 	}
 
-
-
+	
+	@Override
+	public String ObtenerPermisosID(Long idUsuario) throws Exception {
+		try {
+			return this.getPermisodao().ObtenerPermisosID(idUsuario);
+		} catch (Exception e) {
+			throw new Exception();
+		}
+	}
 
 	@Override
-	public int ObtenerPermisos(Long idUsuario) throws Exception {
+	public String ObtenerPermisosNombre(int idPermiso) throws Exception {
 		try {
-			return this.getPermisodao().ObtenerPermisos(idUsuario);
+			return this.getPermisodao().ObtenerPermisosNombre(idPermiso);
 		} catch (Exception e) {
 			throw new Exception();
 		}
