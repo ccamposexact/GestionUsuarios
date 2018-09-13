@@ -126,6 +126,15 @@ import javax.persistence.ParameterMode;
 							   	@StoredProcedureParameter(mode = ParameterMode.IN, name = "activo", type = Integer.class),
 							   	@StoredProcedureParameter(mode = ParameterMode.OUT, name = "rpta", type = Long.class) 
 							   	}
+					   ),
+			   @NamedStoredProcedureQuery(
+					   name = "perfiles.ObtenerPerfil", 
+					   procedureName = "ObtenerPerfil", 
+					   resultClasses = Perfil.class, 
+					   parameters = {
+							   	@StoredProcedureParameter(mode = ParameterMode.IN, name = "idUsuario", type = Long.class),
+							   	@StoredProcedureParameter(mode = ParameterMode.OUT, name = "Perfil", type = String.class)
+							   	}
 					   )
 					
 			}

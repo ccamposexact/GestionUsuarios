@@ -216,6 +216,25 @@ public class PerfilDAOimpl implements PerfilDAO{
 		return rpta;
 	}
 
+	@Override
+	public String ObtenerPerfil(Long idUsuario) throws Exception {
+		String rpta="";
+
+		try {
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("perfiles.ObtenerPerfil");
+			spq.setParameter("idUsuario", idUsuario);
+			spq.execute();
+			em.close();
+			Object ret = spq.getOutputParameterValue("Perfil");
+			rpta=ret.toString();
+			em.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return rpta;
+	}
+
 
 
 

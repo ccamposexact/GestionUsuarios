@@ -45,11 +45,6 @@ public class LoginController  {
 	    private JwtTokenUtil jwtTokenUtil;
 	    
 	    @Autowired
-	    private PermisoService permisoService;
-	    
-	   
-
-	    @Autowired
 	    private LoginUsuarioService loginusuarioservice;
 	
 	
@@ -65,7 +60,6 @@ public class LoginController  {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final Usuario usuario = loginusuarioservice.findOne(loginusuario.getUsername());
-        permisoService.ObtenerPermisos(usuario.getIdUsuario());
         final String token = jwtTokenUtil.generateToken(usuario);
         System.out.println(token);
         return ResponseEntity.ok(new AuthToken(token));

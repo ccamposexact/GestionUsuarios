@@ -2,7 +2,8 @@ package com.gestionusuario.app.repository;
 
 public interface PermisoDAO {
 	
-	public int ObtenerPermisos(Long idUsuario) throws Exception;
+	public String ObtenerPermisosID(Long idUsuario) throws Exception;
 	
+	public String ObtenerPermisosNombre(int idPermiso) throws Exception;
 
 }

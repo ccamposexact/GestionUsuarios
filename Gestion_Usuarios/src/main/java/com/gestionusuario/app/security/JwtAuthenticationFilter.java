@@ -37,7 +37,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
         String header = req.getHeader(HEADER_STRING);
-        
         String username = null;
         String Basictoken64 = null;
         if (header != null && header.startsWith(TOKEN_PREFIX)) {
@@ -55,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             logger.warn("couldn't find bearer string, will ignore the header");
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
+        	System.out.println(username);
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             if (jwtTokenUtil.validateToken(Basictoken64, userDetails)) {

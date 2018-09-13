@@ -17,21 +17,43 @@ public class PermisoDAOimpl implements PermisoDAO{
 
 
 	@Override
-	public int ObtenerPermisos(Long idUsuario) throws Exception {
+	public String ObtenerPermisosID(Long idUsuario) throws Exception {
 
-		int sw = 0;
+		String rpta="";
 
 		try {
-			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("permiso.ObtenerPermisos");
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("permisos.ObtenerPermisosID");
 			spq.setParameter("idUsuario", idUsuario);
 			spq.execute();
-			sw=1;
+			em.close();
+			Object ret = spq.getOutputParameterValue("Permisos");
+			rpta=ret.toString();
 			em.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return sw;
+		return rpta;
+	}
+
+
+	@Override
+	public String ObtenerPermisosNombre(int idPermiso) throws Exception {
+		String rpta="";
+
+		try {
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("permisos.ObtenerPermisosNombre");
+			spq.setParameter("idPermiso", idPermiso);
+			spq.execute();
+			em.close();
+			Object ret = spq.getOutputParameterValue("nombre");
+			rpta=ret.toString();
+			em.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return rpta;
 	}
 
 }

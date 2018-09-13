@@ -15,11 +15,21 @@ import javax.persistence.Table;
 @NamedStoredProcedureQueries(
 		{
 			@NamedStoredProcedureQuery(
-					name="permisos.ObtenerPermisos", 
-					procedureName="ObtenerPermisos",
+					name="permisos.ObtenerPermisosID", 
+					procedureName="ObtenerPermisosID",
 					resultClasses= Permiso.class,
 					parameters={
 							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario", type=Long.class),
+							@StoredProcedureParameter(mode=ParameterMode.OUT,name="Permisos", type=String.class)
+						}					
+				),
+			@NamedStoredProcedureQuery(
+					name="permisos.ObtenerPermisosNombre", 
+					procedureName="ObtenerPermisosNombre",
+					resultClasses= Permiso.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idPermiso", type=Integer.class),
+							@StoredProcedureParameter(mode=ParameterMode.OUT,name="nombre", type=String.class)
 						}					
 				)
 		}

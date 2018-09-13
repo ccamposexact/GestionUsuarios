@@ -5,6 +5,7 @@ package com.gestionusuario.app.service;
 
 public interface PermisoService {
 	
-	public int ObtenerPermisos(Long idUsuario) throws Exception;
+	public String ObtenerPermisosID(Long idUsuario) throws Exception;
 
+	public String ObtenerPermisosNombre(int idPermiso) throws Exception;
 }
