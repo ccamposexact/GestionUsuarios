@@ -87,6 +87,7 @@ public class JwtTokenUtil implements Serializable{
         }
 
         Claims claims = Jwts.claims().setSubject(String.valueOf(usuario.getIdUsuario()));
+        claims.put("idperfil", perfilservice.ObtenerPerfilID(usuario.getIdUsuario()));
         claims.put("perfil", perfilservice.ObtenerPerfil(usuario.getIdUsuario()));
         claims.put("permisos", permisosNombre);
         claims.put("matricula", usuario.getMatricula());
