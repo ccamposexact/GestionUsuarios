@@ -8,9 +8,39 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+
+
+@NamedStoredProcedureQueries(
+		{
+			
+			@NamedStoredProcedureQuery(
+					name="sesion.CrearSesion", 
+					procedureName="CrearSesion",
+					resultClasses= Sesion.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class),
+							@StoredProcedureParameter(mode=ParameterMode.OUT,name="usuarioActual",type=Long.class)
+						}					
+			),
+			@NamedStoredProcedureQuery(
+					name="sesion.CerrarSesion", 
+					procedureName="CerrarSesion",
+					resultClasses= Sesion.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Integer.class)
+						}					
+			)
+		}
+	)
+
 
 @Entity
 @Table
@@ -23,10 +53,10 @@ public class Sesion implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idSesion;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date inisesion;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date finsesion;
 	
 	@ManyToOne

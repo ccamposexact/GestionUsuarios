@@ -136,4 +136,13 @@ public class PerfilServiceImpl implements PerfilService{
 		}
 	}
 
+	@Override
+	public int ObtenerPerfilID(Long idUsuario) throws Exception {
+		try {
+			return this.perfildao.ObtenerPerfilID(idUsuario);
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+	}
+
 }

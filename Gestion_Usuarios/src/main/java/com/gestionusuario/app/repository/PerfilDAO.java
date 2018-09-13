@@ -23,4 +23,6 @@ public interface PerfilDAO extends GenericDAO<Perfil>{
 	
 	public String ObtenerPerfil(Long idUsuario) throws Exception;
 	
+	public int ObtenerPerfilID(Long idUsuario) throws Exception;
+	
 }

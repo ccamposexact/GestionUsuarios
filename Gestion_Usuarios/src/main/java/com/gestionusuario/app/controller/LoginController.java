@@ -28,6 +28,7 @@ import com.gestionusuario.app.security.AuthToken;
 import com.gestionusuario.app.security.JwtTokenUtil;
 import com.gestionusuario.app.service.LoginUsuarioService;
 import com.gestionusuario.app.service.PermisoService;
+import com.gestionusuario.app.service.SesionService;
 import com.gestionusuario.app.service.UsuarioService;
 
 
@@ -36,6 +37,8 @@ import com.gestionusuario.app.service.UsuarioService;
 @RestController
 @RequestMapping("/login")
 public class LoginController  {
+	
+		public int UsuarioActual;
 	
 	
 		@Autowired
@@ -46,6 +49,9 @@ public class LoginController  {
 	    
 	    @Autowired
 	    private LoginUsuarioService loginusuarioservice;
+	    
+	    @Autowired
+	    private SesionService sesionservice;
 	
 	
 	@RequestMapping(value = "/generate-token", method = RequestMethod.POST)
@@ -61,8 +67,22 @@ public class LoginController  {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final Usuario usuario = loginusuarioservice.findOne(loginusuario.getUsername());
         final String token = jwtTokenUtil.generateToken(usuario);
-        System.out.println(token);
+        if(token!=null) {
+        	UsuarioActual=sesionservice.CrearSesion(usuario.getIdUsuario());
+        }
+        System.out.println(UsuarioActual);
         return ResponseEntity.ok(new AuthToken(token));
     }
 	
+	
+	@RequestMapping(value = "/cerrarsession", method = RequestMethod.GET)
+    public String cerrar() throws Exception {
+			
+		
+			sesionservice.CerrarSesion(UsuarioActual);
+		
+	
+       return "Cierre de sesion exitoso";
+	
+	}
 }
