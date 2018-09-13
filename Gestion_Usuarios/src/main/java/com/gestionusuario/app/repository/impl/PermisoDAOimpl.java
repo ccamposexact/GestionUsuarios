@@ -22,7 +22,7 @@ public class PermisoDAOimpl implements PermisoDAO{
 		int sw = 0;
 
 		try {
-			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("permiso.ObtenerPermisos");
+			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("permisos.ObtenerPermisos");
 			spq.setParameter("idUsuario", idUsuario);
 			spq.execute();
 			sw=1;
