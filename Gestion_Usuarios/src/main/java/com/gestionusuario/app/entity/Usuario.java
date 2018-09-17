@@ -17,12 +17,6 @@ import javax.persistence.Table;
 
 
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 
 
 
@@ -97,6 +91,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 						}					
 			),
 			@NamedStoredProcedureQuery(
+					name="usuario.ValidarDatosExistentesAModificar", 
+					procedureName="ValidarDatosExistentesAModificar",
+					resultClasses= Usuario.class,
+					parameters={
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Long.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="dni",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="correo",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="matricula",type=String.class),
+							@StoredProcedureParameter(mode=ParameterMode.OUT,name="rpta",type=Long.class)
+						}					
+			),
+			@NamedStoredProcedureQuery(
 
 					name="usuario.ValidarSiActivaDesactiva", 
 					procedureName="ValidarSiActivaDesactiva",
@@ -135,7 +141,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Entity
 @Table(name="Usuarios")
-public class Usuario implements Serializable, UserDetails{
+public class Usuario implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
@@ -153,30 +159,7 @@ public class Usuario implements Serializable, UserDetails{
 	private String username;
 	private String password;
 	
-	@Override
-	public List<GrantedAuthority> getAuthorities() {
-		return null;
-    }
-	@Override
-	public boolean isAccountNonExpired() {
-		
-		return false;
-	}
-	@Override
-	public boolean isAccountNonLocked() {
-		
-		return false;
-	}
-	@Override
-	public boolean isCredentialsNonExpired() {
-		
-		return false;
-	}
-	@Override
-	public boolean isEnabled() {
-		
-		return false;
-	}
+
 	public String getUsername() {
 		return username;
 	}

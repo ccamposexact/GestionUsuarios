@@ -83,7 +83,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public int ValidarDatosExistentes(String dni, String correo, String matricula) throws Exception {
+	public int ValidarDatosExistentes( String dni, String correo, String matricula) throws Exception {
 		try {
 			return this.getUsuariodao().ValidarDatosExistentes(dni, correo, matricula);
 		} catch (Exception e) {
@@ -125,6 +125,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 		} catch (Exception e) {
 			throw new Exception();
 		}
+	}
+
+	@Override
+	public int ValidarDatosExistentesAModificar(Long idUsuario, String dni, String correo, String matricula) throws Exception {
+	try {
+		return this.getUsuariodao().ValidarDatosExistentesAModificar(idUsuario, dni, correo, matricula);
+	} catch (Exception e) {
+		throw new Exception();
+	}
+	
 	}
 	
 	

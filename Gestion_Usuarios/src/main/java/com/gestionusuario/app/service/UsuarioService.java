@@ -23,4 +23,6 @@ public interface UsuarioService extends GenericService<Usuario>{
 	public boolean ModificarPerfilUsuario(Long idUsuario, Long idPerfil) throws Exception;
 	
 	public int LoguearUsuario(String username, String password) throws Exception;
+	
+	public int ValidarDatosExistentesAModificar(Long idUsuario, String dni, String correo, String matricula) throws Exception;
 }

@@ -166,13 +166,13 @@ public class UsuarioController {
 							if ((usuarioDest.getNombre() != "") & (usuarioDest.getApellido() != "")
 									& (usuarioDest.getDni() != "") & (usuarioDest.getMatricula() != "")
 									& (usuarioDest.getCorreo() != "")) {
-								valor = this.getUsuarioservice().ValidarDatosExistentes(usuarioDest.getDni(),
+								valor = this.getUsuarioservice().ValidarDatosExistentesAModificar(usuarioDest.getIdUsuario(),usuarioDest.getDni(),
 										usuarioDest.getCorreo(), usuarioDest.getMatricula());
 								switch (valor) {
 								case 1:
 									return "{\"RPTA\":\"EL DNI INGRESADO SE REPITE EN LA BASE DE DATOS\"}";
 								case 2:
-									return "{\"RPTA\":\"EL MATRICULA INGRESADO SE REPITE EN LA BASE DE DAToOS\"}";
+									return "{\"RPTA\":\"LA MATRICULA INGRESADA SE REPITE EN LA BASE DE DATOS\"}";
 								case 3:
 									return "{\"RPTA\":\"EL CORREO INGRESADO SE REPITE EN LA BASE DE DATOS\"}";
 								default:

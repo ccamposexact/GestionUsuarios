@@ -25,6 +25,7 @@ import com.gestionusuario.app.entity.LoginUsuario;
 import com.gestionusuario.app.entity.Usuario;
 
 import com.gestionusuario.app.security.AuthToken;
+import com.gestionusuario.app.security.JwtAuthenticationFilter;
 import com.gestionusuario.app.security.JwtTokenUtil;
 import com.gestionusuario.app.service.LoginUsuarioService;
 import com.gestionusuario.app.service.PermisoService;
@@ -41,8 +42,6 @@ public class LoginController  {
 		public int UsuarioActual;
 	
 	
-		@Autowired
-	    private AuthenticationManager authenticationManager;
 
 	    @Autowired
 	    private JwtTokenUtil jwtTokenUtil;
@@ -53,25 +52,22 @@ public class LoginController  {
 	    @Autowired
 	    private SesionService sesionservice;
 	
-	
+	//ResponseEntity<?> 
 	@RequestMapping(value = "/generate-token", method = RequestMethod.POST)
-    public ResponseEntity<?> register(@RequestBody LoginUsuario loginusuario) throws AuthenticationException, Exception {
+    public String register() throws AuthenticationException, Exception {
 		
-	
-        final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                		loginusuario.getUsername(),
-                		loginusuario.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        final Usuario usuario = loginusuarioservice.findOne(loginusuario.getUsername());
-        final String token = jwtTokenUtil.generateToken(usuario);
-        if(token!=null) {
-        	UsuarioActual=sesionservice.CrearSesion(usuario.getIdUsuario());
-        }
-        System.out.println(UsuarioActual);
-        return ResponseEntity.ok(new AuthToken(token));
+		
+		
+		
+       // final Usuario usuario = loginusuarioservice.findOne();
+       // final String token = jwtTokenUtil.generateToken(usuario);
+       // if(token!=null) {
+       // 	UsuarioActual=sesionservice.CrearSesion(usuario.getIdUsuario());
+       // }
+       
+        //return ResponseEntity.ok(new AuthToken(token));
+		
+		return "logueado";
     }
 	
 	
@@ -80,7 +76,7 @@ public class LoginController  {
 			
 		
 			sesionservice.CerrarSesion(UsuarioActual);
-		//chris
+		
 	
        return "Cierre de sesion exitoso";
 	

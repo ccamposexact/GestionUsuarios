@@ -24,4 +24,6 @@ public interface UsuarioDAO extends GenericDAO<Usuario> {
 	
 	public int LoguearUsuario(String username, String password) throws Exception;
 	
+	public int ValidarDatosExistentesAModificar(Long idUsuario, String dni, String correo, String matricula) throws Exception; 
+	
 }

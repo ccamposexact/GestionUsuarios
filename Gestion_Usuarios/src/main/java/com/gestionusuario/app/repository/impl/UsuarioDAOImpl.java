@@ -249,6 +249,41 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		return rpta;
 	}
 
+	@Override
+	public int ValidarDatosExistentesAModificar(Long idUsuario, String dni, String correo, String matricula) {
+
+	int rpta = 0;
+	int valor = 0;
+	try {
+		StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("usuario.ValidarDatosExistentesAModificar");
+		spq.setParameter("idUsuario", idUsuario);
+		spq.setParameter("dni", dni);
+		spq.setParameter("correo", correo);
+		spq.setParameter("matricula", matricula);
+		spq.execute();
+		Object ret = spq.getOutputParameterValue("rpta");
+		rpta = Integer.parseInt(ret.toString());
+		em.close();
+		switch (rpta) {
+		case 1:
+			valor = 1;
+			break;
+		case 2:
+			valor = 2;
+			break;
+		case 3:
+			valor = 3;
+			break;
+		default:
+			valor = 4;
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return valor;
+
+	}
+
 
 
 
