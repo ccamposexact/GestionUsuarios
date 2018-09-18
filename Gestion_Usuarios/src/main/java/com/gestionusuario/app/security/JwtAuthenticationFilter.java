@@ -77,18 +77,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         	username=part[0];
         	password=part[1];
         	
-        	final Usuario usuario = loginusuarioservice.findOne(username);
+        	
             
-			try {
-				token = jwtTokenUtil.generateToken(usuario);
-				UsuarioActual=sesionservice.CrearSesion(usuario.getIdUsuario());
-				System.out.println(token);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	
-        	
+            
         	
         } else {
             logger.warn("couldn't find bearer string, will ignore the header");
@@ -99,10 +90,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
                 logger.info("authenticated user " + username + ", setting security context");
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                
-                
-           
-        }
+         }
 
         chain.doFilter(req, res);
     

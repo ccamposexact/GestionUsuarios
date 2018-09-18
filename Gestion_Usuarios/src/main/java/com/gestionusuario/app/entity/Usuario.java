@@ -159,6 +159,12 @@ public class Usuario implements Serializable{
 	private String username;
 	private String password;
 	
+	
+	public Usuario() {
+		this.activo=1;
+		
+	}
+	
 
 	public String getUsername() {
 		return username;
@@ -172,10 +178,7 @@ public class Usuario implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Usuario() {
-		this.activo=1;
-		
-	}
+	
 	public int getActivo() {
 		return activo;
 	}

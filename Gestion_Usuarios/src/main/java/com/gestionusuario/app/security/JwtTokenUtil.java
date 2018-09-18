@@ -62,11 +62,13 @@ public class JwtTokenUtil implements Serializable{
         return expiration.before(new Date());
     }
 
-    public String generateToken(Usuario usuario) throws Exception {
-        return doGenerateToken(usuario);
+    public String generateToken(Usuario usuario, int idsession) throws Exception {
+        return doGenerateToken(usuario,idsession);
     }
   
-    private String doGenerateToken(Usuario usuario) throws Exception {
+    private String doGenerateToken(Usuario usuario, int idsession) throws Exception {
+    	
+    	System.out.println(usuario.getIdUsuario());
     	
     	String permisosID = permisoservice.ObtenerPermisosID(usuario.getIdUsuario());
     	List<String> permisosNombre = new ArrayList<String>();
@@ -86,10 +88,11 @@ public class JwtTokenUtil implements Serializable{
         claims.put("permisos", permisosNombre);
         claims.put("matricula", usuario.getMatricula());
         claims.put("usuario", usuario.getNombre());
+        claims.put("idSesion", idsession);
+        
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuer("http://google.com.pe")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000))
                 .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
