@@ -17,7 +17,7 @@ public class PermisoDAOimpl implements PermisoDAO {
 	@Override
 	public String ObtenerPermisosID(Long idUsuario) throws Exception {
 
-		String rpta = "";
+		String rpta = " ";
 
 		try {
 
