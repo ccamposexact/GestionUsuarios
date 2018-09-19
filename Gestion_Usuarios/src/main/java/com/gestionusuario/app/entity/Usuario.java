@@ -16,11 +16,6 @@ import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
 
-
-
-
-
-
 @NamedStoredProcedureQueries(
 		{
 			
@@ -159,13 +154,11 @@ public class Usuario implements Serializable{
 	private String username;
 	private String password;
 	
-	
 	public Usuario() {
 		this.activo=1;
 		
 	}
 	
-
 	public String getUsername() {
 		return username;
 	}

@@ -35,7 +35,7 @@ import javax.persistence.TemporalType;
 					procedureName="CerrarSesion",
 					resultClasses= Sesion.class,
 					parameters={
-							@StoredProcedureParameter(mode=ParameterMode.IN,name="idUsuario",type=Integer.class)
+							@StoredProcedureParameter(mode=ParameterMode.IN,name="idSesion",type=Integer.class)
 						}					
 			)
 		}

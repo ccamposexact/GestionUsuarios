@@ -30,9 +30,9 @@ public class SesionServiceImpl implements SesionService {
 	}
 
 	@Override
-	public int CerrarSesion(int idUsuario) throws Exception {
+	public int CerrarSesion(int idSesion) throws Exception {
 		try {
-			return this.getSesiondao().CerrarSesion(idUsuario);
+			return this.getSesiondao().CerrarSesion(idSesion);
 		} catch (Exception e) {
 			throw new Exception();
 		}

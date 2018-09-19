@@ -35,12 +35,12 @@ public class SesionDAOimpl implements SesionDAO {
 	}
 
 	@Override
-	public int CerrarSesion(int idUsuario) throws Exception {
+	public int CerrarSesion(int idSesion) throws Exception {
 		int rpta=0;
 
 		try {
 			StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("sesion.CerrarSesion");
-			spq.setParameter("idUsuario", idUsuario);
+			spq.setParameter("idSesion", idSesion);
 			spq.execute();
 			rpta=1;
 			em.close();
