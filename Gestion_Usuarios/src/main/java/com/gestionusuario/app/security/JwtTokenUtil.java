@@ -49,7 +49,6 @@ public class JwtTokenUtil implements Serializable{
         return claimsResolver.apply(claims);
     }
     
-    
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(SIGNING_KEY)
@@ -90,7 +89,6 @@ public class JwtTokenUtil implements Serializable{
         claims.put("usuario", usuario.getNombre());
         claims.put("idSesion", idsession);
         
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
