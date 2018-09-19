@@ -54,22 +54,18 @@ public class LoginController  {
     public ResponseEntity<?> register(HttpServletRequest header ) throws AuthenticationException, Exception {
 		
 		String [] part ;
-		String username = null;
-        String password =null;
-		Decoder decode = new Decoder();
-		part=decode.decode(header);
-		username=part[0];
-    	password=part[1];
+		Decoder decoder = new Decoder();
+		part=decoder.decode(header);
 		
-    	final Authentication authentication = authenticationManager.authenticate(
+		final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                		username,
-                		password
+                		part[0],
+                		part[1]
                 )
         );
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-        	final Usuario usuario = loginusuarioservice.findOne(username);
+        	final Usuario usuario = loginusuarioservice.findOne(part[0]);
 			UsuarioActual=sesionservice.CrearSesion(usuario.getIdUsuario());
 			final String token = jwtTokenUtil.generateToken(usuario,UsuarioActual);
 
@@ -78,49 +74,9 @@ public class LoginController  {
 	
 	
 @RequestMapping(value = "/cerrarsession", method = RequestMethod.POST)
-public ResponseEntity<?> cerrar(HttpServletRequest header ) throws AuthenticationException, Exception {
-		
-		String decoderString = null;
-        String [] part ;
-        Base64 decoder = new Base64();
-        byte[] decodedBytes;
-        String Basictoken64= null;
-        String username = null;
-        String password =null;
-        
-        
-		String auth = header.getHeader(HEADER_STRING);
-		
-		Basictoken64 = auth.replace(AUTHENTICATION_PREFIX,"");
-    	decodedBytes = decoder.decode(Basictoken64);
-    	decoderString = new String (decodedBytes);
-    	part=decoderString.split(":");
-    	username=part[0];
-    	password=part[1];
-		
-		final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                		username,
-                		password
-                )
-        );
-		
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-        	final Usuario usuario = loginusuarioservice.findOne(username);
-			UsuarioActual=sesionservice.CrearSesion(usuario.getIdUsuario());
-			final String token = jwtTokenUtil.generateToken(usuario,UsuarioActual);
-			
-/**/			
-			int x = usuario.getIdUsuario().intValue();
-			
-			System.out.println(x);
-
-			sesionservice.CerrarSesion(x);
-			
-		//return ResponseEntity.ok(new AuthToken(token));
-			return ResponseEntity.ok(null);
-/**/			
-   }
+public void cerrar(String idsesion ) throws AuthenticationException, Exception {
+		sesionservice.CerrarSesion(Integer.parseInt(idsesion));
+	}
 	
 
 }
