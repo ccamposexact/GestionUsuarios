@@ -3,6 +3,8 @@ package com.gestionusuario.app.controller;
 
 
 
+import java.util.Base64;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,13 +72,55 @@ public class LoginController  {
         	final Usuario usuario = loginusuarioservice.findOne(username);
 			UsuarioActual=sesionservice.CrearSesion(usuario.getIdUsuario());
 			final String token = jwtTokenUtil.generateToken(usuario,UsuarioActual);
-			System.out.println(UsuarioActual);
+
 		return ResponseEntity.ok(new AuthToken(token));
    }
 	
 	
-	@RequestMapping(value = "/cerrarsession", method = RequestMethod.POST)
-    public void cerrar() throws Exception {
-			sesionservice.CerrarSesion(UsuarioActual);
-	}
+@RequestMapping(value = "/cerrarsession", method = RequestMethod.POST)
+public ResponseEntity<?> cerrar(HttpServletRequest header ) throws AuthenticationException, Exception {
+		
+		String decoderString = null;
+        String [] part ;
+        Base64 decoder = new Base64();
+        byte[] decodedBytes;
+        String Basictoken64= null;
+        String username = null;
+        String password =null;
+        
+        
+		String auth = header.getHeader(HEADER_STRING);
+		
+		Basictoken64 = auth.replace(AUTHENTICATION_PREFIX,"");
+    	decodedBytes = decoder.decode(Basictoken64);
+    	decoderString = new String (decodedBytes);
+    	part=decoderString.split(":");
+    	username=part[0];
+    	password=part[1];
+		
+		final Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                		username,
+                		password
+                )
+        );
+		
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+        	final Usuario usuario = loginusuarioservice.findOne(username);
+			UsuarioActual=sesionservice.CrearSesion(usuario.getIdUsuario());
+			final String token = jwtTokenUtil.generateToken(usuario,UsuarioActual);
+			
+/**/			
+			int x = usuario.getIdUsuario().intValue();
+			
+			System.out.println(x);
+
+			sesionservice.CerrarSesion(x);
+			
+		//return ResponseEntity.ok(new AuthToken(token));
+			return ResponseEntity.ok(null);
+/**/			
+   }
+	
+
 }
