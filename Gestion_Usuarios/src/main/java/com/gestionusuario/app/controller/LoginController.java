@@ -3,10 +3,11 @@ package com.gestionusuario.app.controller;
 
 
 
-import java.util.Base64;
+
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -75,18 +76,9 @@ public class LoginController  {
 	
 	
 @RequestMapping(value = "/cerrarsession", method = RequestMethod.POST)
-public void cerrar(HttpServletRequest header) throws AuthenticationException, Exception {
-	
-	
-	String[] split_string = header.toString().split("\\.");
-	String base64EncodedBody = split_string[1];
-	String body = new String(base64Url.decode(base64EncodedBody));
-	//obtener la idsesion
-	
-	
-	
-	
-		sesionservice.CerrarSesion();
+public void cerrar(@RequestBody String idsesion) throws AuthenticationException, Exception {
+		
+		sesionservice.CerrarSesion(Integer.parseInt(idsesion));
 	}
 	
 
