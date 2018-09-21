@@ -77,7 +77,10 @@ public class LoginController  {
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
         	final Usuario usuario = loginusuarioservice.findOne(part[0]);
-			UsuarioActual=sesionservice.CrearSesion(usuario.getIdUsuario());
+        	if(usuario.getActivo()==0) {
+        		return new ResponseEntity<>("Usuario no activo", HttpStatus.FORBIDDEN);
+        	}
+        	UsuarioActual=sesionservice.CrearSesion(usuario.getIdUsuario());
 			final String token = jwtTokenUtil.generateToken(usuario,UsuarioActual);
 			
 		Map<String, String> respuesta = new HashMap<String, String>();
