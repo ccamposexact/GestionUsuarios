@@ -5,10 +5,15 @@ package com.gestionusuario.app.controller;
 
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,6 +55,10 @@ public class LoginController  {
 	    
 	    @Autowired
 	    private SesionService sesionservice;
+	    
+	    @Value("${ruta.intranet}")
+	    private String rutaIntranet;
+	    
 	
 	
 	@RequestMapping(value = "/generate-token", method = RequestMethod.POST)
@@ -70,8 +79,13 @@ public class LoginController  {
         	final Usuario usuario = loginusuarioservice.findOne(part[0]);
 			UsuarioActual=sesionservice.CrearSesion(usuario.getIdUsuario());
 			final String token = jwtTokenUtil.generateToken(usuario,UsuarioActual);
+			
+		Map<String, String> respuesta = new HashMap<String, String>();
+		
+		respuesta.put("token", token);
+		respuesta.put("link", rutaIntranet);
 
-		return ResponseEntity.ok(new AuthToken(token));
+		return new ResponseEntity<Map<String, String>>(respuesta, HttpStatus.OK);
    }
 	
 	
