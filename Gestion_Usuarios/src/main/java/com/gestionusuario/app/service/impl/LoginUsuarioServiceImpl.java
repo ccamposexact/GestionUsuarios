@@ -32,6 +32,8 @@ public class LoginUsuarioServiceImpl implements UserDetailsService, LoginUsuario
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, RuntimeException {
 		Usuario usuario = loginusuariodao.findByUsername(username);
+		
+		//
 		if(usuario==null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
