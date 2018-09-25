@@ -3,6 +3,7 @@ package com.gestionusuario.app.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 @NamedStoredProcedureQueries(
@@ -153,6 +156,7 @@ public class Usuario implements Serializable{
 	
 	private String username;
 	private String password;
+	
 	
 	public Usuario() {
 		this.activo=1;

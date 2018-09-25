@@ -67,6 +67,7 @@ public class LoginController  {
 		String [] part ;
 		Decoder decoder = new Decoder();
 		part=decoder.decode(header);
+		int acceso=0;
 		
 		final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -82,20 +83,24 @@ public class LoginController  {
         	}
         	UsuarioActual=sesionservice.CrearSesion(usuario.getIdUsuario());
 			final String token = jwtTokenUtil.generateToken(usuario,UsuarioActual);
+			acceso=1;
 			
-		Map<String, String> respuesta = new HashMap<String, String>();
+		Map<String, String> respuesta = new HashMap<>();
 		
 		respuesta.put("token", token);
 		respuesta.put("link", rutaIntranet);
+		respuesta.put("acceso", String.valueOf(acceso));
 
 		return new ResponseEntity<Map<String, String>>(respuesta, HttpStatus.OK);
    }
 	
 	
 @RequestMapping(value = "/cerrarsession", method = RequestMethod.POST)
-public void cerrar(@RequestBody String idsesion) throws AuthenticationException, Exception {
+public ResponseEntity<?> cerrar(@RequestBody String idsesion) throws AuthenticationException, Exception {
 		
 		sesionservice.CerrarSesion(Integer.parseInt(idsesion));
+		
+		 return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 
