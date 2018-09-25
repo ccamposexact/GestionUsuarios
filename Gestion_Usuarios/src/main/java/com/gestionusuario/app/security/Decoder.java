@@ -1,6 +1,5 @@
 package com.gestionusuario.app.security;
 
-import static com.gestionusuario.app.enumerator.Identificadores.AUTHENTICATION_PREFIX;
 import static com.gestionusuario.app.enumerator.Identificadores.HEADER_STRING;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +8,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 public class Decoder {
 	
-	public String[] decode(HttpServletRequest header) {
+	public String[] decode(HttpServletRequest header, String prefix) {
 		
 		String decoderString = null;
         String [] part ;
@@ -19,7 +18,7 @@ public class Decoder {
         
 		String auth = header.getHeader(HEADER_STRING);
 		
-		Basictoken64 = auth.replace(AUTHENTICATION_PREFIX,"");
+		Basictoken64 = auth.replace(prefix,"");
     	decodedBytes = decoder.decode(Basictoken64);
     	decoderString = new String (decodedBytes);
     	part=decoderString.split(":");
