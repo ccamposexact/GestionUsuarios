@@ -29,6 +29,8 @@ import static com.gestionusuario.app.enumerator.Identificadores.AUTHENTICATION_P
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
+	@Autowired
+    private JwtTokenUtil jwtTokenUtil;
 	
 	@Autowired
     private UserDetailsService userDetailsService;
@@ -43,6 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String [] part ;
         
         if (header != null && header.startsWith(AUTHENTICATION_PREFIX)) {
+        	
         	Decoder decoder = new Decoder();
     		part=decoder.decode(req);
     		username=part[0];
@@ -51,6 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             logger.warn("couldn't find bearer string, will ignore the header");
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        	
         	UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         		
         	
@@ -58,7 +62,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
                 logger.info("authenticated user " + username + ", setting security context");
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-         }
+        	
+        }
 
         chain.doFilter(req, res);
     

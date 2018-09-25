@@ -2,16 +2,17 @@ package com.gestionusuario.app.security;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -20,10 +21,11 @@ import com.gestionusuario.app.service.PerfilService;
 import com.gestionusuario.app.service.PermisoService;
 
 import static com.gestionusuario.app.enumerator.Identificadores.ACCESS_TOKEN_VALIDITY_SECONDS;
+import static com.gestionusuario.app.enumerator.Identificadores.REFRESH_TOKEN_VALIDITY_SECONDS;
 
 import static com.gestionusuario.app.enumerator.Identificadores.SIGNING_KEY;
 
-import com.gestionusuario.app.enumerator.PermisosLista;
+
 
 
 @Component
@@ -49,6 +51,18 @@ public class JwtTokenUtil implements Serializable{
         return claimsResolver.apply(claims);
     }
     
+    public String refreshToken(String token) throws Exception {
+        try {
+            final Claims claims = getAllClaimsFromToken(token);
+            return tokenrefresh(claims);
+        } catch (Exception e) {
+            final String errorMsg = "Failed to refresh token!";
+            
+            throw new Exception(errorMsg, e);
+        }
+    }
+    
+    
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(SIGNING_KEY)
@@ -62,15 +76,25 @@ public class JwtTokenUtil implements Serializable{
     }
 
     public String generateToken(Usuario usuario, int idsession) throws Exception {
-        return doGenerateToken(usuario,idsession);
+        return tokenacceso(usuario,idsession);
     }
-  
-    private String doGenerateToken(Usuario usuario, int idsession) throws Exception {
-    	
-    	System.out.println(usuario.getIdUsuario());
+    
+    private String tokenrefresh(Map<String, Object> claims) {
+
+        //final Date expirationDate = new Date(issuedAtDate.getTime() + (expirationInSecs * 1000));
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_VALIDITY_SECONDS*1000))                
+                .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
+                .compact();
+    }
+    
+    private String tokenacceso(Usuario usuario, int idsession) throws Exception {
     	
     	String permisosID = permisoservice.ObtenerPermisosID(usuario.getIdUsuario());
-    	List<String> permisosNombre = new ArrayList<String>();
+    	List<String> permisosNombre = new ArrayList<>();
         String[] permisosIDarray = permisosID.split(",");
         int[] intpermisosID = new int[permisosIDarray.length];
         for (int i = 0; i < permisosIDarray.length; i++) {
@@ -92,7 +116,7 @@ public class JwtTokenUtil implements Serializable{
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS))
+                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000))
                 .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
                 .compact();
     }

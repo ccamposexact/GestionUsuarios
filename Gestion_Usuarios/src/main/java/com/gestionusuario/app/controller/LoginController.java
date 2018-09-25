@@ -10,7 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.tomcat.util.codec.binary.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -62,12 +62,11 @@ public class LoginController  {
 	
 	
 	@RequestMapping(value = "/generate-token", method = RequestMethod.POST)
-    public ResponseEntity<?> register(HttpServletRequest header ) throws AuthenticationException, Exception {
+    public ResponseEntity<?> register(HttpServletRequest header) throws AuthenticationException, Exception {
 		
 		String [] part ;
 		Decoder decoder = new Decoder();
 		part=decoder.decode(header);
-		int acceso=0;
 		
 		final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -83,14 +82,14 @@ public class LoginController  {
         	}
         	UsuarioActual=sesionservice.CrearSesion(usuario.getIdUsuario());
 			final String token = jwtTokenUtil.generateToken(usuario,UsuarioActual);
-			acceso=1;
+			final String rt = jwtTokenUtil.refreshToken(token);
 			
 		Map<String, String> respuesta = new HashMap<>();
 		
 		respuesta.put("token", token);
+		respuesta.put("rt", rt);
 		respuesta.put("link", rutaIntranet);
-		respuesta.put("acceso", String.valueOf(acceso));
-
+		
 		return new ResponseEntity<Map<String, String>>(respuesta, HttpStatus.OK);
    }
 	
