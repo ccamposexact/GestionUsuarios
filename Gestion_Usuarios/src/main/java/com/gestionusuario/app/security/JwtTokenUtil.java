@@ -62,7 +62,7 @@ public class JwtTokenUtil implements Serializable{
         }
     }
     
-    
+    // Obtiene los claims del token enviado
     public Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(SIGNING_KEY)
@@ -75,13 +75,15 @@ public class JwtTokenUtil implements Serializable{
         return expiration.before(new Date());
     }
 
+    //llama a generar Token
     public String generateToken(Usuario usuario, int idsession) throws Exception {
         return tokenacceso(usuario,idsession);
     }
     
+    //crea el token refresh
     private String tokenrefresh(Map<String, Object> claims) {
 
-        //final Date expirationDate = new Date(issuedAtDate.getTime() + (expirationInSecs * 1000));
+        
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -91,6 +93,8 @@ public class JwtTokenUtil implements Serializable{
                 .compact();
     }
     
+    
+    // Crea el token de acceso en el login 
     private String tokenacceso(Usuario usuario, int idsession) throws Exception {
     	
     	String permisosID = permisoservice.ObtenerPermisosID(usuario.getIdUsuario());

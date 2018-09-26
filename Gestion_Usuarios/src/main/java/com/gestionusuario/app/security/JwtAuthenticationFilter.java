@@ -46,26 +46,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		String username = null;
 		String password = null;
 		String[] part;
-
+		
+		
 		if (header != null && header.startsWith(AUTHENTICATION_PREFIX)) {
 
-			Decoder decoder = new Decoder();
-			part = decoder.decode(req, AUTHENTICATION_PREFIX);
-			username = part[0];
-			password = part[1];
-			if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-						userDetails, password, Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
-				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-				logger.info("authenticated user " + username + ", setting security context");
-				SecurityContextHolder.getContext().setAuthentication(authentication);
-
-			}
-
-			chain.doFilter(req, res);
-		} else if (header != null && header.startsWith(TOKEN_PREFIX)) {
+			try {
+				Decoder decoder = new Decoder();
+				part = decoder.decode(req, AUTHENTICATION_PREFIX);
+				username = part[0];
+				password = part[1];
+            } catch (IllegalArgumentException e) {
+                logger.error("an error occured during getting username from token", e);
+            } catch (ExpiredJwtException e) {
+                logger.warn("the token is expired and not valid anymore", e);
+            } catch(SignatureException e){
+                logger.error("Authentication Failed. Username or Password not valid.");
+            }
+			
+			
+        }
+		else if (header != null && header.startsWith(TOKEN_PREFIX)) {
 			String token = header.replace(TOKEN_PREFIX, "");
 			try {
 				Jwts.parser()
@@ -80,9 +80,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			}catch (SignatureException se) {
 				res.setStatus(498);
 			}
-			chain.doFilter(req, res);
+			
+			return;
+		
+		
 		}
+      chain.doFilter(req, res);
+  } 
 
-	}
+	
 
 }

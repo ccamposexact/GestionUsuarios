@@ -2,6 +2,7 @@ package com.gestionusuario.app.controller;
 
 import static com.gestionusuario.app.enumerator.Identificadores.ACCESS_TOKEN_VALIDITY_SECONDS;
 import static com.gestionusuario.app.enumerator.Identificadores.SIGNING_KEY;
+import static com.gestionusuario.app.enumerator.Identificadores.TOKEN_PREFIX;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -36,10 +37,11 @@ public class TokenController {
 	JwtTokenUtil jwtTokenUtil;
 	
 	@GetMapping
-	public ResponseEntity<Map<String, Object>> getNewTokens(@RequestHeader("Authorization") String refreshToken, HttpServletResponse response) throws Exception{
+	public ResponseEntity<Map<String, Object>> getNewTokens(@RequestHeader("Authorization") String header, HttpServletResponse response) throws Exception{
 		Map<String, Object> respuesta = new HashMap<String, Object>();
+		String authtoken = header.replace(TOKEN_PREFIX, "");
 		try {
-			final Claims claims = jwtTokenUtil.getAllClaimsFromToken(refreshToken);			
+			final Claims claims = jwtTokenUtil.getAllClaimsFromToken(authtoken);			
 			String token = Jwts.builder()
 					.setClaims(claims)
 					.setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000))
