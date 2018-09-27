@@ -56,7 +56,7 @@ public class JwtTokenUtil implements Serializable{
             final Claims claims = getAllClaimsFromToken(token);
             return tokenrefresh(claims);
         } catch (Exception e) {
-            final String errorMsg = "Failed to refresh token!";
+            final String errorMsg = "NO SE CREO EL REFRESH TOKEN";
             
             throw new Exception(errorMsg, e);
         }
@@ -82,10 +82,7 @@ public class JwtTokenUtil implements Serializable{
     
     //crea el token refresh
     private String tokenrefresh(Map<String, Object> claims) {
-
-        
-
-        return Jwts.builder()
+    		return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_VALIDITY_SECONDS*1000))                

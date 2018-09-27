@@ -74,16 +74,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	            .getBody();
 				chain.doFilter(req, res);
 			}catch (ExpiredJwtException eje) {
-				res.setStatus(894);				
+				res.setStatus(894);	
+				res.sendError(894, "EL TOKEN ENVIADO HA EXPIRADO");
 			}catch (MalformedJwtException mje) {
 				res.setStatus(498);
+				res.sendError(498, "EL TOKEN ENVIADO ES INVÁLIDO");
 			}catch (SignatureException se) {
 				res.setStatus(498);
+				res.sendError(498, "EL TOKEN ENVIADO ES INVÁLIDO");
 			}
 			
 			return;
-		
-		
+		}else {
+			res.sendError(400, "NO SE ENCONTRÓ EL TOKEN");
+			return;
 		}
       chain.doFilter(req, res);
   } 

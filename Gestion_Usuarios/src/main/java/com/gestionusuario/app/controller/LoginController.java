@@ -65,7 +65,7 @@ public class LoginController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		final Usuario usuario = loginusuarioservice.findOne(part[0]);
 		if (usuario.getActivo() == 0) {
-			return new ResponseEntity<>("Usuario no activo", HttpStatus.FORBIDDEN);
+			return new ResponseEntity<>( HttpStatus.FORBIDDEN);
 		}
 		UsuarioActual = sesionservice.CrearSesion(usuario.getIdUsuario());
 		final String token = jwtTokenUtil.generateToken(usuario, UsuarioActual);

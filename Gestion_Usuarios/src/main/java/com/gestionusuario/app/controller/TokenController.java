@@ -41,7 +41,8 @@ public class TokenController {
 		Map<String, Object> respuesta = new HashMap<String, Object>();
 		String authtoken = header.replace(TOKEN_PREFIX, "");
 		try {
-			final Claims claims = jwtTokenUtil.getAllClaimsFromToken(authtoken);			
+			final Claims claims = jwtTokenUtil.getAllClaimsFromToken(authtoken);	
+			
 			String token = Jwts.builder()
 					.setClaims(claims)
 					.setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000))
@@ -52,6 +53,7 @@ public class TokenController {
 			respuesta.put("token", token);
 			respuesta.put("refreshToken", refreshTokenActual);
 			return new ResponseEntity<Map<String,Object>>(respuesta, HttpStatus.OK);
+			
 		}catch (ExpiredJwtException eje) {	
 			return ResponseEntity.status(894).body(null);
 		}catch (MalformedJwtException mje) {
