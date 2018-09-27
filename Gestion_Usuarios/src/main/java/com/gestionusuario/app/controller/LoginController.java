@@ -1,12 +1,15 @@
 package com.gestionusuario.app.controller;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,12 +17,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.gestionusuario.app.entity.Usuario;
 
@@ -53,11 +59,12 @@ public class LoginController {
 	private String rutaIntranet;
 
 	@RequestMapping(value = "/generate-token", method = RequestMethod.POST)
-	public ResponseEntity<?> register(HttpServletRequest header) throws AuthenticationException, Exception {
+	public void register(HttpServletRequest header,  HttpServletResponse response) throws AuthenticationException, Exception {
 
 		String[] part;
 		Decoder decoder = new Decoder();
 		part = decoder.decode(header, AUTHENTICATION_PREFIX);
+		
 
 		final Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(part[0], part[1]));
@@ -65,19 +72,28 @@ public class LoginController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		final Usuario usuario = loginusuarioservice.findOne(part[0]);
 		if (usuario.getActivo() == 0) {
-			return new ResponseEntity<>( HttpStatus.FORBIDDEN);
+			response.setStatus(401);
+			return;
 		}
 		UsuarioActual = sesionservice.CrearSesion(usuario.getIdUsuario());
 		final String token = jwtTokenUtil.generateToken(usuario, UsuarioActual);
 		final String rt = jwtTokenUtil.refreshToken(token);
-
-		Map<String, String> respuesta = new HashMap<>();
-
-		respuesta.put("token", token);
-		respuesta.put("rt", rt);
-		respuesta.put("link", rutaIntranet);
-
-		return new ResponseEntity<Map<String, String>>(respuesta, HttpStatus.OK);
+		
+		MultiValueMap<String, String> respuesta = new LinkedMultiValueMap<>();
+		
+		respuesta.add("token", token);
+		respuesta.add("refresht", rt);
+		
+		UriComponents uriComponents = UriComponentsBuilder.newInstance()
+	            .scheme("http")
+	            .host(rutaIntranet)
+	            .queryParams(respuesta).build(true);
+		
+		URI location = uriComponents.toUri();
+		response.setStatus(302);
+		response.sendRedirect(location.toString());
+		
+		//return new ResponseEntity<Map<String, String>>(respuesta, HttpStatus.OK)
 	}
 
 	@RequestMapping(value = "/cerrarsession", method = RequestMethod.POST)
@@ -87,5 +103,14 @@ public class LoginController {
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/correo", method = RequestMethod.POST)
+	public ResponseEntity<?> RecuperarCorreo(@RequestBody String correo) throws Exception {
+
+		
+
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 
 }
