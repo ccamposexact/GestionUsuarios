@@ -57,8 +57,12 @@ public class LoginController {
 
 	@Value("${ruta.intranet}")
 	private String rutaIntranet;
+	
+	@Value("${ruta.port}")
+	private int port;
 
-	@RequestMapping(value = "/generate-token", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/token", method = RequestMethod.POST)
 	public ResponseEntity<?> register(HttpServletRequest header,  HttpServletResponse response) throws AuthenticationException, Exception {
 
 		String[] part;
@@ -88,6 +92,7 @@ public class LoginController {
 		UriComponents uriComponents = UriComponentsBuilder.newInstance()
 	            .scheme("http")
 	            .host(rutaIntranet)
+	            .port(port)
 	            .queryParams(params).build(true);
 		
 		URI location = uriComponents.toUri();

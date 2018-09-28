@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionusuario.app.entity.Usuario;
 import com.gestionusuario.app.service.PerfilService;
 import com.gestionusuario.app.service.PermisoService;
@@ -65,7 +67,7 @@ public class JwtTokenUtil implements Serializable{
     // Obtiene los claims del token enviado
     public Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(SIGNING_KEY)
+                .setSigningKey(SIGNING_KEY.getBytes())
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -86,7 +88,7 @@ public class JwtTokenUtil implements Serializable{
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_VALIDITY_SECONDS*1000))                
-                .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
+                .signWith(SignatureAlgorithm.HS256, SIGNING_KEY.getBytes())
                 .compact();
     }
     
@@ -95,7 +97,7 @@ public class JwtTokenUtil implements Serializable{
     private String tokenacceso(Usuario usuario, int idsession) throws Exception {
     	
     	String permisosID = permisoservice.ObtenerPermisosID(usuario.getIdUsuario());
-    	List<String> permisosNombre = new ArrayList<>();
+    	List<Map<String, Object>> permisosNombre = new ArrayList<Map<String, Object>>();
         String[] permisosIDarray = permisosID.split(",");
         int[] intpermisosID = new int[permisosIDarray.length];
         for (int i = 0; i < permisosIDarray.length; i++) {
@@ -103,14 +105,18 @@ public class JwtTokenUtil implements Serializable{
            intpermisosID[i] = Integer.parseInt(numberAsString);
         }
         for (int i = 0; i < intpermisosID.length; i++) {
-        	permisosNombre.add(permisoservice.ObtenerPermisosNombre(intpermisosID[i]));
+        	Map<String, Object> nombrePermiso = new HashMap<String, Object>();
+        	nombrePermiso.put("nombre", 
+        			permisoservice.ObtenerPermisosNombre(intpermisosID[i]));
+        	permisosNombre.add(nombrePermiso);
         }
-
+        String jsonPermisos = new ObjectMapper().writeValueAsString(permisosNombre);
         Claims claims = Jwts.claims().setSubject(String.valueOf(usuario.getIdUsuario()));
         claims.put("idperfil", perfilservice.ObtenerPerfilID(usuario.getIdUsuario()));
         claims.put("perfil", perfilservice.ObtenerPerfil(usuario.getIdUsuario()));
-        claims.put("permisos", permisosNombre);
+        claims.put("permisos", jsonPermisos);
         claims.put("matricula", usuario.getMatricula());
+        claims.put("idUsuario", usuario.getIdUsuario());
         claims.put("usuario", usuario.getNombre());
         claims.put("idSesion", idsession);
         
@@ -118,7 +124,7 @@ public class JwtTokenUtil implements Serializable{
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000))
-                .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
+                .signWith(SignatureAlgorithm.HS256, SIGNING_KEY.getBytes())
                 .compact();
     }
 
