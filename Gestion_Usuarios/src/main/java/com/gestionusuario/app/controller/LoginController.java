@@ -59,7 +59,7 @@ public class LoginController {
 	private String rutaIntranet;
 
 	@RequestMapping(value = "/generate-token", method = RequestMethod.POST)
-	public void register(HttpServletRequest header,  HttpServletResponse response) throws AuthenticationException, Exception {
+	public ResponseEntity<?> register(HttpServletRequest header,  HttpServletResponse response) throws AuthenticationException, Exception {
 
 		String[] part;
 		Decoder decoder = new Decoder();
@@ -73,27 +73,29 @@ public class LoginController {
 		final Usuario usuario = loginusuarioservice.findOne(part[0]);
 		if (usuario.getActivo() == 0) {
 			response.setStatus(401);
-			return;
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		UsuarioActual = sesionservice.CrearSesion(usuario.getIdUsuario());
 		final String token = jwtTokenUtil.generateToken(usuario, UsuarioActual);
 		final String rt = jwtTokenUtil.refreshToken(token);
 		
-		MultiValueMap<String, String> respuesta = new LinkedMultiValueMap<>();
+		Map<String, String> respuesta = new HashMap<>();
 		
-		respuesta.add("token", token);
-		respuesta.add("refresht", rt);
+		respuesta.put("token", token);
+		respuesta.put("rt", rt);
+		respuesta.put("link", rutaIntranet);
 		
-		UriComponents uriComponents = UriComponentsBuilder.newInstance()
-	            .scheme("http")
-	            .host(rutaIntranet)
-	            .queryParams(respuesta).build(true);
+//		UriComponents uriComponents = UriComponentsBuilder.newInstance()
+//	            .scheme("http")
+//	            .host(rutaIntranet)
+//	            .queryParams(respuesta).build(true);
+//		
+//		URI location = uriComponents.toUri();
 		
-		URI location = uriComponents.toUri();
-		response.setStatus(302);
-		response.sendRedirect(location.toString());
+//		response.sendRedirect(location.toString());
+//		response.setStatus(302);
 		
-		//return new ResponseEntity<Map<String, String>>(respuesta, HttpStatus.OK)
+		return new ResponseEntity<Map<String, String>>(respuesta, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/cerrarsession", method = RequestMethod.POST)
