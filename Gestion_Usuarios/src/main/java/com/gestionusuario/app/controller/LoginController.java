@@ -79,18 +79,22 @@ public class LoginController {
 		final String token = jwtTokenUtil.generateToken(usuario, UsuarioActual);
 		final String rt = jwtTokenUtil.refreshToken(token);
 		
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+	
+		params.add("token", token);
+		params.add("rt", rt);
+		
+		
+		UriComponents uriComponents = UriComponentsBuilder.newInstance()
+	            .scheme("http")
+	            .host(rutaIntranet)
+	            .queryParams(params).build(true);
+		
+		URI location = uriComponents.toUri();
+		
 		Map<String, String> respuesta = new HashMap<>();
 		
-		respuesta.put("token", token);
-		respuesta.put("rt", rt);
-		respuesta.put("link", rutaIntranet);
-		
-//		UriComponents uriComponents = UriComponentsBuilder.newInstance()
-//	            .scheme("http")
-//	            .host(rutaIntranet)
-//	            .queryParams(respuesta).build(true);
-//		
-//		URI location = uriComponents.toUri();
+		respuesta.put("ruta", location.toString());
 		
 //		response.sendRedirect(location.toString());
 //		response.setStatus(302);
@@ -106,13 +110,11 @@ public class LoginController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/correo", method = RequestMethod.POST)
-	public ResponseEntity<?> RecuperarCorreo(@RequestBody String correo) throws Exception {
-
-		
-
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
+//	@RequestMapping(value = "/correo", method = RequestMethod.POST)
+//	public ResponseEntity<?> RecuperarCorreo(@RequestBody String correo) throws Exception {
+//
+//		return new ResponseEntity<>(HttpStatus.OK);
+//	}
 	
 
 }
