@@ -37,7 +37,7 @@ public class TokenController {
 	JwtTokenUtil jwtTokenUtil;
 	
 	@GetMapping
-	public ResponseEntity<Map<String, Object>> getNewTokens(@RequestHeader("Authorization") String header, HttpServletResponse response) throws Exception{
+	public ResponseEntity<Map<String, Object>> getNewTokens(@RequestHeader("Authorization") String header) throws Exception{
 		Map<String, Object> respuesta = new HashMap<String, Object>();
 		String authtoken = header.replace(TOKEN_PREFIX, "");
 		try {
@@ -46,7 +46,7 @@ public class TokenController {
 			String token = Jwts.builder()
 					.setClaims(claims)
 					.setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000))
-	                .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
+	                .signWith(SignatureAlgorithm.HS256, SIGNING_KEY.getBytes())
 	                .compact();
 			
 			String refreshTokenActual = jwtTokenUtil.refreshToken(token);
@@ -62,5 +62,6 @@ public class TokenController {
 			return ResponseEntity.status(498).body(null);
 		}
 	}
+	
 	
 }

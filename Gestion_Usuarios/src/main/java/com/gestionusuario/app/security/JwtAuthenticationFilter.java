@@ -69,7 +69,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			String token = header.replace(TOKEN_PREFIX, "");
 			try {
 				Jwts.parser()
-	            .setSigningKey(SIGNING_KEY)
+	            .setSigningKey(SIGNING_KEY.getBytes())
 	            .parseClaimsJws(token)
 	            .getBody();
 				chain.doFilter(req, res);
