@@ -106,6 +106,7 @@ public class JwtTokenUtil implements Serializable{
         }
         for (int i = 0; i < intpermisosID.length; i++) {
         	Map<String, Object> nombrePermiso = new HashMap<String, Object>();
+        	nombrePermiso.put("id", intpermisosID[i]);
         	nombrePermiso.put("nombre", 
         			permisoservice.ObtenerPermisosNombre(intpermisosID[i]));
         	permisosNombre.add(nombrePermiso);
