@@ -1,23 +1,34 @@
 package com.gestionusuario.app.controller;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionusuario.app.configuration.Conectar;
 import com.gestionusuario.app.entity.Perfil;
+import com.gestionusuario.app.entity.Usuario;
 import com.gestionusuario.app.enumerator.PermisosLista;
 import com.gestionusuario.app.service.PerfilService;
 import com.gestionusuario.app.service.UsuarioService;
+import static com.gestionusuario.app.enumerator.PerfilesEnum.*;
 
 @Controller
 @RequestMapping("/perfil")
@@ -341,5 +352,10 @@ public class PerfilController {
 			}
 		}	
 		return USUARIOEXISTE;
+	}
+	
+	@GetMapping("/correousuario")
+	public ResponseEntity<String> obtenerCorreoAutorizador() throws Exception {
+		return new ResponseEntity<String>(perfilservice.obtenerCorreoAutorizador(GESTION_DOCUMENTAL),HttpStatus.OK);
 	}
 }
