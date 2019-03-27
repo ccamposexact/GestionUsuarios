@@ -1,9 +1,15 @@
 package com.gestionusuario.app.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gestionusuario.app.dao.IUsuarioPerfilDao;
 import com.gestionusuario.app.entity.Perfil;
+import com.gestionusuario.app.entity.Usuario;
 import com.gestionusuario.app.repository.PerfilDAO;
 import com.gestionusuario.app.service.PerfilService;
 
@@ -13,6 +19,9 @@ public class PerfilServiceImpl implements PerfilService{
 	
 	@Autowired
 	private PerfilDAO perfildao;
+	
+	@Autowired
+	IUsuarioPerfilDao usuarioPerfilDao;
 	
 	@Override
 	public int insertar(Perfil perfil) throws Exception {
@@ -143,6 +152,16 @@ public class PerfilServiceImpl implements PerfilService{
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
+	}
+
+	@Override
+	public String obtenerCorreoAutorizador(Long idPerfil) throws Exception {
+		
+		Iterable<String> correos = usuarioPerfilDao.obtenerCorreoAutorizador(idPerfil);
+		List<String> correolst = StreamSupport.stream(correos.spliterator(), false).collect(Collectors.toList());
+		String correo = StreamSupport.stream(correolst.spliterator(), false)
+                .collect(Collectors.joining(", "));
+		return correo;
 	}
 
 }

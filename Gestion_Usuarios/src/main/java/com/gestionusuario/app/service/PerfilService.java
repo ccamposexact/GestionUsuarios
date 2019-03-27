@@ -1,6 +1,9 @@
 package com.gestionusuario.app.service;
 
+import java.util.List;
+
 import com.gestionusuario.app.entity.Perfil;
+import com.gestionusuario.app.entity.Usuario;
 
 public interface PerfilService extends GenericService<Perfil> {
 	
@@ -23,5 +26,8 @@ public interface PerfilService extends GenericService<Perfil> {
 	public String ObtenerPerfil(Long idUsuario) throws Exception;
 	
 	public int ObtenerPerfilID(Long idUsuario) throws Exception;
+	
+	public String obtenerCorreoAutorizador(Long idPerfil) throws Exception;
+	
 
 }
