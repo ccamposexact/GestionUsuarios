@@ -164,4 +164,10 @@ public class PerfilServiceImpl implements PerfilService{
 		return correo;
 	}
 
+	@Override
+	public String findPerfilByUsuarioId(Long idUsuario) throws Exception {
+		return usuarioPerfilDao.findPerfilByUsuarioId(idUsuario);
+		
+	}
+
 }

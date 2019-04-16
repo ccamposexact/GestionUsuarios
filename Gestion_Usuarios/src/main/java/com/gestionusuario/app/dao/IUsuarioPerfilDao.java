@@ -16,4 +16,7 @@ public interface IUsuarioPerfilDao extends CrudRepository<Usuario_Perfil, Long> 
 			+ " up.perfil.idPerfil = ?1)")
 	public Iterable<String> obtenerCorreoAutorizador(Long idPerfil);
 	
+	@Query("SELECT p.nombre FROM Perfil p WHERE p IN (SELECT up.perfil FROM Usuario_Perfil "
+			+ "up WHERE up.usuario.id=?1)")
+	public String findPerfilByUsuarioId(Long idUsuario);
 }
