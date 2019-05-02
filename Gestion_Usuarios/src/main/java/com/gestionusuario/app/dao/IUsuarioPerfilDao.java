@@ -14,9 +14,15 @@ public interface IUsuarioPerfilDao extends CrudRepository<Usuario_Perfil, Long> 
 
 	@Query("SELECT u.correo FROM Usuario u WHERE u IN(SELECT up.usuario FROM Usuario_Perfil up WHERE"
 			+ " up.perfil.idPerfil = ?1)")
-	public Iterable<String> obtenerCorreoAutorizador(Long idPerfil);
+	public Iterable<String> obtenerCorreoGD(Long idPerfil);
 	
 	@Query("SELECT p.nombre FROM Perfil p WHERE p IN (SELECT up.perfil FROM Usuario_Perfil "
 			+ "up WHERE up.usuario.id=?1)")
 	public String findPerfilByUsuarioId(Long idUsuario);
+	
+	@Query("SELECT u.correo FROM Usuario u WHERE u IN(SELECT up.usuario FROM Usuario_Perfil up WHERE"
+			+ " up.perfil.idPerfil = ?1 OR up.perfil.idPerfil=?2)")
+	public Iterable<String> obtenerCorreoGDAndSuper(Long idPerfilGD, Long idPerfilSP);
+	
+
 }

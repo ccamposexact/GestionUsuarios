@@ -1,5 +1,6 @@
 package com.gestionusuario.app.service.impl;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -12,6 +13,12 @@ import com.gestionusuario.app.entity.Perfil;
 import com.gestionusuario.app.entity.Usuario;
 import com.gestionusuario.app.repository.PerfilDAO;
 import com.gestionusuario.app.service.PerfilService;
+import static com.gestionusuario.app.enumerator.PerfilesEnum.GESTION_DOCUMENTAL;
+import static com.gestionusuario.app.enumerator.PerfilesEnum.SUPERVISOR;
+import static com.gestionusuario.app.enumerator.VerificadorUsuarioEnum.EXPRESS;
+import static com.gestionusuario.app.enumerator.VerificadorUsuarioEnum.REGULAR;
+import static com.gestionusuario.app.enumerator.VerificadorUsuarioEnum.ESPECIAL;
+
 
 
 @Service("perfilservice")
@@ -155,13 +162,18 @@ public class PerfilServiceImpl implements PerfilService{
 	}
 
 	@Override
-	public String obtenerCorreoAutorizador(Long idPerfil) throws Exception {
+	public String obtenerCorreo(Long idVerificador) throws Exception {
 		
-		Iterable<String> correos = usuarioPerfilDao.obtenerCorreoAutorizador(idPerfil);
+		Iterable<String> correos = null;
+		
+		if(idVerificador==REGULAR || idVerificador==ESPECIAL) {
+			correos = usuarioPerfilDao.obtenerCorreoGD(GESTION_DOCUMENTAL);
+		}else if(idVerificador==EXPRESS) {
+			correos = usuarioPerfilDao.obtenerCorreoGDAndSuper(GESTION_DOCUMENTAL, SUPERVISOR);
+		}
 		List<String> correolst = StreamSupport.stream(correos.spliterator(), false).collect(Collectors.toList());
-		String correo = StreamSupport.stream(correolst.spliterator(), false)
-                .collect(Collectors.joining(", "));
-		return correo;
+		return  StreamSupport.stream(correolst.spliterator(), false).collect(Collectors.joining(", "));
+		
 	}
 
 	@Override
