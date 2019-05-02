@@ -354,9 +354,9 @@ public class PerfilController {
 		return USUARIOEXISTE;
 	}
 	
-	@GetMapping("/correousuario")
-	public ResponseEntity<String> obtenerCorreoAutorizador() throws Exception {
-		return new ResponseEntity<String>(perfilservice.obtenerCorreoAutorizador(GESTION_DOCUMENTAL),HttpStatus.OK);
+	@GetMapping("/{id}/correousuario")
+	public ResponseEntity<String> obtenerCorreo(@PathVariable Long id) throws Exception {
+		return new ResponseEntity<String>(perfilservice.obtenerCorreo(id),HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}/usuario")

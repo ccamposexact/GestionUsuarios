@@ -25,4 +25,6 @@ public interface UsuarioService extends GenericService<Usuario>{
 	public int LoguearUsuario(String username, String password) throws Exception;
 	
 	public int ValidarDatosExistentesAModificar(Long idUsuario, String dni, String correo, String matricula) throws Exception;
+	
+	public String findNombreUsuario (Long usuarioId) throws Exception;
 }

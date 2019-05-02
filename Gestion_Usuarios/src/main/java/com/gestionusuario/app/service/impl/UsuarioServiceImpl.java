@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gestionusuario.app.dao.IUsuarioDao;
 import com.gestionusuario.app.entity.Usuario;
 import com.gestionusuario.app.repository.UsuarioDAO;
 import com.gestionusuario.app.service.UsuarioService;
@@ -15,6 +16,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@SuppressWarnings("uncheked")
 	@Autowired
 	private UsuarioDAO usuariodao;
+	
+	@Autowired
+	private IUsuarioDao iusuarioDao;
 
 	public UsuarioDAO getUsuariodao() {
 		return usuariodao;
@@ -135,6 +139,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 		throw new Exception();
 	}
 	
+	}
+
+	@Override
+	public String findNombreUsuario(Long usuarioId) throws Exception {
+		return iusuarioDao.findNombreUsuario(usuarioId);
 	}
 	
 	

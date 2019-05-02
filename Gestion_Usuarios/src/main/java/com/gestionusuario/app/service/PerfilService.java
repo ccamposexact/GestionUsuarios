@@ -27,7 +27,7 @@ public interface PerfilService extends GenericService<Perfil> {
 	
 	public int ObtenerPerfilID(Long idUsuario) throws Exception;
 	
-	public String obtenerCorreoAutorizador(Long idPerfil) throws Exception;
+	public String obtenerCorreo(Long idVerificador) throws Exception;
 	
 	public String findPerfilByUsuarioId(Long idUsuario) throws Exception;
 	
