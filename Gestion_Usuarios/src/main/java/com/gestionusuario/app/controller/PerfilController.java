@@ -363,4 +363,9 @@ public class PerfilController {
 	public ResponseEntity<String> findPerfil(@PathVariable Long id) throws Exception {
 		return new ResponseEntity<String>(perfilservice.findPerfilByUsuarioId(id),HttpStatus.OK);
 	}
+	
+	@GetMapping("/correoutd")
+	public ResponseEntity<String> obtenerCorreoUTD() throws Exception {
+		return new ResponseEntity<String>(perfilservice.obtenerCorreoUTD(),HttpStatus.OK);
+	}
 }
