@@ -31,5 +31,7 @@ public interface PerfilService extends GenericService<Perfil> {
 	
 	public String findPerfilByUsuarioId(Long idUsuario) throws Exception;
 	
+	public String obtenerCorreoUTD() throws Exception;
+	
 
 }

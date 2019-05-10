@@ -167,7 +167,7 @@ public class PerfilServiceImpl implements PerfilService{
 		Iterable<String> correos = null;
 		
 		if(idVerificador==REGULAR || idVerificador==ESPECIAL) {
-			correos = usuarioPerfilDao.obtenerCorreoGD(GESTION_DOCUMENTAL);
+			correos = usuarioPerfilDao.obtenerCorreo(GESTION_DOCUMENTAL);
 		}else if(idVerificador==EXPRESS) {
 			correos = usuarioPerfilDao.obtenerCorreoGDAndSuper(GESTION_DOCUMENTAL, SUPERVISOR);
 		}
@@ -179,6 +179,14 @@ public class PerfilServiceImpl implements PerfilService{
 	@Override
 	public String findPerfilByUsuarioId(Long idUsuario) throws Exception {
 		return usuarioPerfilDao.findPerfilByUsuarioId(idUsuario);
+		
+	}
+
+	@Override
+	public String obtenerCorreoUTD() throws Exception {
+		Iterable<String> correos = usuarioPerfilDao.obtenerCorreo(SUPERVISOR);
+		List<String> correolst = StreamSupport.stream(correos.spliterator(), false).collect(Collectors.toList());
+		return  StreamSupport.stream(correolst.spliterator(), false).collect(Collectors.joining(", "));
 		
 	}
 
